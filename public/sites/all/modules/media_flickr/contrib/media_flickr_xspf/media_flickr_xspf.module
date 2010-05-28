@@ -1,0 +1,89 @@
+<?php
+// $Id: media_flickr_xspf.module,v 1.1.2.5 2009/06/26 14:05:28 aaron Exp $
+
+/**
+ * Implementation of hook_menu().
+ */
+function media_flickr_xspf_menu() {
+  $items = array();
+
+  $items['media/flickr/photoset/%media_flickr_photoset/xspf'] = array(
+    'page callback' => 'media_flickr_xspf_page',
+    'page arguments' => array(3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ *  Page callback for /media/flickr/[photoset]/xspf.
+ *
+ *  Displays an XSPF playlist for the photoset.
+ */
+function media_flickr_xspf_page($photoset, $delay = 10, $width = 0, $height = 0) {
+  drupal_set_header('Content-Type: text/xml; charset=utf-8');
+
+  $output = array();
+  $output[] = '<playlist version="1" xmlns="http://xspf.org/ns/0/">';
+  $info = media_flickr_sets_request('flickr.photosets.getInfo', array('photoset_id' => $photoset['id']));
+  $title = $info['photoset']['title']['_content'];
+  $attributes = array(
+    'title' => t('@title', array('@title' => $title)),
+  );
+  $output[] = format_xml_elements($attributes) . '<trackList>';
+
+
+  $items = array();
+  $size = media_flickr_guess_size($width, $height);
+  $photos = media_flickr_photoset_load_photos($photoset, $size);
+  foreach ($photoset['photoset']['photo'] as $photo) {
+    $url = url($photos[$photo['id']], array('absolute' => TRUE));
+//     $url = media_flickr_photo_url($photo['id'], $width, $height);
+    $items[] = array(
+      'title' => $photo['title'],
+      'creator' => '',
+      'location' => $url,
+      'info' => '',
+      'image' => $url,
+      'duration' => $delay,
+      array(
+        'key' => 'meta',
+        'value' => $delay,
+        'attributes' => array(
+          'rel' => 'duration',
+        ),
+      ),
+    );
+  }
+  if (!empty($items)) {
+    foreach($items as $item){
+      // Add another item.
+      $output[] = media_flickr_xspf_item($item);
+    }
+  }
+  $output[] = '</trackList>';
+  $output[] = '</playlist>';
+
+  print implode("\n", $output);
+}
+
+/**
+ * Create a playlist item for an xml file.
+ *
+ * @param array $item
+ *   Keys are:
+ *   - 'key': the tag name.
+ *   - 'value': the tag value.
+ *   - 'attributes': an array of attributues, e.g., array('rel' => 'rel')) to be applied
+ *     to the tag. Will be run through drupal_attributes().
+ * @return
+ *   An XML string.
+ */
+function media_flickr_xspf_item($item) {
+  $output = array();
+  $output[] = '<track>';
+  $output[] = format_xml_elements($item) . '</track>';
+  return implode("\n", $output);
+}

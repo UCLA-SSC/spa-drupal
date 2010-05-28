@@ -1,0 +1,59 @@
+<?php
+// $Id: path_image.install,v 1.5 2009/02/01 01:18:00 sun Exp $
+
+/**
+ * @file
+ * Module installation and update functionality for Path image.
+ */
+
+/**
+ * Implementation of hook_schema().
+ */
+function path_image_schema() {
+  $schema['path_image_data'] = array(
+    'fields' => array(
+      'pid' => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE),
+      'path' => array('type' => 'varchar', 'length' => '128', 'not null' => FALSE),
+      'image_file' => array('type' => 'varchar', 'length' => '32', 'not null' => FALSE),
+    ),
+    'indexes' => array(
+      'path' => array(array('path', 32)),
+    ),
+    'primary key' => array('pid'),
+  );
+  return $schema;
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function path_image_install() {
+  drupal_install_schema('path_image');
+  db_query("UPDATE {system} SET weight = 5 WHERE name = 'path_image'");
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function path_image_uninstall() {
+  drupal_uninstall_schema('path_image');
+  variable_del('path_image_block_subject');
+  variable_del('path_image_default_image');
+  variable_del('path_image_default_use');
+  variable_del('path_image_file_types');
+  variable_del('path_image_homepage_image');
+  variable_del('path_image_homepage_use');
+  variable_del('path_image_numeric_use');
+  variable_del('path_image_repository');
+}
+
+/**
+ * Convert column 'pid' into type serial.
+ */
+function path_image_update_6100() {
+  $ret = array();
+  db_drop_primary_key($ret, 'path_image_data');
+  db_change_field($ret, 'path_image_data', 'pid', 'pid', array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE), array('primary key' => array('pid')));
+  return $ret;
+}
+

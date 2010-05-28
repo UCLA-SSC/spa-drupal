@@ -1,0 +1,344 @@
+<?php
+
+
+
+function ucla_spa_helper_init() {
+/*$link=arg(0) .'/'.arg(1); 
+    menu_set_active_trail(ucla_spa_helper_build_active_trail($link));
+            menu_set_active_menu_name(drupal_get_title());
+             print_r(menu_set_active_trail());*/
+    /*$path=arg(0) .'/'.arg(1);    
+     $hard_menu = db_result(db_query("SELECT mlid FROM menu_links WHERE link_path = '%s'", $path));
+       menu_get_item(NULL, NULL, TRUE);
+$menu_item = menu_get_item($hard_menu);*/
+ //    menu_set_active_item($path);
+  /*  $menu_item = menu_get_item($hard_menu);
+    menu_set_item(NULL, $menu_item);
+    if (variable_get('menutrails_breadcrumbs', 1)) {
+        drupal_set_breadcrumb(menutrails_get_breadcrumbs());
+    }   */     
+
+}
+
+/*
+function ucla_spa_helper_rehone_menu($path) {
+    $src = db_result(db_query("SELECT src FROM url_alias WHERE dst = '%s'", $path));
+
+    $menu_item = menu_get_item($src);
+    menu_set_item(NULL, $menu_item);
+    if (variable_get('menutrails_breadcrumbs', 1)) {
+        drupal_set_breadcrumb(menutrails_get_breadcrumbs());
+    }
+}
+/*
+
+/*
+function ucla_spa_helper_build_active_trail($link) {
+  static $trail;
+
+  if (!isset($trail)) {
+    $trail = array();
+    $trail[] = array('title' => t('Home'), 'href' => '<front>', 'localized_options' => array());
+
+    $tree = menu_tree_all_data('primary_links', $link);
+    $curr = array_shift($tree);
+
+    while ($curr) {
+      if ($curr['link']['href'] == $link['href']) {
+        $trail[] = $curr['link'];
+        $curr = FALSE;
+      }
+      else {
+        if ($curr['below'] && $curr['link']['in_active_trail']) {
+          $trail[] = $curr['link'];
+          $tree = $curr['below'];
+        }
+        $curr = array_shift($tree);
+      }
+    }
+  }
+  return $trail;
+}
+*/
+/*
+function ucla_spa_helper_menu($may_cache = null)
+{
+
+  $items = array();
+  if (!$may_cache) {
+   
+    
+    $items['admin/content/node'] = array(
+      'title' => t('Edit Content'),
+      'page callback' => 'ucla_spa_helper_admin_content_override',
+      'access arguments' => user_access('administer nodes'),
+      'type' => MENU_CALLBACK,
+      );
+
+  }
+  return $items;
+
+} */
+function ucla_spa_helper_admin_content_override()
+{
+ 
+  drupal_goto('admin/dashboard/content');
+ 
+}
+
+function ucla_spa_helper_form_alter(&$form, $form_state, $form_id) {
+ //krumo($form);
+ global $user;
+   if ($user->uid == 1) {
+  // krumo($key);
+  // krumo($profile->taxonomy);
+ // krumo($form);
+   }
+ if ($form['#id'] == 'search-form') {
+   unset($form['basic']['#title']);
+   $form['basic']['inline']['#hint'] = t('Search');
+  
+   //krumo($form);
+ }
+ if (isset($form['type']) && isset($form['#node']) && $form['type']['#value'] .'_node_form' == $form_id) {
+   //hide input formats
+   $form['body_field']['format']['#attributes'] = array('class' => 'invisible');
+   $form['body_field']['format']['#access'] = user_access('administer filters');
+   //krumo($form);
+    
+    if (arg(3) && $form['type']['#value'] != 'faculty_profile') {
+     $form['author']['name']['#default_value']=arg(3);
+     //$form['taxonomy']=NULL;
+     }
+   $authorname=$form['author']['name']['#default_value'];
+   $author=user_load(array('name' => $authorname));
+   $profile=content_profile_load('faculty_profile', $author->uid);
+   
+   // krumo($author);
+   if (arg(0) != 'user' && $profile) {
+    $user_roles = array_keys($author->roles);
+   } else {
+     $user_roles =array();
+     }
+   if (in_array(5, $user_roles) && arg(0) != 'user'  ) {
+     $key=array_keys($profile->taxonomy);
+    //$option[$profile->taxonomy[$key[0]]->tid]= $profile->taxonomy[$key[0]]->name;
+     //$term = taxonomy_get_term($profile->taxonomy[$key[0]]->tid);
+            
+     $form['taxonomy'][2]['#default_value']=array(0 => $profile->taxonomy[$key[0]]->tid);
+     $form['taxonomy'][2]['#disabled'] = TRUE;
+   }
+   global $user;
+   if ($user->uid == 1) {
+  // krumo($key);
+  // krumo($profile->taxonomy);
+  // krumo($form['taxonomy'][2]);
+   }
+   
+   //hide menu options
+   $hide=array('menu-resources:0', 'primary-links:2446', 'primary-links:3371', 'primary-links:3393', 'primary-links:3596', 'primary-links:3399', 'primary-links:2446', 'primary-links:3395', 'primary-links:3595', 'primary-links:3594', 'primary-links:3374', 'primary-links:3398', 'primary-links:3597', 'primary-links:3598');
+
+   if (isset($form['menu']['parent']['#options'])) {
+		$options = array();
+	
+		$original = $form['menu']['parent']['#options'];
+		//krumo($original);
+		foreach ($original as $id => $display) {
+		  if ((strpos($id, "navigation") !== 0) && (strpos($id, "secondary-links") !==0 ) && (strpos($id, "admin") !== 0) && (strpos($id, "devel") !== 0))
+			 if (!in_array($id, $hide)) {
+			  $options[$id] = $display;
+			  }
+		}
+	   if ($user->uid == 1) {
+	   //krumo($options);
+	   }
+		$form['menu']['parent']['#options'] = $options;
+    }
+  
+
+
+   
+   
+   /*$path = isset($form['#node']->path) ? $form['#node']->path : NULL;
+    $form['path'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('URL path settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => empty($path),
+      '#access' => user_access('create url aliases'),
+      '#weight' => 30,
+    );
+    $form['path']['path'] = array(
+      '#type' => 'textfield',
+      '#default_value' => $path,
+      '#maxlength' => 128,
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      '#description' => t('Optionally specify an alternative URL by which this node can be accessed. For example, type "about" when writing an about page. Use a relative path and don\'t add a trailing slash or the URL alias won\'t work.'),
+    );
+    if ($path) {
+      $form['path']['pid'] = array(
+        '#type' => 'value',
+        '#value' => db_result(db_query("SELECT pid FROM {url_alias} WHERE dst = '%s' AND language = '%s'", $path, $form['#node']->language))
+      );
+    }*/
+  }
+ 
+}
+
+
+
+/**
+ * Implementation of hook_menu_alter().
+ */
+/*function ulca_spa_helper_menu_alter(&$items) {
+  foreach ($items as $path => $item) {
+    $args = explode('/', $path);
+    // Move all admin/* items to admin menu links.
+    if ($args && $args[0] === 'admin') {
+      $items[$path]['menu_name'] = 'admin';
+    }
+    // Smarter access callback for poorly checked landing pages
+    if (!empty($item['access arguments']) && !empty($item['page callback']) && $item['access arguments'] === array('access administration pages') && in_array($item['page callback'], array('system_admin_menu_block_page', 'system_settings_overview'))) {
+      $items[$path]['access callback'] = 'admin_landing_page_access';
+      $items[$path]['access arguments'] = array($path);
+    }
+  }
+
+  // Move admin theme settings to theme local task.
+  $items['admin/build/themes/admin'] = $items['admin/settings/admin'];
+  $items['admin/build/themes/admin']['type'] = MENU_LOCAL_TASK;
+  $items['admin/build/themes/admin']['weight'] = 10;
+  unset($items['admin/settings/admin']);
+
+  // Add in a routing item for admin/content/add
+  $items['admin/content/add'] = $items['node/add'];
+  $items['admin/content/add']['page callback'] = 'drupal_goto';
+  $items['admin/content/add']['page arguments'] = array('node/add');
+  $items['admin/content/add']['description'] = 'Create new content on your site.';
+  $items['admin/content/add']['weight'] = -20;
+  $items['admin/dashboard/content']['weight'] = -19;
+
+  $items = array_merge($items, admin_menu_clone_items('admin/build/themes', 'admin/themes', $items));
+  $items = array_merge($items, admin_menu_clone_items('admin/build/modules', 'admin/modules', $items));
+
+  // Expose a small subset of the most usable core admin pages.
+  // Other pages can be exposed simply by adding ['options']['admin'] = TRUE
+  // to items in hook_menu().
+  $include = array(
+    'admin/content' => 'Content',
+    'admin/content/add' => 'Add',
+    'admin/dashboard/content' => 'Edit',
+
+    'admin/build' => 'Structure',
+    'admin/build/views' => '',
+    'admin/build/block' => '',
+    'admin/build/menu' => '',
+
+    'admin/user' => 'People',
+    'admin/user/permissions' => '',
+    'admin/user/user' => '',
+
+    'admin/settings' => 'Configuration',
+    'admin/settings/date-time' => '',
+    'admin/settings/filters' => '',
+    'admin/settings/language' => '',
+    'admin/settings/performance' => '',
+    'admin/settings/site-information' => '',
+
+    'admin/themes' => 'Appearance',
+    'admin/modules' => '',
+  );
+
+  foreach ($include as $path => $title) {
+    if (!empty($items[$path])) {
+      $items[$path]['title'] = !empty($title) ? $title : $items[$path]['title'];
+      $items[$path]['options']['admin'] = TRUE;
+    }
+  }
+  cache_clear_all('admin_paths', 'cache');
+}*/
+
+function ucla_spa_helper_profile_alter(&$account) {
+ // krumo($account);
+
+  $user_roles = array_keys($account->roles);
+  
+ if (!in_array(5, $user_roles)) {
+   $account->content['content_profile']=NULL;
+ }
+  foreach ($account->content AS $key => $field) {
+    // do something
+  }
+}
+
+function ucla_spa_helper_views_pre_render(&$view) {
+ if($view->name == "control_content") {
+      //Add code to manipulate the view
+      $view->header=NULL;
+
+  }
+       // krumo($view);
+}
+
+function ucla_spa_helper_tweetsimple_getblock($tweet_uri, $num) {
+  // simplepie_get((string) tweeter search uri, (string) simplepie cache loc, (int) cache refresh in seconds)
+  if ($simplepie = simplepie_get($tweet_uri, FALSE, 600)) {
+    foreach ($simplepie->get_items() as $item) {
+      if ($author = $item->get_author()) {
+        $twauthor = check_plain($author->get_name());
+        $twauthor_link = filter_xss($author->get_link());
+      } 
+      else {
+        $twauthor = '';
+      }
+      
+      $t_src = $item->get_item_tags('http://api.twitter.com/', 'source');
+      $twfrom = filter_xss(trim($t_src[0]['data'], '"'));
+      
+      $tweets[] = array(
+        'twicon' => filter_xss($item->get_link(0, $rel = 'image')),
+        'twauthor' => $twauthor,
+        'twauthor_link' => $twauthor_link,   
+        'twitem' => filter_xss($item->get_description(), $allowed_tags = array('a', 'em', 'strong', 'cite', 'code', 'ul', 'b')),
+        'twdate' => $item->get_date('j F Y | g:i a '),
+        'twfrom' => $twfrom,
+      );
+    }
+  } 
+  else {
+    drupal_set_message(t("Simplepie error."), 'error');
+  }
+  $count=0;
+  while ( $count < $num ) {
+    $tweets_final[$count]=$tweets[$count];
+    $count++;
+  }
+ 
+  // echo '<pre>'; print_r($tweets); echo '</pre>';
+  if (count($tweets_final)) {
+ 	 $output.=theme('tweetsimple_tweets', $tweets_final);
+ 	 $link=str_replace('/statuses/user_timeline', '', $tweet_uri);
+ 	 $link=str_replace('.atom','',$link);
+ 	 if (arg(0) == 'node' && is_numeric(arg(1))) {
+ 	   $node=node_load(arg(1));
+ 	   }
+ 	 if ($node->type == 'faculty_profile') {
+ 	   $output.= "<div class='tweetlink'><a href='". $link ."'>Visit the Professor's Twitter Page</a></div>";
+ 	 } else {
+ 	    $output.= "<div class='tweetlink'><a href='". $link ."'>Visit our Twitter Page</a></div>";
+ 	 } 
+ 	 return $output;
+  } else {
+  	return '<p class="err" style="margin: 8px; padding: 12px;">Sorry, this feed is currently empty, check later or visit <a href="http://www.twitter.com">twitter.com</a> to post your own tweets!</p>';
+  }
+}
+
+function ucla_spa_helper_tweetsimple_tweets($tweets) {
+  $output = '<div id="twblock">';
+  foreach ($tweets as $tweet) {
+    $output .= theme('tweetsimple_tweet', $tweet['twicon'],  $tweet['twauthor'], $tweet['twauthor_link'], $tweet['twitem'],  $tweet['twdate'], $tweet['twfrom']);
+  }
+  $output .= '</div>';
+  return $output;
+}

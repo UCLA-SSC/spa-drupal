@@ -1,0 +1,93 @@
+<?php
+// $Id: data.test,v 1.5 2009/07/26 21:59:15 alexb Exp $
+/**
+ * @file
+ * Data module tests.
+ */
+
+require_once(drupal_get_path('module', 'data') .'/tests/data.test.inc');
+
+/**
+ * Test basic Data API functionality.
+ */
+class DataTestCaseAPI extends DataTestCase {
+
+  /**
+   * Describe this test.
+   */
+  public function getInfo() {
+    return array(
+      'name' => t('Data API'),
+      'description' => t('Unit tests for Data module\'s API'),
+      'group' => t('Data'),
+    );
+  }
+
+  /**
+   * Set up test.
+   */
+  public function setUp() {
+    // Test with CTools enabled if available.
+    if (drupal_get_filename('module', 'ctools')) {
+      parent::setUp('ctools', 'data');
+      $this->assertTrue(1, 'Testing with Data module and CTools.');
+    }
+    else {
+      parent::setUp('data');
+      $this->assertTrue(1, 'Testing with Data module only (without CTools).');
+    }
+  }
+
+  /**
+   * Run CRUD tests.
+   */
+  public function testCRUD() {
+    // Create table.
+    $table_name = data_name($this->randomName(5, 'crud'));
+    if (!$table = data_create_table($table_name, $this->testSchema())) {
+      $this->error('Could not create table.');
+      return;
+    }
+    else {
+      $this->assertTrue(1, 'Created table '. $table_name);
+    }
+
+    // Save data.
+    $test_data = $this->testData();
+    $table->save($test_data[0], array('id'));
+    $table->save($test_data[1], array('id'));
+    $table->save($test_data[1], array('id'));
+    $record_num = db_result(db_query('SELECT COUNT(*) FROM {'. $table_name .'}'));
+    
+    $result = db_query('SELECT * FROM {'. $table_name .'}');
+    while ($row = db_fetch_array($result)) {
+      $rows[] = $row;
+    }
+
+    // Load second record.
+    $data = $table->load(array('id' => 1));
+    $this->assertEqual($data[0], $test_data[1], 'Loaded data matches saved data.');
+
+    // Manipulate second record, save and load.
+    $data[0]['char0'] = 'test';
+    $table->save($data[0], array('id'));
+    $data = $table->load(array('id' => 1));
+    $this->assertEqual($data[0]['char0'], 'test', 'Saved data matches changed data.');
+
+    // Load a record by string.
+    $data = $table->load(array('char0' => 'test'));
+    $this->assertEqual($data[0]['id'], 1, 'Loaded data by string type key.');
+
+    // Delete table.
+    data_drop_table($table_name);
+    $this->assertFalse(db_table_exists($table_name), 'Dropped table.');
+
+    // Create table and drop it again.
+    $table = data_create_table($table_name, $this->testSchema());
+    $this->assertTrue(!empty($table), 'Created table with same name '. $table_name);
+
+    // Delete table.
+    data_drop_table($table_name);
+    $this->assertFalse(db_table_exists($table_name), 'Dropped table.');
+  }
+}

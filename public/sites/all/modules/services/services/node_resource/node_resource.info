@@ -1,0 +1,12 @@
+; $Id: node_resource.info,v 1.1 2010/03/08 20:01:41 hugowetterberg Exp $
+name = Node Resource
+description = Provides a resource oriented service interface to nodes.
+package = Services - services
+core = 6.x
+php = 5.x
+; Information added by drupal.org packaging script on 2010-03-12
+version = "6.x-3.0-unstable2"
+core = "6.x"
+project = "services"
+datestamp = "1268390408"
+

@@ -1,0 +1,15 @@
+; $Id: tweetsimple.info,v 1.1 2009/08/03 17:49:58 rfpldev Exp $
+name = TweetSimple 
+description = Retrieve Twitter-type feeds 
+dependencies[] = simplepie
+
+version = 6.x-1.0-beta1b
+package = Twitter
+project = tweetsimple
+core = 6.x
+; Information added by drupal.org packaging script on 2009-08-17
+version = "6.x-1.0-beta2"
+core = "6.x"
+project = "tweetsimple"
+datestamp = "1250542009"
+

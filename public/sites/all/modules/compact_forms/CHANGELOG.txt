@@ -1,0 +1,34 @@
+// $Id: CHANGELOG.txt,v 1.10 2009/05/06 23:46:37 sun Exp $
+
+Compact Forms x.x-x.x, xxxx-xx-xx
+---------------------------------
+
+
+Compact Forms 6.x-1.x, xxxx-xx-xx
+---------------------------------
+
+
+Compact Forms 6.x-1.2, 2009-05-06
+---------------------------------
+#452196 by sun: Fixed JavaScript to re-use existing jQuery objects.
+#452946 by sun: Fixed $form['#id'] not respected when testing form ids.
+
+
+Compact Forms 6.x-1.1, 2009-05-03
+---------------------------------
+#404132 by sun: Fixed configuration settings and implementation of hook_help().
+#404132 by sun: Fixed page requisites only need to be loaded on pages containing
+  configured forms.
+#404132 by sun: Changed order of functions.
+#243952 by sun: Ported to 6.x.
+#404132 by sun: Major rewrite:
+  - Proper use of Drupal.behaviors.
+  - Split administrative functions into include file.
+  - Code clean-up.
+
+
+Compact Forms 5.x-1.0, 2007-07-29
+---------------------------------
+Initial release of Compact Forms.
+
+

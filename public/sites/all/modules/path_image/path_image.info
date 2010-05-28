@@ -1,0 +1,11 @@
+; $Id: path_image.info,v 1.4 2009/02/01 01:18:00 sun Exp $
+name = Path image
+description = A module to provide an image file within a block dependant upon the Drupal path.
+core = 6.x
+
+; Information added by drupal.org packaging script on 2009-05-14
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "path_image"
+datestamp = "1242260582"
+
