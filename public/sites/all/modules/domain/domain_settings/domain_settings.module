@@ -1,6 +1,6 @@
 <?php
 
-// $Id: domain_settings.module,v 1.1.2.7 2010/03/02 20:38:24 agentken Exp $
+// $Id: domain_settings.module,v 1.1.2.10 2010/04/29 21:31:23 agentken Exp $
 
 /**
  * @defgroup domain_settings Domain Settings : expanded site configuration options for Domain Access
@@ -47,7 +47,7 @@ function domain_settings_form_alter(&$form, $form_state, $form_id) {
   $form['buttons']['#weight'] = $weight + 2;
   $domain_weight = $weight + 1;
   $form['#submit'][] = 'domain_settings_form_submit';
-  $options = array();
+  $options = array(-5 => t('All domains'));
   // Get the display format of the form element.
   $format = domain_select_format();
   foreach (domain_domains() as $data) {
@@ -66,16 +66,21 @@ function domain_settings_form_alter(&$form, $form_state, $form_id) {
     '#collapsed' => FALSE,
     '#weight' => $domain_weight,
   );
-  $default = $_domain['domain_id'];
-  if (!variable_get('domain_settings_behavior', 0) || $default == 0) {
-    $default = -1;
+  // Set the proper default.
+  $behavior = variable_get('domain_settings_behavior', 0);
+  $default = -1;
+  if ($behavior == 1) {
+    $default = ($_domain['domain_id'] == 0) ? -1 : $_domain['domain_id'];
+  }
+  if ($behavior == 2) {
+    $default = -5;
   }
   $form['domain_settings']['domain_id'] = array(
     '#type' => empty($format) ? 'radios' : 'select',
     '#title' => t('Save settings for'),
     '#options' => $options,
     '#required' => TRUE,
-    '#description' => t('Select the domain to which these settings apply.'),
+    '#description' => t('Select the domain to which these settings apply. If you select <em>All domains</em>, domain-specific settings will be removed.'),
     '#default_value' => $default,
   );
   if ($format) {
@@ -84,6 +89,15 @@ function domain_settings_form_alter(&$form, $form_state, $form_id) {
   }
   foreach ($form['#submit'] as $key => $value) {
     if ($value == 'system_settings_form_submit') {
+      unset($form['#submit'][$key]);
+    }
+  }
+  if (isset($form['site_name'])) {
+    $form['site_name']['#description'] .= ' <em>'. t('This value will change the registered name of the selected domain.') .'</em>';
+  }
+  // Disable special sitename variable handling.
+  foreach ($form['#submit'] as $key => $value) {
+    if ($value == 'domain_form_sitename_submit') {
       unset($form['#submit'][$key]);
     }
   }
@@ -106,20 +120,39 @@ function domain_settings_form_submit($form, &$form_state) {
   }
   // -1 is the primary domain.
   foreach ($values as $name => $value) {
-    if ($domain_id == -1) {
+    if ($domain_id == -1 || $domain_id == -5) {
       if ($reset) {
         variable_del($name);
+        if ($name == 'site_name') {
+          db_query("UPDATE {domain} SET sitename = '%s' WHERE domain_id = 0", 'Drupal');
+          variable_set('domain_sitename', 'Drupal');
+        }
       }
       else {
         variable_set($name, $value);
+        if ($name == 'site_name') {
+          db_query("UPDATE {domain} SET sitename = '%s' WHERE domain_id = 0", $value);
+          variable_set('domain_sitename', $value);
+        }
       }
     }
     else {
       if ($reset) {
         domain_conf_variable_delete($domain_id, $name);
+        if ($name == 'site_name') {
+          db_query("UPDATE {domain} SET sitename = '%s' WHERE domain_id = %d", 'Drupal', $domain_id);
+        }
       }
       else {
         domain_conf_variable_save($domain_id, $name, $value);
+        if ($name == 'site_name') {
+          db_query("UPDATE {domain} SET sitename = '%s' WHERE domain_id = %d", $value, $domain_id);
+        }
+      }
+    }
+    if ($domain_id == -5 && !$reset) {
+      foreach (domain_domains() as $id => $value) {
+        domain_conf_variable_delete($id, $name);
       }
     }
   }
@@ -141,7 +174,7 @@ function domain_settings_domainform(&$form) {
   $form['domain_settings_module']['domain_settings_behavior'] = array(
     '#type' => 'radios',
     '#title' => t('Domain settings behavior'),
-    '#options' => array(0 => t('Use the default domain'), 1 => t('Use the active domain')),
+    '#options' => array(0 => t('Use the default domain'), 1 => t('Use the active domain'), 2 => t('All domains')),
     '#default_value' => variable_get('domain_settings_behavior', 0),
     '#description' => t('Default form value when submitting system settings.')
   );
@@ -198,4 +231,96 @@ function domain_settings_domain_warnings_alter(&$forms) {
       unset($forms[$form_id]);
     }
   }
+}
+
+/**
+ * Handle the erasure of Domain Conf settings properly.
+ */
+function domain_settings_form_domain_conf_reset_form_alter(&$form, &$form_state) {
+  $form['#submit'] = array('domain_settings_reset_form_submit');
+  $form['domain_settings_erase'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Retain values from Domain Settings module.'),
+    '#default_value' => 1,
+    '#weight' => 1,
+  );
+  $form['actions']['#weight'] = 2;
+}
+
+/**
+ * Form submit handler to batch reset custom settings.
+ *
+ * @see domain_conf_reset_form()
+ */
+function domain_settings_reset_form_submit($form, &$form_state) {
+  if (empty($form_state['values']['domain_settings_erase'])) {
+    domain_conf_reset_form_submit($form, $form_state);
+    return;
+  }
+  drupal_set_message(t('Domain configuration settings have been reset. Custom module settings have been retained.'));
+  $form_state['redirect'] = 'admin/build/domain/conf/'. $form_state['values']['domain_id'];
+  domain_settings_reset($form_state['values']['domain_id']);
+  // Clear the cache.
+  cache_clear_all();
+}
+
+/**
+ * Handle the batch erasure of Domain Conf settings properly.
+ */
+function domain_settings_form_domain_batch_form_alter(&$form, &$form_state) {
+  if (!isset($form['#parameters'][2]) || $form['#parameters'][2] != 'domain_conf') {
+    return;
+  }
+  $form['#submit'] = array('domain_settings_batch_form_submit');
+  $form['domain_settings_erase'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Retain values from Domain Settings module.'),
+    '#default_value' => 1,
+    '#weight' => 1,
+  );
+  $form['submit']['#weight'] = 2;
+}
+
+/**
+ * Submit handler for batch domain settings.
+ */
+function domain_settings_batch_form_submit($form, &$form_state) {
+  if (empty($form_state['values']['domain_settings_erase'])) {
+    domain_batch_form_submit($form, $form_state);
+    return;
+  }
+  foreach (array_filter($form_state['values']['domain_batch']) as $domain_id=> $value) {
+    domain_settings_reset($domain_id);
+  }
+  drupal_set_message(t('Domain configuration settings have been reset. Custom module settings have been retained.'));
+  // Clear the cache.
+  cache_clear_all();
+}
+
+/**
+ * Erase Domain Conf and Batch settings but keep those set by this module.
+ *
+ * @param $domain_id
+ *   The domain_id to reset.
+ */
+function domain_settings_reset($domain_id) {
+  // Get the conf elements and erase them from the record.
+  $batch = module_invoke_all('domainbatch');
+  $conf = module_invoke_all('domainconf');
+  $list = array_merge(array_keys($batch), array_keys($conf));
+  // Get the existing data.
+  $data = db_fetch_array(db_query("SELECT settings FROM {domain_conf} WHERE domain_id = %d", $domain_id));
+  if (empty($data)) {
+    return;
+  }
+  // Erase the settings by key.
+  $settings = domain_unserialize($data['settings']);
+  foreach ($list as $item) {
+    if (isset($settings[$item])) {
+      unset($settings[$item]);
+    }
+  }
+  // Write the update.
+  $sql = "UPDATE {domain_conf} SET settings = %b WHERE domain_id = %d";
+  db_query($sql, serialize($settings), $form_state['values']['domain_id']);
 }

@@ -1,1 +1,1 @@
-<?php  print drupal_substr($row->node_revisions_teaser, 0, 475) .'.. <span class="inline-more">'; print l('Read More', 'node/'. $row->nid);  ?>
+<?php  print drupal_substr($row->node_revisions_teaser, 0, 475) .'.. <span class="inline-more">'; print l('Read More', 'node/'. $row->nid); print '</span>';  ?>

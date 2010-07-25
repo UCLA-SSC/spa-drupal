@@ -834,3 +834,56 @@ function phptemplate_search_form($form) {
   $form['search_form']['#hint'] = t('Search');
   return drupal_render($form);
 }
+
+
+/**
+ * Views Slideshow: "previous" control.
+ *
+ * @ingroup themeable
+ */
+function phptemplate_views_slideshow_singleframe_control_previous($vss_id, $view, $options) {
+  $img = '<img src="/'. path_to_theme() .'/images/slide-prev.png"/>';
+  return l($img, '#', array(
+    'attributes' => array(
+      'class' => 'views_slideshow_singleframe_previous views_slideshow_previous',
+      'id' => "views_slideshow_singleframe_prev_" . $vss_id,
+    ),
+    'html' => 'true',
+    'fragment' => ' ',
+    'external' => TRUE,
+  ));
+}
+
+/**
+ * Views Slideshow: "pause" control.
+ *
+ * @ingroup themeable
+ */
+function phptemplate_views_slideshow_singleframe_control_pause($vss_id, $view, $options) {
+  return l(t(''), '', array(
+    'attributes' => array(
+      'class' => 'views_slideshow_singleframe_pause views_slideshow_pause',
+      'id' => "views_slideshow_singleframe_playpause_" . $vss_id,
+    ),
+    'fragment' => ' ',
+    'external' => TRUE,
+  ));
+}
+
+/**
+ * Views Slideshow: "next" control.
+ *
+ * @ingroup themeable
+ */
+function phptemplate_views_slideshow_singleframe_control_next($vss_id, $view, $options) {
+  $img = '<img src="/'. path_to_theme() .'/images/slide-next.png"/>';
+  return l($img, '#', array(
+    'attributes' => array(
+      'class' => 'views_slideshow_singleframe_next views_slideshow_next',
+      'id' => "views_slideshow_singleframe_next_" . $vss_id,
+    ),
+    'html' => 'true',
+    'fragment' => ' ',
+    'external' => TRUE,
+  ));
+}

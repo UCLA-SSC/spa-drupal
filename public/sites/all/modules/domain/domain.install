@@ -1,5 +1,5 @@
 <?php
-// $Id: domain.install,v 1.25 2009/10/24 22:11:26 agentken Exp $
+// $Id: domain.install,v 1.25.2.2 2010/05/16 15:27:45 agentken Exp $
 
 /**
  * @file
@@ -210,6 +210,35 @@ function domain_update_6204() {
         $string .= ', access domain navigation';
       }
       $ret[] = update_sql("UPDATE {permission} SET perm = '$string' WHERE pid = $pid");
+    }
+  }
+  return $ret;
+}
+
+/**
+ * Remove dead user accounts from {domain_editor}.
+ */
+function domain_update_6205() {
+  $ret = array();
+  $ret[] = update_sql("DELETE FROM {domain_editor} WHERE uid NOT IN (SELECT u.uid FROM {users} u)");
+  return $ret;
+}
+
+/**
+ * Remove UPPERCASE from domain records.
+ *
+ * @link http://drupal.org/node/785818
+ */
+function domain_update_6206() {
+  $ret = array();
+  $result = db_query("SELECT domain_id, subdomain FROM {domain}");
+  while ($domain = db_fetch_array($result)) {
+    $string = drupal_strtolower($domain['subdomain']);
+    if ($string != $domain['subdomain']) {
+      db_query("UPDATE {domain} SET subdomain = '%s' WHERE domain_id = %d", $string, $domain['domain_id']);
+      if ($domain['domain_id'] == 0) {
+        variable_set('domain_root', $string);
+      }
     }
   }
   return $ret;

@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.3 2009/10/27 16:08:59 agentken Exp $
+// $Id: README.txt,v 1.3.2.1 2010/05/16 16:10:47 agentken Exp $
 
 /**
  * @file
@@ -54,7 +54,7 @@ As of 6.x.2.0, Domain Navigation has one permission:
 
   - 'access domain navigation'
   This permission allows users to view the Domain Navigation block.
-  
+
 The module also uses the following inherited permission:
 
   - 'access inactive domains'

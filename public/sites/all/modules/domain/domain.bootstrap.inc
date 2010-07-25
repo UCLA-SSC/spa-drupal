@@ -1,5 +1,5 @@
 <?php
-// $Id: domain.bootstrap.inc,v 1.10.2.4 2010/02/13 19:31:04 agentken Exp $
+// $Id: domain.bootstrap.inc,v 1.10.2.6 2010/05/04 13:58:41 agentken Exp $
 /**
  * @file
  * Domain bootstrap file.
@@ -106,6 +106,10 @@ function _domain_bootstrap($phase) {
       if (!domain_settings_setup_ok()) {
         return FALSE;
       }
+
+      // Grant access to all affiliates. See http://drupal.org/node/770650
+      $_domain['site_grant'] = DOMAIN_SITE_GRANT;
+
       _domain_bootstrap_invoke_all('full', $_domain);
       break;
   }
@@ -238,38 +242,4 @@ function domain_get_primary_table($table) {
     $table = $db_prefix['default'] . $table;
   }
   return db_escape_table($table);
-}
-
-/**
- * Unserialize an object stored in {domain_*} tables.
- *
- * PostGRES has issues with bytea fields, and while this is
- * handled cleanly in cache_get(), we have our own functions
- * for retrieving similar data objects. So we must be sure to
- * unserialize these safely.
- *
- * @param $object
- *   The serialized object.
- * @return $data
- *   Properly unserialized data or an empty string if the $object
- *   contained no data.
- *
- * @see http://drupal.org/node/686146
- */
-function domain_unserialize($object) {
-  if (empty($object)) {
-    return;
-  }
-  return unserialize(db_decode_blob($object));
-}
-
-/**
- * Store the initially loaded domain, for later use.
- */
-function domain_initial_domain($domain = array()) {
-  static $initial;
-  if (!isset($initial) && !empty($domain)) {
-    $initial = $domain;
-  }
-  return $initial;
 }

@@ -1,5 +1,5 @@
 <?php
-// $Id: API.php,v 1.51.2.4 2010/03/02 20:38:24 agentken Exp $
+// $Id: API.php,v 1.51.2.6 2010/05/16 16:10:47 agentken Exp $
 
 /**
  * @defgroup domain_hooks Domain hook functions
@@ -319,7 +319,7 @@ function hook_domainform(&$form) {
  *  may have values that vary on each domain.
  *
  * @return
- *   An associative array where the keys form_id values representing forms 
+ *   An associative array where the keys form_id values representing forms
  *   that require warnings. The value should return a link for where the
  *   form may be set for the current domain. If no link exists, you should
  *   pass NULL as the value.
@@ -783,5 +783,34 @@ function hook_domain_settings($domain_id, $values) {
     foreach($values as $name => $value) {
       variable_set($name, $value);
     }
+  }
+}
+
+/**
+ * Alter the validation step of a domain record.
+ *
+ * This hook allows modules to change or extend how domain validation
+ * happens. Most useful for international domains or other special cases
+ * where a site wants to restrict domain creation is some manner.
+ *
+ * NOTE: This does not apply to Domain Alias records.
+ *
+ * @param &$error_list
+ *   The list of current vaidation errors. Modify this value by reference.
+ *   If you return an empty array or NULL, the domain is considered valid.
+ * @param $subdomain
+ *   The HTTP_HOST string value being validated, such as one.example.com.
+ *   Note that this is checked for uniqueness separately. This value is not
+ *   modifiable.
+ * @return
+ *   No return value. Modify $error_list by reference. Return an empty array
+ *   or NULL to validate this domain.
+ *
+ * @see domain_valid_domain()
+ */
+function hook_domain_validate_alter(&$error_list, $subdomain) {
+  // Only allow TLDs to be .org for our site.
+  if (substr($subdomain, -4) != '.org') {
+    $error_list[] = t('Only .org domains may be registered.');
   }
 }

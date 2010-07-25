@@ -1,4 +1,62 @@
-// $Id: CHANGELOG.txt,v 1.257.2.35 2010/03/18 15:05:56 agentken Exp $
+// $Id: CHANGELOG.txt,v 1.257.2.60 2010/05/16 16:10:47 agentken Exp $
+
+16-MAY-2010
+
+-- patch #785818 by nonsie and mikeytown2. Update domain validation sequence
+    to require lowercase; support non-ASCII domains; and add hook_domain_validate_alter().
+-- #793558 by hawkdrupal. Updates Domain Source to handle new batch form options.
+-- Creates the 6.x.2.5 release.
+-- Requires running update.php.
+
+07-MAY-2010
+
+-- patch #761556 by hefox. Better abstraction for domain creation. New domain_save() function.
+
+04-MAY-2010
+
+-- #774692 by hawkdrupal. Allow the error sequence to be skipped. Load default
+    domain in event of installation failure to prevent SQL errors.
+-- Prevent errors in domain_get_domain().
+-- patch #782208 by bleen18. Excellent Views caching patch.
+
+29-APR-2010
+
+-- #624626. Properly ignore domain settings in Domain Conf.
+-- #775224 by antiorario. Domain Conf and Domain Settings interfere with each other.
+
+27-APR-2010
+
+-- #621512. Clean up some validation handling.
+-- #783134 by xenophyle. Delete {domain_editor} records on user delete. Requires update.php.
+
+25-APR-2010
+
+-- Patch #769640 by davidwthomas. Fixes pgSQL error in Domain Content.
+-- #770650 by nonsie. Ensure the site_grant is loaded in bootstrap. Edge case.
+-- #775028 by brucepearson. Allow DA to be disabled for XMLRPC.
+
+07-APR-2010
+
+-- Make domain_block link absolute.
+-- #758772. Handle site name value properly in Domain Settings.
+-- #755456 by Michelle. Allow Domain Settings to reset all values.
+
+06-APR-2010
+
+-- #763025 by hefox. Site names cannot be update_all.
+-- Better handling of hook_node_operations submit handler.
+
+05-APR-2010
+
+-- Patch #762292 by Daemon_Byte. Fixes error message in Domain User.
+-- #756162. Better grant handling for Domain Content updates.
+-- #757746 by drupalok. Better options for batch updates.
+-- #710712 by fizk and nonsie. Better handling of hook_node_operations().
+-- Removes unused permission from Domain Content.
+
+30-MAR-2010
+
+-- #752570 by brucepearson. Reset domain node lookup static on node save.
 
 18-MAR-2010
 
@@ -119,7 +177,7 @@
 
 24-OCT-2009
 
--- #529026 by davereid. Updates the URL Alter integration to match Drupal 7. 
+-- #529026 by davereid. Updates the URL Alter integration to match Drupal 7.
     Requires URL Alter module 6.x.1.2.
 -- #540684 by Bartezz. Allows Domain Source to set the active domain as source.
 -- #561282 by kotu, nonsie, nirbhasa, Bartezz. Removes the auto-filtering of domains

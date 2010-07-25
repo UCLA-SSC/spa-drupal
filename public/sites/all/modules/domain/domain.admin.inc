@@ -1,5 +1,5 @@
 <?php
-// $Id: domain.admin.inc,v 1.41.2.3 2010/02/13 20:22:42 agentken Exp $
+// $Id: domain.admin.inc,v 1.41.2.9 2010/05/16 16:10:47 agentken Exp $
 
 /**
  * @file
@@ -318,6 +318,13 @@ function domain_configure_form($form_state, $user_submitted = FALSE) {
     '#description' => t('Normally, you should leave this setting active.  See the README for more information.')
   );
 
+  $form['domain_all']['domain_xmlrpc_rule'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => variable_get('domain_xmlrpc_rule', 0),
+    '#title' => t('Treat xmlrpc.php as a special page request.'),
+    '#description' => t('Enable this setting if you have trouble with remote data calls over XMLRPC.  See the README for more information.')
+  );
+
   $form['domain_paths'] = array(
     '#type' => 'fieldset',
     '#title' => t('Node link patterns'),
@@ -437,6 +444,8 @@ function domain_form($form_state, $domain = array(), $arguments = array()) {
     }
   }
   $form = array();
+
+  $form['#domain'] = $domain;
   // The $arguments arrray allows other modules to pass values to change the bahavior
   // of submit and validate functions.
   if (!empty($arguments)) {
@@ -448,6 +457,12 @@ function domain_form($form_state, $domain = array(), $arguments = array()) {
     '#collapsible' => TRUE
   );
   $form['domain_id'] = array('#type' => 'value', '#value' => $domain['domain_id']);
+  if (!variable_get('domain_allow_non_ascii', FALSE)) {
+    $description = t('Can only contain lowercase alphanumeric characters, dashes and a colon (if using alternative ports).');
+  }
+  else {
+    $description = t('Can contain lowercase alphanumeric and ASCII characters, dashes and a colon (if using alternative ports).');
+  }
   $form['domain']['subdomain'] = array(
     '#type' => 'textfield',
     '#title' => t('Domain'),
@@ -455,7 +470,7 @@ function domain_form($form_state, $domain = array(), $arguments = array()) {
     '#maxlength' => 80,
     '#required' => TRUE,
     '#default_value' => $domain['subdomain'],
-    '#description' => t('The allowed domain, using the full <em>path.example.com</em> format.  Can only contain lower-case alphanumeric characters, dashes and a colon (if using alternative ports).  Leave off the http:// and the trailing slash and do not include any paths.')
+    '#description' => t('The allowed domain, using the full <em>path.example.com</em> format. Leave off the http:// and the trailing slash and do not include any paths.') . ' ' . $description
   );
   $form['domain']['sitename'] = array(
     '#type' => 'textfield',
@@ -493,12 +508,17 @@ function domain_form($form_state, $domain = array(), $arguments = array()) {
  */
 function domain_form_validate($form, &$form_state) {
   $subdomain = $form_state['values']['subdomain'];
+  $error_list = array();
   $domain_changed = (bool) strcmp($form_state['values']['subdomain'], $form['domain']['subdomain']['#default_value']);
-  if ($domain_changed) {
-    $error_list = domain_validate($subdomain);
-    foreach ($error_list as $error) {
-      form_set_error('subdomain', $error);
-    }
+  if ($domain_changed && !domain_unique_domain($subdomain)) {
+    $error_list[] = t('The domain value must be unique.');
+  }
+  $error = domain_valid_domain($subdomain);
+  if (!empty($error)) {
+    $error_list[] = $error;
+  }
+  foreach ($error_list as $error) {
+    form_set_error('subdomain', $error);
   }
 }
 
@@ -506,27 +526,21 @@ function domain_form_validate($form, &$form_state) {
  * Implement domain_form submit hook.
  */
 function domain_form_submit($form, &$form_state) {
-  // Populate sql values used in both queries.
   $values = domain_values_from_form_state($form_state);
-
-  // Update or create a new domain depending on presence of domain_id.
-  if ($values['domain_id']) {
-    $sql = "UPDATE {domain} SET subdomain = '%s', sitename = '%s', scheme = '%s', valid = %d WHERE domain_id = %d";
-    $action = 'update';
+  // Set the proper message
+  if (!empty($values['domain_id'])) {
     $message = t('Domain record updated.');
   }
   else {
-    $sql = "INSERT INTO {domain} (subdomain, sitename, scheme, valid) VALUES ('%s', '%s', '%s', %d)";
-    $action = 'create';
     $message = t('Domain record created.');
   }
+  // Run the save routine.
+  $domain = domain_save($values, $form_state);
 
-  // Update the record.
-  db_query($sql, $values);
-
-  // Let other modules act.
-  $domain = domain_lookup(NULL, $values['subdomain']);
-  module_invoke_all('domainupdate', $action, $domain, $form_state);
+  // If return is not a $domain array, something went wrong.
+  if ($domain == -1) {
+    $message = t('Domain record failed.');
+  }
 
   // Hide the message for the Domain User module.
   if (empty($form_state['values']['domain_arguments']['user_submitted'])) {
@@ -801,7 +815,9 @@ function domain_batch_form($form_state, $action, $batch, $domains) {
     '#title' => $batch['#form']['#title'],
     '#description' => $batch['#meta_description']
   );
-
+  if ($batch['#domain_action'] == 'domain_conf' && $batch['#form']['#type'] == 'select') {
+    $batch['#form']['#options'] = array('domain-conf-ignore' => t('Use primary domain settings')) + $batch['#form']['#options'];
+  }
   foreach ($domains as $domain) {
     // Set the current value according to the stored values.
     if (isset($domain[$action])) {
@@ -1017,7 +1033,7 @@ function domain_batch_form_submit($form, &$form_state) {
       }
       break;
   }
-  drupal_set_message(t('Settings have been updated successfully.'));
+  drupal_set_message(t('Settings have been updated successfully.'), 'status', FALSE);
 }
 
 /**

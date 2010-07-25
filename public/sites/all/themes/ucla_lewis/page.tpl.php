@@ -31,17 +31,9 @@
   <div id="header">
     <?php
 
-if ( arg(0) != 'public-policy' && arg(0) != 'social-welfare' && arg(0) != 'urban-planning' && arg(0) != 'node' && arg(0) != 'admin' ) {
+if (!$is_front ) {
  $block = module_invoke('headerimage', 'block', 'view', 1);
-print $block['content'];
-} elseif (arg(0) == 'node' && is_numeric(arg(1))) {
-    $node=node_load(arg(1));
-    if (is_null($node->field_header_image[0])) {
-      $block = module_invoke('headerimage', 'block', 'view', 1);
-print $block['content'];
-    }
-
-} else {
+ print $block['content'];
 
 }
 
@@ -121,10 +113,7 @@ print $block['content'];
         <div class="clear"></div>
         <?php if ($footer_message): ?>
           <div id="footer-message"><?php print $footer_message; ?>
-			  <div id="footer-right-links">
-				  <a href="http://www.ucla.edu"><img src="/<?php print path_to_theme()?>/images/ucla-logo.gif"/></a>
-				  
-      		 </div>
+			 
          </div>
         <?php endif; ?>
       </div>

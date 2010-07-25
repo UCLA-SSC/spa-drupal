@@ -316,10 +316,8 @@ html.js fieldset.collapsed legend {
 }
 html.js fieldset.collapsible legend a {
   padding-left: 15px; /* LTR */
-  background: url(../../misc/menu-expanded.png) 5px 75% no-repeat; /* LTR */
 }
 html.js fieldset.collapsed legend a {
-  background-image: url(../../misc/menu-collapsed.png); /* LTR */
   background-position: 5px 50%; /* LTR */
 }
 /* Note: IE-only fix due to '* html' (breaks Konqueror otherwise). */

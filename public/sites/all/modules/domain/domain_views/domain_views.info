@@ -6,9 +6,9 @@ dependencies[] = domain
 dependencies[] = views
 core = 6.x
 
-; Information added by drupal.org packaging script on 2010-03-18
-version = "6.x-2.4"
+; Information added by drupal.org packaging script on 2010-05-16
+version = "6.x-2.5"
 core = "6.x"
 project = "domain"
-datestamp = "1268925310"
+datestamp = "1274027105"
 

@@ -1,0 +1,15 @@
+;$Id: views_clone_display.info,v 1.1 2010/05/04 18:49:23 jacintocapote Exp $
+
+name= Views clone display
+description = Utility for clone display views
+
+dependencies[] = "views_ui"
+package = 'Views'
+core = 6.x
+
+; Information added by drupal.org packaging script on 2010-07-11
+version = "6.x-1.x-dev"
+core = "6.x"
+project = "views_clone_display"
+datestamp = "1278836281"
+

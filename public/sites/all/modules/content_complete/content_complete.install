@@ -1,5 +1,5 @@
 <?php
-// $Id: content_complete.install,v 1.1.2.13 2009/10/18 12:57:57 pvhee Exp $
+// $Id: content_complete.install,v 1.1.2.15 2010/01/14 10:55:30 pvhee Exp $
 
 /**
  * @file
@@ -32,6 +32,11 @@ function content_complete_schema() {
         'unsigned' => TRUE,
         'default' => 0,
         'description' => t('Completeness of this node.')
+      ),
+      'data' => array(
+        'type' => 'text',
+        'size' => 'big',
+        'description' => t('Data regarding node completeness')
       ),
     ),
     'primary key' => array('nid'),
@@ -84,10 +89,12 @@ function content_complete_update_6002() {
     $field = $item['field_name'];
     $groups[$type][] = $field;
   }
-    
-  foreach ($groups as $type => $fields) {
-    variable_set('content_complete_'. $type, 1);
-    variable_set('content_complete_fields_'. $type, $fields);
+  
+  if (!empty($groups)) {  
+    foreach ($groups as $type => $fields) {
+      variable_set('content_complete_'. $type, 1);
+      variable_set('content_complete_fields_'. $type, $fields);
+    }
   }
   
   // Uninstall the previous database table
@@ -105,6 +112,23 @@ function content_complete_update_6002() {
       '@rules' => url('rules/trigger'),
     )
   ));
+  
+  return $ret;
+}
+
+/**
+ * Add data column to cache completeness data
+ */ 	 
+function content_complete_update_6003() {
+  $ret = array();
+  
+  $field_def = array (
+    'type' => 'text',
+    'size' => 'big',
+    'description' => t('Data regarding node completeness')
+  );
+  
+  db_add_field($ret, 'content_complete','data',$field_def);
   
   return $ret;
 }

@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_views.views.inc,v 1.13 2009/10/24 16:18:52 agentken Exp $
+// $Id: domain_views.views.inc,v 1.13.2.1 2010/05/04 15:06:25 agentken Exp $
 
 /**
  * @file
@@ -312,12 +312,22 @@ function domain_views_views_plugins() {
     ),
     'argument default' => array(
       'current_domain' => array(
-        'title' => t("Current domain"),
+        'title' => t('Current domain'),
         'handler' => 'domain_views_plugin_argument_default_current',
         'path' => $path,
         'parent' => 'fixed', // so that the parent class is included
       ),
     ),
+    'cache' => array(
+      'time_per_domain' =>array(
+        'title' => t('Time-based Per Domain'),
+        'help' => t('Time-based caching of views on a per domain basis. This is necessary if you want to cache a view that filters on "current domain".'),
+        'handler' => 'domain_views_plugin_cache_time',
+        'uses options' => TRUE,
+        'path' => $path,
+        'parent' => 'time',
+      ),
+    )
   );
 }
 

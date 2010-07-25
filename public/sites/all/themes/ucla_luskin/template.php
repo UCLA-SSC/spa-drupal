@@ -178,7 +178,7 @@ function phptemplate_preprocess_block(&$vars, $hook) {
   
   if (user_access('administer blocks')) {
     include_once './' . drupal_get_path('theme', 'blueprint') . '/template.block-editing.inc';
-    phptemplate_preprocess_block_editing($vars, $hook);
+    //phptemplate_preprocess_block_editing($vars, $hook);
     $classes[] = 'with-block-editing';
   }
 

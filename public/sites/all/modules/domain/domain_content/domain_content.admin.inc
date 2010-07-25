@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_content.admin.inc,v 1.15.2.3 2010/03/10 18:24:26 agentken Exp $
+// $Id: domain_content.admin.inc,v 1.15.2.7 2010/04/25 21:36:02 agentken Exp $
 
 /**
  * @file
@@ -187,7 +187,7 @@ function domain_content_form($form_state) {
     }
   }
 
-  $result = pager_query(db_rewrite_sql('SELECT n.nid FROM {node} n '. $filter['join'] . $filter['where'] .' ORDER BY n.changed DESC'), 50, 0, NULL, $filter['args']);
+  $result = pager_query(db_rewrite_sql('SELECT n.nid, n.changed FROM {node} n '. $filter['join'] . $filter['where'] .' ORDER BY n.changed DESC'), 50, 0, NULL, $filter['args']);
 
   // Reset the active domain.
   domain_reset_domain();
@@ -237,45 +237,7 @@ function domain_content_form($form_state) {
   }
   // Privileged users can make global changes to Domain Access permissions.
   if (user_access('set domain access')) {
-    $options = array();
-    $format = domain_select_format();
-    foreach (domain_domains() as $data) {
-      // Cannot pass zero in checkboxes.
-      ($data['domain_id'] == 0) ? $key = -1 : $key = $data['domain_id'];
-      // The domain must be valid.
-      if ($data['valid'] || user_access('access inactive domains')) {
-        // Filter checkboxes but not select lists.
-        $options[$key] = empty($format) ? check_plain($data['sitename']) : $data['sitename'];
-      }
-    }
-    $form['domain'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Affiliate publishing options'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-      '#prefix' => '<div class="description">'. t('If you select <em>Change affiliate publishing options</em> above, you should confirm the <em>Affiliate publishing options</em> settings below.') .'</div>'
-    );
-    $form['domain']['domain_site'] = array(
-      '#type' => 'checkbox',
-      '#prefix' => t('<p><b>Publishing options:</b>'),
-      '#suffix' => '</p>',
-      '#title' => t('Send to all affiliates'),
-      '#required' => FALSE,
-      '#description' => t('Select if this content can be shown to all affiliates.  This setting will override the options below.'),
-      '#default_value' => variable_get('domain_behavior', DOMAIN_INSTALL_RULE),
-    );
-    $form['domain']['domains'] = array(
-      '#type' => empty($format) ? 'checkboxes' : 'select',
-      '#title' => t('Publish to'),
-      '#options' => $options,
-      '#required' => FALSE,
-      '#description' => t('Select which affiliates can access this content.'),
-      '#default_value' => array(($_domain['domain_id'] == 0) ? -1 : $_domain['domain_id']), // Can't use 0 as a checkbox value.
-    );
-    if ($format) {
-      $form['domain']['domains']['#multiple'] = TRUE;
-      $form['domain']['domains']['#size'] = count($options) > 10 ? 10 : count($options);
-    }
+    domain_content_add_form_widget($form);
   }
   // Users must have passed at least one access check to have batch options.
   if ((user_access('administer nodes') || user_access('set domain access')) && !empty($nodes)) {
@@ -299,7 +261,7 @@ function domain_content_form($form_state) {
   $form['#theme'] = 'domain_content_admin_nodes';
   $form['#validate'][] = 'node_admin_nodes_validate';
   $form['#submit'][] = 'node_admin_nodes_submit';
-  $form['#submit'][] = 'domain_content_update_nodes';
+  $form['#submit'][] = 'domain_content_process_nodes';
   return $form;
 }
 
@@ -333,48 +295,6 @@ function domain_content_filter_operations(&$operations) {
 }
 
 /**
- * FormAPI function that lets us update access rules.
- */
-function domain_content_update_nodes($form, &$form_state) {
-  // If our operation is flagged, then we have to manually change the
-  // {node_access} table.  The rest of the process will clear the cache,
-  // so this should be a safe operation.
-  if ($form_state['values']['operation'] == 'domain') {
-    if ($form_state['values']['domain_site']) {
-      $domain_site = TRUE;
-    }
-    $domains = array();
-    foreach ($form_state['values']['domains'] as $key => $value) {
-      // Cannot pass zero in checkboxes, so these are converted from -1.
-      if (abs($key) > 0 && $key == $value) {
-        ($key == -1) ? $id = 0 : $id = $value;
-        $domains[] = $id;
-      }
-    }
-    foreach ($form_state['values']['nodes'] as $nid) {
-      if ($nid > 0) {
-        // Delete anything not selected.
-        // We have to update both the {node_access} and {domain_access} tables.
-        db_query("DELETE FROM {node_access} WHERE nid = %d AND realm IN ('domain_id', 'domain_site')", $nid);
-        db_query("DELETE FROM {domain_access} WHERE nid = %d", $nid);
-        if (isset($domain_site)) {
-          db_query("INSERT INTO {node_access} (nid, gid, realm, grant_view, grant_update, grant_delete) VALUES (%d, %d, '%s', %d, %d, %d)", $nid, 0, 'domain_site', 1, 0, 0);
-          db_query("INSERT INTO {domain_access} (nid, gid, realm) VALUES (%d, %d, '%s')", $nid, 0, 'domain_site');
-        }
-        if (!empty($domains)) {
-          foreach ($domains as $id) {
-            db_query("INSERT INTO {node_access} (nid, gid, realm, grant_view, grant_update, grant_delete) VALUES (%d, %d, '%s', %d, %d, %d)", $nid, $id, 'domain_id', 1, 1, 1);
-            db_query("INSERT INTO {domain_access} (nid, gid, realm) VALUES (%d, %d, '%s')", $nid, $id, 'domain_id');
-          }
-        }
-      }
-    }
-  }
-  // Clear the cache.
-  cache_clear_all();
-}
-
-/**
  * Replaces the default theme function for the node administration form.
  *
  * @param $form
@@ -388,8 +308,8 @@ function theme_domain_content_admin_nodes($form) {
   // Overview table:
   $header = array(theme('table_select_header_cell'), t('Title'), t('Affiliates'), t('Type'), t('Author'), t('Status'), t('Operations'));
   $output = '';
-  $output .= drupal_render($form['options']);
   $output .= drupal_render($form['domain']);
+  $output .= drupal_render($form['options']);
   if (isset($form['title']) && is_array($form['title'])) {
     foreach (element_children($form['title']) as $key) {
       $row = array();

@@ -1,5 +1,5 @@
 <?php
-// $Id: content_complete_views_handler_field_completeness.inc,v 1.1.2.4 2009/10/06 12:55:46 pvhee Exp $
+// $Id: content_complete_views_handler_field_completeness.inc,v 1.1.2.6 2010/01/22 13:30:14 pvhee Exp $
 
 /**
  *  @file
@@ -45,12 +45,12 @@ class content_complete_views_handler_field_completeness extends views_handler_fi
   function query() {
     $this->ensure_my_table();
     $this->field_alias = $this->query->add_field($this->table_alias, $this->real_field);
-    $this->add_additional_fields();
+    $this->add_additional_fields();    
   }	
 	
-  function render($values) {     
+  function render($values) {    
     $data['percent'] = $values->{$this->field_alias};
-    
+        
     switch ($this->options['display_as']) {
       default:
       case 'numeric':
@@ -58,12 +58,11 @@ class content_complete_views_handler_field_completeness extends views_handler_fi
     	break;
     	case 'bar':
     	  // Render a separate message next to it.
-        // TODO: cache in database and make separate field handlers    
         if ($this->options['next']) {
           $nid = $values->nid;
           $node = node_load($nid);
-          $data = content_complete_get_data($node); // overwrite data array with values computed on the fly          
-      }
+          $data = content_complete_get_data($node);
+        }
     	  return theme('content_complete_profile_percent_complete', $data);
       break;    	
     }

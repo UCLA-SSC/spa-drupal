@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_conf.module,v 1.53.2.6 2010/03/17 18:14:05 agentken Exp $
+// $Id: domain_conf.module,v 1.53.2.9 2010/04/29 21:36:49 agentken Exp $
 
 /**
  * @defgroup domain_conf Domain Conf: configuration extension
@@ -36,6 +36,9 @@ function domain_conf_domain_bootstrap_full($domain) {
     $settings = domain_unserialize($data['settings']);
     // Overwrite the $conf variables.
     foreach ($settings as $key => $value) {
+      if ($value == 'domain-conf-ignore') {
+        continue;
+      }
       // Language handling is a special case.
       if ($key == 'language_default') {
         $table = domain_get_primary_table('system');

@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.72.2.1 2010/01/11 16:36:27 agentken Exp $
+// $Id: README.txt,v 1.72.2.5 2010/05/16 16:10:47 agentken Exp $
 
 /**
  * @file
@@ -38,6 +38,8 @@ CONTENTS
 4.1.2   Site Name
 4.1.3   Domain URL Scheme
 4.2   Creating Domain Records
+4.2.1   Restricted Characters in Domains
+4.2.2   Altering Domain Name Validation
 4.3   Domain Module Behaviors
 4.3.1   New Content Settings
 4.3.2   Debugging Status
@@ -52,6 +54,7 @@ CONTENTS
 4.4.5   Node Access Settings
 4.5   Special Page Requests
 4.5.1   Cron Handling
+4.5.2   XMLRPC Handling
 4.6   Node Link Patterns
 4.7   The Domain List
 4.8   Node Settings
@@ -59,7 +62,8 @@ CONTENTS
 4.8.2   Domain Node Types
 4.9   Batch Updating
 4.10  Assigning Users to Domains
-4.11 Batch Assignment of Users to Domains
+4.11  Batch Assignment of Users to Domains
+4.11.1  Form Behavior
 5.  Blocks
 5.1   Block -- Domain Switcher
 5.2   Block -- Domain Access Information
@@ -541,7 +545,7 @@ Due to the way node_access() works, the following limitations should be noted.
   - Users who look at the sites and have the 'administer nodes' permission
     can always see all content on all sites, which can be confusing.  To
     enforce Domain Access rules on these users, you may enable the
-    'Enforce rules on administrators' setting described in 4.3.3. 
+    'Enforce rules on administrators' setting described in 4.3.3.
 
   - Users who have the 'edit any TYPE nodes' permission will be able to edit
     nodes that do not belong to their domain.
@@ -634,7 +638,7 @@ When you create a new domain record, simply fill in the form:
   a domain to Inactive restricts access to users with the 'access inactive
   domains' permission. This feature is useful for staging content and testing
   new domain configurations.
-  
+
   NOTE: Users who try to access an inactive domain will have the attempt
   reported in the site logs. When this occurs, the module will try to redirect
   the user to the appropriate content on an active domain. If no match is
@@ -659,6 +663,40 @@ to help you debug your DNS configuration and may be safely ignored.
 NOTE: Users who attempt to access an unregistered domain will be
 redirected to the primary domain automatically.
 
+----
+4.2.1  Restricted Characters in Domains
+
+When creating a domain record, you are restricted to the valid character set
+for Internet domain names.  By design, this includes only the ASCII
+alphanumeric character set (a-z 0-9) plus the special characters dot (.)
+dash (-) and colon (:). A colon may only be followed by a port number.
+
+Domains must be lowercase. Domain matching with HTTP_HOST is not
+case-sensitive.
+
+With the advent of Internationalized Domain Names (IDNs), domain servers
+are beginning to recognize non-ASCII domain names. To enable support for
+non-ASCII domain names, you must add the following lines to the bottom
+of your settings.php file:
+
+  // Allow registration of non-ASCII domain strings.
+  $conf['domain_allow_non_ascii'] = TRUE;
+
+For background, see the following:
+
+  http://tools.ietf.org/html/rfc819
+  http://tools.ietf.org/html/rfc1035
+  http://en.wikipedia.org/wiki/Internationalized_domain_name
+  http://blog.icann.org/2010/05/idn-cctlds/
+
+----
+4.2.2   Altering Domain Name Validation
+
+If you wish to enforce special business rules for domain name validation,
+you may implement hook_domain_validate_alter() in your module.
+
+This hook will allow your module to intercept and alter any errors found
+by the normal domain validation process.  See API.php for details.
 
 ----
 4.3   Domain Module Behaviors
@@ -900,6 +938,12 @@ for nodes when cron runs.
 Note that this does not affect node access permissions set by other modules.
 
 ----
+4.5.2   XMLRPC Handling
+
+Similar to the above, you may check this option to disable Domain Access
+rules when Drupal is invoked using XMLRPC.
+
+----
 4.6   Node Link Patterns
 
 When using this module, there are times when Domain Access will need to
@@ -1060,6 +1104,25 @@ Note that this form also shows you a list of domains that a user is
 currently assigned to.
 
 If these elements do not appear, you do not have the proper permissions.
+
+----
+4.11.1 Form Behavior
+
+In 6.x.2.5 and higher, you may select one of two options when updating domains.
+
+Under the 'Update behavior' form element, you may choose:
+
+  [] Replace old values with new settings
+  [] Add new settings to existing values
+  [] Remove selected domains from existing values
+
+Choosing 'replace' will erase any current domain affiliation for the selected users
+and replace them with those entered into the form. Choosing 'add' will merge the
+new values with the existing values. Choosing 'remove' will remove the new values
+from the existing ones.
+
+This new feature is helpful when you want to alter domain settings, but do not
+want all users to be assigned to the same domains.
 
 ----
 5.  Blocks

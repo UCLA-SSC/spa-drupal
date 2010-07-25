@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_user.module,v 1.28.2.1 2010/03/01 01:16:39 agentken Exp $
+// $Id: domain_user.module,v 1.28.2.2 2010/04/05 14:30:43 agentken Exp $
 
 /**
  * @defgroup domain_user Domain User: personal subdomains
@@ -242,7 +242,7 @@ function domain_user_user($op, &$edit, &$account, $category = NULL) {
           }
         }
       }
-      if (isset($edit['domain_create_user']) && !user_access('create personal domain', $account) && !user_access('create user domains')) {
+      if (isset($edit['domain_create_user']) && !(user_access('create personal domain', $account) || user_access('create user domains'))) {
         drupal_set_message(t('Your personal URL could not be created.'));
       }
       // Throw away what we do not need.

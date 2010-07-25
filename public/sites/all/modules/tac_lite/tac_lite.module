@@ -1,5 +1,5 @@
 <?php
-// $Id: tac_lite.module,v 1.9.2.8 2009/04/17 17:28:26 yogadex Exp $
+// $Id: tac_lite.module,v 1.9.2.7 2009/02/22 00:38:37 yogadex Exp $
 /**
  * @file
  *   Control access to site content based on taxonomy, roles and users.
@@ -327,7 +327,7 @@ function tac_lite_node_access_records($node) {
   if (!count($tids)) {
     // no relevant terms found.
     
-    // in drupal 4-7 we had to write a row into the database.  In drupal 5 and later, it should be safe to do nothing.
+    // in drupal 4-7 we had to write a row into the database.  In drupal 5, it should be safe to do nothing.
   }
   else {
     // if we're here, the node has terms associated with it which restrict
@@ -426,7 +426,7 @@ function _tac_lite_user_tids(&$account, $scheme) {
   // add per-role grants in addition to per-user grants
   $defaults = variable_get('tac_lite_grants_scheme_' . $scheme, array());
   foreach ($account->roles as $rid => $role_name) {
-    if (isset($defaults[$rid]) && count($defaults[$rid])) {
+    if (count($defaults[$rid])) {
       foreach ($defaults[$rid] as $tids) {
         if (count($tids)) {
           $grants = array_merge($grants, $tids);

@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.8.2.1 2010/01/31 21:47:06 agentken Exp $
+// $Id: README.txt,v 1.8.2.4 2010/04/05 20:43:43 agentken Exp $
 
 /**
  * @file
@@ -22,14 +22,18 @@ CONTENTS
 4.  Content Editing
 4.1   Affiliates
 4.2   Domain Access Options
+4.3   Form Behavior
 5.  Developer Notes
 
 
 ----
 1.  Introduction
 
-The Domain Content provides an alternate view for batch editing site content.
+The Domain Content provides an alternate page for batch editing site content.
 The module is part of the Domain Access module group.
+
+For administrative users, this module also enables a new batch update
+operation on the Content administration screen.
 
 ----
 1.1 Use-Case
@@ -38,7 +42,7 @@ Domain Access is a node access module.  By design, Drupal's default content
 administration page does not respect node access rules.
 
 The Domain Content provides an additional set of batch content administration
-pages that respect the node access rules set by the Doamin Access module.
+pages that respect the node access rules set by the Domain Access module.
 
 ----
 2.  Installation
@@ -146,12 +150,32 @@ By default, the currently active domain will be chosen, as will the value set fo
 promoting new nodes to all affiliates.
 
 WARNING: It is possible that you may move some nodes to domains other
-than the currently active domain.  If so, some nodes will be reomved from
+than the currently active domain.  If so, some nodes will be removed from
 the form after you submit the update.  This behavior is normal and desired.
+
+----
+4.3 Form Behavior
+
+In 6.x.2.5 and higher, you may select one of two options when updating domains.
+
+Under the 'Update behavior' form element, you may choose:
+
+  [] Replace old values with new settings
+  [] Add new settings to existing values
+  [] Remove selected domains from existing values
+
+Choosing 'replace' will erase any current domain affiliation for the selected nodes
+and replace them with those entered into the form. Choosing 'add' will merge the
+new values with the existing values. Choosing 'remove' will remove the new values
+from the existing ones.
+
+This new feature is helpful when you want to alter domain settings, but do not
+want all nodes to be assigned to the same affiliates.
 
 ----
 5.  Developer Notes
 
 A companion module that handles this function for Comments is also needed.
 
-Contributions welcome.
+For support for Views Bulk Operations (which was released after this module)
+see the Domain Actions project: http://drupal.org/project/domain_actions.

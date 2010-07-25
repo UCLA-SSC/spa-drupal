@@ -126,7 +126,7 @@ function ucla_spa_helper_form_alter(&$form, $form_state, $form_id) {
      //$term = taxonomy_get_term($profile->taxonomy[$key[0]]->tid);
             
      $form['taxonomy'][2]['#default_value']=array(0 => $profile->taxonomy[$key[0]]->tid);
-     $form['taxonomy'][2]['#disabled'] = TRUE;
+     //$form['taxonomy'][2]['#disabled'] = TRUE;
    }
    global $user;
    if ($user->uid == 1) {

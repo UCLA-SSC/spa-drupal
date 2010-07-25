@@ -9,6 +9,10 @@
  top:30px;
  margin-left:320px;
   }
+.admin-menu #nice-menu-0 {
+  top:79px;
+  }
+  
 ul.nice-menu-down {
   float: left;
   border: 0;
@@ -447,15 +451,18 @@ padding:30px 150px 30px 30px;
  margin-left:50px;
  margin-top:20px;
   }
- #block-menu-menu-lewis-primary ul li.leaf {
+ #block-menu-menu-lewis-primary ul li {
    list-style-type:none;
    list-style-image:none;
    margin-bottom:1px;
    display:inline;
    margin:0 9px;
  }
+  #block-menu-menu-lewis-primary ul li ul {
+    display:none;
+    }
  
- #block-menu-menu-lewis-primary ul li.leaf a,  #block-menu-menu-lewis-primary ul li.leaf a:visited {
+ #block-menu-menu-lewis-primary ul li a,  #block-menu-menu-lewis-primary ul li a:visited {
   color:#111;
   }
  #footer .block-menu_block ul.menu {
