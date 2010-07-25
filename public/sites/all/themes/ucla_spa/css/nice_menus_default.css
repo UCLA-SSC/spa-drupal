@@ -114,7 +114,7 @@ ul.nice-menu-right li.menuparent:hover,
 ul.nice-menu-right li.over,
 ul.nice-menu-right li li.menuparent:hover,
 ul.nice-menu-right li li.over {
-  background: #ccc url(arrow-right.png) right center no-repeat;
+  background: #ccc;
 }
 
 /* VERTICAL menus where submenus pop LEFT. */
@@ -199,7 +199,7 @@ ul.nice-menu-down li.over,
 ul.nice-menu-down li li.menuparent,
 /* Repeat for Garland header. */
 #header-region ul.nice-menu-down li li.menuparent {
-  background: #eee url(arrow-right.png) right center no-repeat;
+  background: #eee;
 }
 
 ul.nice-menu-down li li.menuparent:hover,
@@ -207,5 +207,5 @@ ul.nice-menu-down li li.over,
 /* Repeat for Garland header. */
 #header-region ul.nice-menu-down li li.menuparent:hover,
 #header-region ul.nice-menu-down li li.over {
-  background: #ccc url(arrow-right.png) right center no-repeat;
+  background: #ccc;
 }

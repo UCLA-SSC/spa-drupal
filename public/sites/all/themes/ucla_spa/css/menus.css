@@ -129,7 +129,7 @@ ul.nice-menu-down li li.over,
 /* Repeat for Garland header. */
 #header-region ul.nice-menu-down li li.menuparent:hover,
 #header-region ul.nice-menu-down li li.over {
-  background: #ccc url(arrow-right.png) right center no-repeat;
+  background: #ccc;
 }
 
 ul.nice-menu-down ul li a {
