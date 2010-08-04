@@ -1728,7 +1728,7 @@ ul.links li.blog_usernames_blog {
  background:#ffd940;
  color:#000;
  border:0px;
- height:55px;
+
  margin:2px 0px;
  padding:0 15px 0 15px;
 }
@@ -1842,6 +1842,9 @@ ul.links li.blog_usernames_blog {
   }
 .pane-news-panel-pane-1 h2.pane-title {
   background:url(../images/news-icon.jpg) top right no-repeat;
+  }
+#term-panel {
+  width:635px;
   }
 #mini-panel-term_left .panel-col-first, 
 #mini-panel-term_left .panel-col-last {

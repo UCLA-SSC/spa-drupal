@@ -802,7 +802,10 @@ padding-right:27px;
 #mini-panel-dept_header {
   border-bottom:4px solid #339892;
   }
-  
+#mini-panel-dept_header .panels-flexible-row-15-left-inside {
+  padding-left:560px;
+  }
+ 
   
 .page-social-welfare #department .main-title h2.pane-title { 
    background:url(../images/diamond_purple.jpg) 0px 19px no-repeat;

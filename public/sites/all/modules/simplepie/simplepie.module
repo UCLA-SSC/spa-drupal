@@ -100,7 +100,7 @@ function simplepie_set_cache_location($location) {
   variable_set('simplepie_cache_location', $location);
 }
 
-function simplepie_get_cache_location() {
+function simplepie_get_cache_location() { //echo file_directory_path().'/'. variable_get('simplepie_cache_location', 'cache/simplepie'); exit;
   return file_directory_path() .'/'. variable_get('simplepie_cache_location', 'cache/simplepie');
 }
 

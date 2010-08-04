@@ -17,9 +17,5 @@ regions[content] = Content
 regions[header] = Header
 regions[footer] = Footer
 
-; Information added by drupal.org packaging script on 2008-12-23
-version = "6.x-1.2"
-core = "6.x"
-project = "blueprint"
-datestamp = "1230042309"
+
 

@@ -3,9 +3,9 @@ name = Menuless Node Type
 description = Makes menu configurable per node type.
 core = 6.x
 
-; Information added by drupal.org packaging script on 2009-04-18
+; Information added by drupal.org packaging script on 2010-07-11
 version = "6.x-1.x-dev"
 core = "6.x"
 project = "menuless_nodetype"
-datestamp = "1240013819"
+datestamp = "1278834859"
 

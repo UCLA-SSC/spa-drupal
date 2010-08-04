@@ -43,7 +43,7 @@ function path_image_menu() {
 
 /**
  * Implementation of hook_form_FORM_ID_alter().
- *
+ */
 function path_image_form_block_admin_configure_alter(&$form, $form_state, $form_id) {
   if (isset($form['module']['#value']) && 'path_image' == $form['module']['#value']) {
     $form['path_image'] = array(
@@ -57,7 +57,7 @@ function path_image_form_block_admin_configure_alter(&$form, $form_state, $form_
       '#value' => t('This section allows you to control the visibility of the block. To administer the content please visit the <a href="@path-image-settings-url">administration section</a>.', array('@path-image-settings-url' => url('admin/settings/path_image'))),
     );
   }
-}*/
+}
 
 /**
  * Implementation of hook_block().

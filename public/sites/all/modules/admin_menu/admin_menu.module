@@ -253,10 +253,6 @@ function admin_menu_translated_menu_link_alter(&$item, $map) {
     // We only ever do this for development
     $access_all = variable_get('admin_menu_show_all', 0) && module_exists('devel');
   }
-  global $user;
-  if (!$user->uid) {
-    $item['title']="Login";
-   }
   if ($item['menu_name'] != 'admin_menu') {
     return;
   }
