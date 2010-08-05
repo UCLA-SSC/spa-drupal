@@ -39,7 +39,7 @@
       <?php $school=node_load(422);?>
       <div class="clear"></div>
        <div id="ucla-logo">
-      <a href="http://spa.ucla.edu"><img src="/<?php print path_to_theme() ?>/images/ucla-white.png"/></a>
+      <a href="http://publicaffairs.ucla.edu"><img src="/<?php print path_to_theme() ?>/images/ucla-white.png"/></a>
     </div>  
       <div class="social-wrapper">
 		  <div class="connected">Stay connected on </div>

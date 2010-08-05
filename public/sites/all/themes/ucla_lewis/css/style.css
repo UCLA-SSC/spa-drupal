@@ -106,6 +106,7 @@ h2.pane-title, h2.pane-title a {
  margin-left:687px;
  position:absolute;
  top:227px;
+ z-index:100;
  }
   
 #top-right {
