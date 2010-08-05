@@ -43,7 +43,7 @@ if (!$is_front ) {
       <a href="<?php print url();?>"><img src="<?php print $logo?>"/></a>
     </div>
     <div id="ucla-logo">
-      <a href="http://spa.ucla.edu"><img src="/<?php print path_to_theme() ?>/images/ucla-white.png"/></a>
+      <a href="http://publicaffairs.ucla.edu"><img src="/<?php print path_to_theme() ?>/images/ucla-white.png"/></a>
     </div>  
     <?php print $header; ?>
     <?php if (isset($primary_links)) : ?>
