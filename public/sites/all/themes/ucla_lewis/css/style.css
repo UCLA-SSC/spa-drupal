@@ -107,6 +107,9 @@ h2.pane-title, h2.pane-title a {
  position:absolute;
  top:227px;
  z-index:100;
+ padding:5px;
+ width:310px;
+ background: url(http://lewis-local/sites/all/themes/ucla_lewis/images/primary-bg.png) repeat 0% 0%;
  }
   
 #top-right {
@@ -376,7 +379,7 @@ font-size:1em;
   }
 .view-date-browser .views-field-tid, .teasers .views-field-tid  {
   /*background:url(../images/diamond.png) 0 5px no-repeat;*/
-  padding-left:10px;
+
  
   color:#964300;
  
@@ -402,8 +405,7 @@ font-size:1em;
   display:inline;
   }
 .view-id-date_browser.view-display-id-panel_pane_1 .views-field-tid {
-  margin-top:3px;
-  margin-left:5px;
+
   display:inline;
   }
 .view-id-date_browser.view-display-id-panel_pane_1 .views-field-tid a, .teasers .views-field-tid a {
@@ -2053,7 +2055,11 @@ text-decoration:none;
   }
   
   
-  #footer-message {
+#footer-message {
     background:#fff;
     padding:30px;
-    }
+}
+    
+.view-id-glossary.view-display-id-panel_pane_2 .views-view-grid tr td {
+  vertical-align:top;
+  }    
