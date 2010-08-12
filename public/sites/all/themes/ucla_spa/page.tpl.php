@@ -24,7 +24,7 @@
 
 <body class="<?php print $body_classes; print arg(1) ?>">
   <?php if (!empty($admin)):?>
-   <?php print $admin; ?>
+   <?php krumo($admin); ?>
   <?php endif; ?>
 <div class="container">
 <?php print $skinr; ?>

@@ -4,6 +4,9 @@ body {
   font-size:13px;
   background:#26465b url(../images/bg.jpg) top center no-repeat;
   }
+body.front {
+  background:#26465b url(../images/0_home_bg.jpg) top center no-repeat;
+  }  
 body.page-faculty-index {
   background:#26465b url(../images/2_scholars_bg.jpg) top center no-repeat;
   }
@@ -15,7 +18,20 @@ body.page-events {
   } 
 body.page-node.About {
   background:#26465b url(../images/1_about_us_bg.jpg) top center no-repeat;
-  }   
+  }  
+body.term28 {
+  background:#26465b url(../images/climate-bg.jpg) top center no-repeat;
+  } 
+body.term27 {
+  background:#26465b url(../images/smart-water-bg.jpg) top center no-repeat;
+  } 
+body.term46 {
+  background:#26465b url(../images/biz-bg.jpg) top center no-repeat;
+  } 
+body.term29 {
+  background:#26465b url(../images/greentech-bg.jpg) top center no-repeat;
+  } 
+  
 strong, em, b, i {
     font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
 }  
