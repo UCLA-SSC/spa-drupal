@@ -44,6 +44,7 @@
   </div>
 
   <div class="views-showcase-content-container">
+    
     <h3 class="views-showcase-content-title"><?php print t('Content'); ?></h3>
     <ul class="views-showcase-big-panel">
       <?php foreach ($structured_rows as $row_index => $structured_row): ?>
@@ -52,16 +53,21 @@
           <?php foreach ($structured_row as $field_id => $field): ?>
             <?php if ($field->big_box): ?>
               <div class="views-showcase-subitem views-showcase-big-box-<?php print $field_id; ?>">
+               
                 <?php if ($field->label): ?>
                   <label class="views-label-<?php print $field_id; ?>"><?php print $field->label; ?></label>
                 <?php endif; ?>
                 <span class="field-content"><?php print $field->content; ?></span>
+                 
               </div>
             <?php endif; ?>
+            <?php if ($field_id == 'field_slide_image_fid' ) { print '<div class="showcase-bg">'; } ?>
+            <?php if ($field_id == 'field_link_url' ) { print '</div>'; } ?>
           <?php endforeach; ?>
         </li>
       <?php endforeach; ?>
     </ul>
+  
   </div>
 </div>
 </div>

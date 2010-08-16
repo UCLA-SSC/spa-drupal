@@ -1890,32 +1890,47 @@ margin:-15px 0 0 38px;
 #luskin-home .panel-col-top .views-showcase-big-box-field_slide_image_fid img {
   margin:0px;
   }
+.views-showcase .views-showcase-big-panel  .showcase-bg {
+  background:url(../images/grey-bg.png) top left repeat;
+  z-index:1;
+  width:612px;
+  float:left;
+  height:130px;
+  margin:-130px 0 0 0px;
+  } 
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-title {
   z-index:3;
   float:left;
-  margin:-295px 0 0 35px;
+  margin:-0px 0 0 35px;
   font-size:40px;
   color:#fff;
   line-height:43px;
   }
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_teaser_value  {
    z-index:3;
- float:left;
- margin:-125px 0 0 35px;
+ float:none;
+ clear:both;
+ margin:10px 0 0 50px;
  color:#fff;
  font-size:16px;
   }
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url  {
      z-index:3;
- float:left;
- margin:-80px 0 0 35px;
+ float:none;
+ clear:both;
+ margin:10px 0 0 50px;
  font-size:13px;
- background:#3399ff;
+ 
   }
+.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url .field-content {
+
+ }
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url a { 
  color:#fff;
  text-transform:uppercase;
  padding:5px;
+ 
+ background:#3399ff;
  }
 .view-id-slideshow_luskin .views-showcase-pager-subitem {
 
