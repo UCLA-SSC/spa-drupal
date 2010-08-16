@@ -184,6 +184,22 @@ function ucla_spa_helper_form_alter(&$form, $form_state, $form_id) {
     }*/
   }
  
+  if($form_id =='taxonomy_form_term') {
+    // Simulate the output of filter_form() for one available format for Wysiwyg support.
+    // NOTE: filter_xss_admin() is used instead of check_markup(contents, $my_format) during rendering!
+    // Changes to the input format used below will NOT affect the rendered contents.
+
+    $my_format = 2; // Change 2 to id of the format for the editor profile you want.
+    $form['identification']['format'][$my_format] = array( // A hidden value telling Wysiwyg what editor profile to attach.
+      '#type' => 'value',
+      '#value' => $my_format,
+      '#parents' => array('identification', 'format'), // No submit handler should actually care about this value since check_markup() isn't used, so it shouldn't really matter where in $form_state['values'] it appears.
+    );
+    $form['identification']['format']['format']['guidelines'] = array( // Yes, two 'format'. Wysiwyg will add its "metadata" to this element.
+      '#title' => t('Formatting guidelines'),
+      '#value' => '',
+    );
+  }
 }
 
 
