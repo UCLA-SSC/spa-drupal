@@ -4,9 +4,9 @@ body {
   font-size:13px;
   background:#26465b url(../images/bg.jpg) top center no-repeat;
   }
-body.front {
+/*body.front {
   background:#26465b url(../images/0_home_bg.jpg) top center no-repeat;
-  }  
+  }*/  
 body.page-faculty-index {
   background:#26465b url(../images/2_scholars_bg.jpg) top center no-repeat;
   }
@@ -1103,10 +1103,16 @@ text-decoration:none;
  .panel-right .twitter-default h2.pane-title {
    margin-top:15px;
    }
-#twblock, .tweetlink {  
-  background:#668dba;
-  color:#fff;
+#twblock {  
+  background:transparent;
+  color:#797975;
   }
+.tweetlink a {
+  color:#3399ff;
+  padding:10px 7px;
+  text-transform:uppercase;
+  background:#f4f5f7;
+}
 .col-center .twitter-prof #twblock, .col-center .twitter-prof .tweetlink, .twitter-default #twblock, .twitter-default .tweetlink {
   
   width:300px;
@@ -1114,18 +1120,23 @@ text-decoration:none;
 #department  .twitter-prof #twblock, #department .twitter-prof .tweetlink {
   width:380px;
   }
-#twblock a, #twblock small, .tweetlink a {
-  color:#fff;
+#twblock a {
+  color:#3399ff;
+  text-decoration:underline;
   }
+#twblock small {
+  font-size:.8em;
+  padding:15px 0;
+  }
+  
 .tweetlink {
-  text-align:center;
-  padding:10px 0 10px 0;
+ 
+  padding:7px 10px;
   }
 .tweetlink a {
-  font-size:1.2em;
+  font-size:1em;
   font-weight:normal;
-  text-decoration:none;
-  padding:5px;
+
   }
 .twicon { display:none;}
 .tweetblock .twitem { margin-left:5px;}
@@ -1879,7 +1890,7 @@ margin:-15px 0 0 38px;
   margin:0px;
   }
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-title {
-  z-index:100;
+  z-index:3;
   float:left;
   margin:-295px 0 0 35px;
   font-size:40px;
@@ -1887,16 +1898,16 @@ margin:-15px 0 0 38px;
   line-height:43px;
   }
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_teaser_value  {
-   z-index:100;
+   z-index:3;
  float:left;
- margin:-205px 0 0 35px;
+ margin:-125px 0 0 35px;
  color:#fff;
  font-size:16px;
   }
 .view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url  {
-     z-index:100;
+     z-index:3;
  float:left;
- margin:-150px 0 0 35px;
+ margin:-80px 0 0 35px;
  font-size:13px;
  background:#3399ff;
   }
