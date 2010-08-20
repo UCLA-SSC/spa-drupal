@@ -1965,6 +1965,7 @@ body.mceContentBody {
 }
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-row {
   margin:0px;
+  display:block;
   }
 #luskin-home .pane-initiatives-terms-panel-pane-5  a {
   color:#333;
@@ -1977,12 +1978,15 @@ body.mceContentBody {
 .view-id-slideshow_luskin ul.views-showcase-mini-list .views-showcase-pager-item {
  opacity:1;
  }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li.activeItem {
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-row:hover {
   background:#3399ff;
   color:#fff;
   
   }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li.activeItem a {
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-row:hover a {
+  color:#fff;
+  }
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-row:hover .views-field-description   {
   color:#fff;
   }
 #luskin-home .pane-initiatives-terms-panel-pane-5 {
@@ -1994,7 +1998,7 @@ body.mceContentBody {
   }  
  
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-field-name {
-  margin:25px 0 0 15px;
+  margin:15px 0 0 15px;
   }
 
 .view-id-slideshow_luskin .views-showcase-content-container,
