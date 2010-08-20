@@ -13,9 +13,9 @@ body.page-faculty-index {
 body.page-news {
   background:#26465b url(../images/4_news_bg.jpg) top center repeat-y;
   }
-body.page-events {
+/*body.page-events {
   background:#26465b url(../images/5_events_bg.jpg) top center repeat-y;
-  } 
+  } */
 body.page-node.About {
   background:#26465b url(../images/1_about_us_bg.jpg) top center repeat-y;
   }  
@@ -1140,12 +1140,12 @@ text-decoration:none;
 
   }
 .twicon { display:none;}
-.tweetblock .twitem { margin-left:5px;}
+.tweetblock .twitem { margin-left:0px;}
 .tweetblock {
   border-bottom:1px dotted #fff;
-  width:280px;
+
   margin:auto;
-  padding:5px 0 5px 0;
+  padding:0;
   }
 #department .tweetblock {
   width:360px;
@@ -1850,9 +1850,10 @@ body.mceContentBody {
 
 .pane-slideshow-luskin-panel-pane-1 {
  background:#3399ff;
-  width:1006px;
+  width:612px;
   height:330px;
-    margin:-45px 0 0 -66px;
+    
+  float:left;  
   }
 .front .tabs {
   display:none;
@@ -1860,74 +1861,81 @@ body.mceContentBody {
 #luskin-showcase-wrapper {
   margin:0 0 0 0;
   }
-#luskin-home .pane-slideshow-luskin-panel-pane-1 .view-id-slideshow_luskin .views-showcase {
-  width:946px;
-  height:332px;
+#luskin-home .panel-col-top {
+  height:330px;
+  clear:both;
+  width:1006px;
+  background:#3399FF;
+  margin:-59px 0 10px -66px;
+  }
+#luskin-home .panel-col-top .panel-region-separator  {
+  display:none;
+  float:left;
+  }  
+#luskin-home .view-id-slideshow_luskin  {
+  width:612px;
+  height:330px;
   clear:both;
   background:none;
-margin:-15px 0 0 38px;
+  margin:0 0 0 31px;
   }
 
 .view-id-slideshow_luskin .views-showcase-content-container
 .view-id-slideshow_luskin .views-showcase-content-container,
 .view-id-slideshow_luskin .views-showcase-content-container ul,
 .view-id-slideshow_luskin .views-showcase-content-container ul li, 
-.view-id-slideshow_luskin.views-showcase .views-showcase-big-panel li {
+.view-id-slideshow_luskin li {
   height:332px;
   width:612px;
   list-style:none;
   margin:0;
   }
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_slide_image_fid  {
+.view-id-slideshow_luskin  .views-field-field-slide-image-fid  {
   float:left;
   width:612px;
   height:330px;
   z-index:0;
   }
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_slide_image_fid span {
-  width:612px;
-  height:330px;
-  display:block;
-  }
-#luskin-home .panel-col-top .views-showcase-big-box-field_slide_image_fid img {
+
+#luskin-home .panel-col-top .view-id-slideshow_luskin  .views-field-field-slide-image-fid img {
   margin:0px;
   }
-.views-showcase .views-showcase-big-panel  .showcase-bg {
+.view-id-slideshow_luskin .slideshow-bg {
   background:url(../images/grey-bg.png) top left repeat;
   z-index:1;
   width:612px;
   float:left;
-  height:130px;
-  margin:-130px 0 0 0px;
+  height:100px;
+  margin:-100px 0 0 0px;
   } 
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-title {
+.view-id-slideshow_luskin  .views-field-title {
   z-index:3;
   float:left;
-  margin:-0px 0 0 35px;
+  margin:15px 0 0 35px;
   font-size:2.5em;
   color:#fff;
   line-height:43px;
   }
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_teaser_value  {
+.view-id-slideshow_luskin  .views-field-field-teaser-value  {
    z-index:3;
  float:none;
  clear:both;
- margin:10px 0 0 50px;
+ margin:10px 0 0 35px;
  color:#fff;
  font-size:1.2em;
   }
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url  {
+.view-id-slideshow_luskin  .views-field-field-link-url  {
      z-index:3;
- float:none;
- clear:both;
- margin:10px 0 0 50px;
+ float:right;
+
+ margin:-10px 34px 0 35px;
  font-size:1.0em;
  
   }
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url .field-content {
+.view-id-slideshow_luskin  .views-field-field-link-url .field-content {
 
  }
-.view-id-slideshow_luskin .views-showcase .views-showcase-big-panel .views-showcase-big-box-field_link_url a { 
+.view-id-slideshow_luskin  .views-field-field-link-url a { 
  color:#fff;
  text-transform:uppercase;
  padding:5px;
@@ -1937,30 +1945,34 @@ margin:-15px 0 0 38px;
 .view-id-slideshow_luskin .views-showcase-pager-subitem {
 
   }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li {
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-row  {
   width:333px;
-  height:109px;
+  height:94px;
   background:#f0f0f0;
   color:#333;
-  font-size:20px;
+  font-size:16px;
   border:1px solid #fff;
   border-width:0 0 1px 0;
   margin:0px;
   display:block;
-  float:left;
+  float:right;
 }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li.views-row-last {
+#luskin-home .pane-initiatives-terms-panel-pane-5 h2.pane-title {
+  display:none;
+  }
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-row-last {
   border-bottom:1px solid #f0f0f0;
 }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li.views-row {
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-row {
   margin:0px;
   }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li a {
+#luskin-home .pane-initiatives-terms-panel-pane-5  a {
   color:#333;
   }
-.view-id-slideshow_luskin ul.views-showcase-mini-list li .views-showcase-navigation-box-description {
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-field-description {
   font-size:12px;
   margin:5px 0 0 15px;
+  color:#9f9f9f;
   }
 .view-id-slideshow_luskin ul.views-showcase-mini-list .views-showcase-pager-item {
  opacity:1;
@@ -1973,19 +1985,18 @@ margin:-15px 0 0 38px;
 .view-id-slideshow_luskin ul.views-showcase-mini-list li.activeItem a {
   color:#fff;
   }
-.view-id-slideshow_luskin .views-showcase-navigation-container,
-.view-id-slideshow_luskin ul.views-showcase-mini-list,
-.view-id-slideshow_luskin ul.views-showcase-mini-list {
+#luskin-home .pane-initiatives-terms-panel-pane-5 {
   width:333px;
-  height:332px;
-  margin:0px;
+  height:330px;
+  margin:0px 31px 0 0;
   background:none;
+  float:right;
   }  
  
-.view-id-slideshow_luskin .views-showcase-navigation-box-name {
-  margin:50px 0 0 15px;
+#luskin-home .pane-initiatives-terms-panel-pane-5 .views-field-name {
+  margin:25px 0 0 15px;
   }
-  
+
 .view-id-slideshow_luskin .views-showcase-content-container,
 .view-id-slideshow_luskin .views-showcase-navigation-container {
   margin:-10px 0 0 0;

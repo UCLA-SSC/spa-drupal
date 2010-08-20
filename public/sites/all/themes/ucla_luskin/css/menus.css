@@ -106,6 +106,7 @@ ul.nice-menu-down .menuparent ul li a {
   font-size:1em;
   }
 
+
 ul.nice-menu-down li ul li ul,
 /* Repeat for Garland header. */
 #header-region ul.nice-menu-down li ul li ul {
@@ -468,3 +469,6 @@ margin-left:0px;
  #block-block-1  {
    text-align:right;
    }
+ ul.nice-menu-down .menuparent ul li a.active {
+  color:#3399ff;
+}  
