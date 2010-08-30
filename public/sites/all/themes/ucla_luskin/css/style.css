@@ -2097,3 +2097,13 @@ text-decoration:none;
   vertical-align:top;
   width:138px;
   }
+.page-faculty-index .views-exposed-widgets {
+  width:148px;
+  overflow:hidden;
+  }
+.page-faculty-index .views-exposed-widgets label {
+display:block;
+height:18px;
+overflow:hidden;
+width:128px;
+  }  
