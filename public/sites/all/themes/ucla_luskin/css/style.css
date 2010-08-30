@@ -4,6 +4,10 @@ body {
   font-size:13px;
   background:#26465b url(../images/bg.jpg) top center repeat-y;
   }
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  font-weight:bold;
+}  
 /*body.front {
   background:#26465b url(../images/0_home_bg.jpg) top center repeat-y;
   }*/  
@@ -265,7 +269,7 @@ width:300px;
   margin-right:3px;
   }
 .teasers .views-field-name, .teasers .views-field-created, .teasers .views-field-name-1 {
-  font-family:Verdana;
+
   font-size:.9em;
   color:#333333;
   }
@@ -318,7 +322,7 @@ width:300px;
   color:#336699;
   font-size:1.3em;
   text-decoration:none;
-    font-family:Georgia;
+   
     font-weight:normal;
   }
 #read-blogs .views-field-title a {
@@ -332,7 +336,7 @@ font-size:1em;
   padding:0 10px 10px 0;
   }
 .teasers .views-field-field-date-published-value {
- font-family:Verdana;
+
  display:inline;
  float:left;
  font-size:.9em;
@@ -361,10 +365,15 @@ font-size:1em;
   color:#336699;
   }
 /*Events Page */  
-.view-date-browser .views-row {
+.view-date-browser .views-row,
+.view-id-News.view-display-id-panel_pane_1 .views-row {
   clear:both;
  
   border-bottom:1px solid #E2E2E2;
+  }
+.view-date-browser .views-field-view-node,
+.view-id-News.view-display-id-panel_pane_1  .views-field-view-node  {
+  margin:.5em 0;
   }
 .view-date-browser .left-block, .view-date-browser .right-block  {  
   margin:20px 0 20px 0;
@@ -734,7 +743,7 @@ padding:10px;
 
 .view-News.view-display-id-panel_pane_2 .views-field-title a {
   color:#336699;
-  font-family:Georgia;
+
   font-weight:normal;
   font-size:1.5em;
   text-decoration:none;
@@ -783,7 +792,7 @@ display:inline;
 margin-top:25px;
    }
  .view-News.view-display-id-panel_pane_2 .views-field-view-node a {
-  font-family:verdana;
+  
   font-weight:normal;
   color:#336699;
   text-decoration:none;
@@ -791,7 +800,7 @@ margin-top:25px;
   
   }
   .view-News.view-display-id-panel_pane_2  .inline-more a {
-     font-family:verdana;
+  
   font-weight:normal;
   color:#336699;
   text-decoration:none;
@@ -820,7 +829,7 @@ margin-top:25px;
 /*blogs */
 .view-blogs.view-display-id-panel_pane_1 .views-field-title a {
   color:#336699;
-  font-family:Georgia;
+  
   font-weight:normal;
   font-size:1.5em;
   text-decoration:none;
@@ -908,7 +917,7 @@ padding-right:27px;
   text-align:center;
   }
 #mini-panel-dept_header .panels-flexible-row-15-main-row-middle h2 {
-  font-family:Georgia;
+
   font-size:1.5em;
   color:#cccccc;
   text-align:center;
@@ -936,7 +945,7 @@ padding-right:27px;
 #mini-panel-dept_header .field-field-areas-of-focus .field-item {
   background:transparent url(../images/rt-arrow-big-blue.png) no-repeat scroll 3px 16px;
   color:#cccccc;
-  font-family:Georgia;
+ 
   font-size:1.2em;
   border-top:1px solid #424856;
   padding:7px 0 7px 15px;
@@ -1034,7 +1043,7 @@ text-decoration:none;
   }
  /*contacts*/
 .page-contacts h2.pane-title {
-  font-family:Georgia;
+  
   padding:15px 0 0 0;
   border-top:1px solid #dedede;
   margin-top:30px;
@@ -1224,7 +1233,7 @@ color:#333333;
    border-top:4px solid #744b84;
    color:#fff;
    text-decoration:none;
-   font-family:Verdana;
+   
    font-size:10px;
    }
   .selector a.all {
@@ -1413,7 +1422,7 @@ text-decoration:none;
   text-decoration:none;
   font-size:1.2em;
   font-weight:normal;
-  font-family="Georgia";
+
   }
 .breadcrumb .sep {
   font-size:1.4em;
@@ -2027,14 +2036,14 @@ body.mceContentBody {
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-title  a {
   font-size:14px;
   color:#000;
-  font-family:helvetica;
+
   font-weight:bold;
   padding:0 0 5px 0;
   }
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-field-subtitle-value,
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-field-author-value {
   color:#666;
-  font-family:helvetica;
+ 
   font-weight:bold;
   }
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-field-description-value {
@@ -2075,7 +2084,7 @@ text-decoration:none;
 .view-glossary.view-display-id-attachment_2 .view-header {
   color:#666;
   margin:0 0 10px 0;
-  font-family:verdana;
+
   }
   
 #term-panel  {

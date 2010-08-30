@@ -1,12 +1,16 @@
 body {
-  font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
+  font-family:"Times New Roman",times,serif;
   color:#666666;
   font-size:13px;
   background:#dfdcd5 url(../images/bg.gif) top left repeat-x;
   }
 strong, em, b, i {
-    font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
-}  
+    font-family: "Times New Roman",times,serif;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family:helvetica, arial;
+  font-weight:bold;
+}
 body .container {
   margin:0 auto 0 auto;
 
@@ -106,11 +110,11 @@ h2.pane-title, h2.pane-title a {
   float:left;
  margin-left:687px;
  position:absolute;
- top:227px;
+ top:350px;
  z-index:4;
  padding:5px;
  width:310px;
- background: url(http://lewis-local/sites/all/themes/ucla_lewis/images/primary-bg.png) repeat 0% 0%;
+ /*background: url(http://lewis-local/sites/all/themes/ucla_lewis/images/primary-bg.png) repeat 0% 0%;*/
  }
   
 #top-right {
@@ -250,7 +254,7 @@ width:300px;
   margin-right:3px;
   }
 .teasers .views-field-name, .teasers .views-field-created, .teasers .views-field-name-1 {
-  font-family:Verdana;
+  font-family:helvetica;
   font-size:.9em;
   color:#333333;
   }
@@ -303,7 +307,7 @@ width:300px;
   color:#336699;
   font-size:1.3em;
   text-decoration:none;
-    font-family:Georgia;
+    font-family:helvetica;
     font-weight:normal;
   }
 #read-blogs .views-field-title a {
@@ -317,7 +321,7 @@ font-size:1em;
   padding:0 10px 10px 0;
   }
 .teasers .views-field-field-date-published-value {
- font-family:Verdana;
+ font-family:helvetica;
  display:inline;
  float:left;
  font-size:.9em;
@@ -346,10 +350,15 @@ font-size:1em;
   color:#336699;
   }
 /*Events Page */  
-.view-date-browser .views-row {
+.view-date-browser .views-row,
+.view-id-News.view-display-id-panel_pane_1 .views-row {
   clear:both;
  
   border-bottom:1px solid #E2E2E2;
+  }
+.view-date-browser .views-field-view-node,
+.view-id-News.view-display-id-panel_pane_1  .views-field-view-node  {
+  margin:.5em 0;
   }
 .view-date-browser .left-block, .view-date-browser .right-block  {  
   margin:20px 0 20px 0;
@@ -723,7 +732,7 @@ padding:10px;
 
 .view-News.view-display-id-panel_pane_2 .views-field-title a {
   color:#333;
-  font-family:Georgia;
+  font-family:helvetica;
   font-weight:normal;
   font-size:1.5em;
   text-decoration:none;
@@ -772,7 +781,7 @@ display:inline;
 margin-top:25px;
    }
  .view-News.view-display-id-panel_pane_2 .views-field-view-node a {
-  font-family:verdana;
+  font-family:helvetica;
   font-weight:normal;
 
   text-decoration:none;
@@ -780,7 +789,7 @@ margin-top:25px;
   
   }
   .view-News.view-display-id-panel_pane_2  .inline-more a {
-     font-family:verdana;
+     font-family:helvetica;
   font-weight:normal;
  
   text-decoration:none;
@@ -809,7 +818,7 @@ margin-top:25px;
 /*blogs */
 .view-blogs.view-display-id-panel_pane_1 .views-field-title a {
   color:#336699;
-  font-family:Georgia;
+  font-family:helvetica;
   font-weight:normal;
   font-size:1.5em;
   text-decoration:none;
@@ -897,7 +906,7 @@ padding-right:27px;
   text-align:center;
   }
 #mini-panel-dept_header .panels-flexible-row-15-main-row-middle h2 {
-  font-family:Georgia;
+  font-family:helvetica;
   font-size:1.5em;
   color:#cccccc;
   text-align:center;
@@ -925,7 +934,7 @@ padding-right:27px;
 #mini-panel-dept_header .field-field-areas-of-focus .field-item {
   background:transparent url(../images/rt-arrow-big-blue.png) no-repeat scroll 3px 16px;
   color:#cccccc;
-  font-family:Georgia;
+  font-family:helvetica;
   font-size:1.2em;
   border-top:1px solid #424856;
   padding:7px 0 7px 15px;
@@ -1023,7 +1032,7 @@ text-decoration:none;
   }
  /*contacts*/
 .page-contacts h2.pane-title {
-  font-family:Georgia;
+  font-family:helvetica;
   padding:15px 0 0 0;
   border-top:1px solid #dedede;
   margin-top:30px;
@@ -1129,11 +1138,11 @@ text-decoration:none;
 
   }
 .twicon { display:none;}
-.tweetblock .twitem { margin-left:5px;}
+.tweetblock .twitem { }
 .tweetblock {
   border-bottom:1px dotted #fff;
   width:280px;
-  margin:auto;
+  margin:0;
   padding:5px 0 5px 0;
   }
 #department .tweetblock {
@@ -1213,7 +1222,7 @@ color:#333333;
    border-top:4px solid #744b84;
    color:#fff;
    text-decoration:none;
-   font-family:Verdana;
+   font-family:helvetica;
    font-size:10px;
    }
   .selector a.all {
@@ -1402,7 +1411,7 @@ text-decoration:none;
   text-decoration:none;
   font-size:1.2em;
   font-weight:normal;
-  font-family="Georgia";
+  font-family=helvetica;
   }
 .breadcrumb .sep {
   font-size:1.4em;
@@ -1745,7 +1754,7 @@ ul.links li.blog_usernames_blog {
  border:0px;
 
  margin:2px 0px;
- padding:0 15px 0 15px;
+ padding:0 15px 10px 15px;
 }
 .view-id-Initiatives_terms.view-display-id-panel_pane_2 .views-row .field-wrapper {
   padding-top:10px;
@@ -1954,15 +1963,17 @@ body.mceContentBody {
   float:left;
   }
 .view-slideshow-lewis .views-field-title {
-  margin:-232px 0 0 140px;
+  margin:-349px 0 0 323px;
   color:#fff;
   font-size:22px;
   float:left;
   z-index:4;
+  padding:5px 10px;
+  background:url(../images/transbg.png) repeat;
   }
   
 .view-slideshow-lewis .views-field-field-link-url  {
-  margin:-169px 0 0 140px;
+  margin:-293px 0 0 324px;
   background:#FFD940;
   color:#000;
   padding:5px;
@@ -1995,10 +2006,12 @@ body.mceContentBody {
 .view-slideshow-lewis .views-slideshow-controls-top .views_slideshow_previous {
   float:left;
   margin:0 0 0 44px;
+  display:none;
   }
 .view-slideshow-lewis .views-slideshow-controls-top .views_slideshow_next {
   float:right;
   margin:-88px 50px 0 990px;
+  display:none;
   }
  
 
@@ -2063,7 +2076,7 @@ text-decoration:none;
 .view-glossary.view-display-id-attachment_2 .view-header {
   color:#666;
   margin:0 0 10px 0;
-  font-family:verdana;
+  font-family:helvetica;
   }
   
   

@@ -65,17 +65,20 @@ ul.nice-menu-down li.menuparent:hover li a {
 ul.nice-menu-down li.menuparent:hover a,
 ul.nice-menu-down li.menuparent a:active,
 ul.nice-menu-down ul li a {
-  color:#fff;
-  background:#333;
+  color:#333;
+  background:#FFD940;
   }
-
-
+  
+ul.nice-menu-down li.menuparent:hover ul li a {
+ color:#fff;
+  background:#333;
+}
 ul.nice-menu-down li li {
   border-top: 0;
 }
 
 ul.nice-menu-down ul {
-  top:38px;
+  top:42px;
   border:none;
  
   background:#333;
@@ -481,3 +484,7 @@ padding:30px 150px 30px 30px;
  #block-block-1  {
    text-align:right;
    }
+ul.nice-menu-down .menuparent ul li a.active,
+ul.nice-menu-down li.menuparent:hover ul li a.active {
+  color:#FFD940;
+  }
