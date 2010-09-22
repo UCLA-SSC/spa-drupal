@@ -7,9 +7,9 @@ dependencies[] = tabs
 core = 6.x
 
 
-; Information added by drupal.org packaging script on 2010-07-30
-version = "6.x-1.0-rc3"
+; Information added by drupal.org packaging script on 2010-09-10
+version = "6.x-1.0-rc5"
 core = "6.x"
 project = "panels_tabs"
-datestamp = "1280529974"
+datestamp = "1284122508"
 

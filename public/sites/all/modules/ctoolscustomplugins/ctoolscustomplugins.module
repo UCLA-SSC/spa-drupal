@@ -163,10 +163,10 @@ function theme_panel_image($image, $image_description = NULL, $image_caption = N
     }
    
     if(!empty($preset['presetname'])) {
-      $output .= l(theme_imagecache($preset['presetname'], $image['filename'], $image_description, $image_caption), $link_uri, $options = array('html' => TRUE, 'attributes' => array('class' => $link_css, 'rel' => $link_rel, 'target' => $target)));
+      $output .= l(theme_imagecache($preset['presetname'], $image['filename'], $image_description, $image_caption), $link_uri, $options = array('html' => TRUE, 'attributes' => array('class' => $link_css, 'rel' => $link_rel, 'target' => $target, 'title' => $image_description)));
     }
     else {
-      $output .= l(theme_image($image['filepath'], $image_description, $image_caption), $link_uri, $options = array('html' => TRUE, 'attributes' => array('class' => $link_css, 'rel' => $link_rel, 'target' => $target)));
+      $output .= l(theme_image($image['filepath'], $image_description, $image_caption), $link_uri, $options = array('html' => TRUE, 'attributes' => array('class' => $link_css, 'rel' => $link_rel, 'target' => $target, 'title' => $image_description)));
     }
   }
   
@@ -218,7 +218,7 @@ function theme_panel_image_preview($image) {
  * @return
  * A table containing the $file data
  */
-function theme_panel_link($uri, $title = NULL, $target = NULL, $css = NULL) {
+function theme_panel_link($uri, $title = NULL, $target = NULL, $css = NULL, $rel = NULL) {
   $output = '';
   
   if($target) {
@@ -229,10 +229,10 @@ function theme_panel_link($uri, $title = NULL, $target = NULL, $css = NULL) {
   }
   
   if(!empty($title)) {
-    $output .= '<span class="'.$css.'"></span><span class="ctoolscustomplugins-link ctoolscustomplugins-link-'.$css.'">' . l($title, $uri, $options = array('attributes' => array('class' => $css, 'target' => $linktarget))) . '</span>';  
+    $output .= '<span class="'.$css.'"></span><span class="ctoolscustomplugins-link ctoolscustomplugins-link-'.$css.'">' . l($title, $uri, $options = array('attributes' => array('class' => $css, 'target' => $linktarget, 'title' => $title, 'rel' => $rel))) . '</span>';  
   }
   else {
-    $output .= '<span class="'.$css.'"></span><span class="ctoolscustomplugins-link ctoolscustomplugins-link-'.$css.'">' . l($uri, $uri, $options = array('attributes' => array('class' => $css, 'target' => $linktarget))) . '</span>';  
+    $output .= '<span class="'.$css.'"></span><span class="ctoolscustomplugins-link ctoolscustomplugins-link-'.$css.'">' . l($uri, $uri, $options = array('attributes' => array('class' => $css, 'target' => $linktarget, 'title' => $title, 'rel' => $rel))) . '</span>';  
   }
   
   return $output;

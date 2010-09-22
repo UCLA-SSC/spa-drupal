@@ -210,7 +210,8 @@ function ctoolscustomplugins_image_content_type_edit_form_submit_validate(&$form
     $image->weight = 0;
     $image->new = TRUE;
     $form_state['conf']['image'] = (array)$image;
-  }  
+    file_set_status($image, FILE_STATUS_PERMANENT);
+  }
 }
 
 /**

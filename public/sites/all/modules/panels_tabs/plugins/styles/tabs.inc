@@ -1,5 +1,5 @@
 <?php
-// $Id: tabs.inc,v 1.1.2.3 2010/07/28 15:42:07 dereine Exp $
+// $Id: tabs.inc,v 1.1.2.5 2010/07/30 23:05:44 smoothify Exp $
 
 /**
  * @file
@@ -53,6 +53,11 @@ function theme_panels_tabs_style_render_region($display, $owner_id, $panes, $set
     }
   }
 
+  // No content has been rendered
+  if (empty($index)) {
+    return;
+  }
+
   // See if an optional title was added.
   if (!empty($settings['title'])) {
     $output .= theme('panels_tabs_title', $settings['title']);
@@ -98,6 +103,11 @@ function theme_panels_tabs_style_render_panel($display, $owner_id, $panes, $sett
       );
       $index++;
     }
+  }
+
+  // No content has been rendered
+  if (empty($index)) {
+    return;
   }
 
   // See if an optional title was added.

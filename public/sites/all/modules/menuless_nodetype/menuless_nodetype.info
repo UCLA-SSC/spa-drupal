@@ -1,11 +1,11 @@
-; $Id: menuless_nodetype.info,v 1.1.4.1 2009/04/17 15:38:31 henrrrik Exp $
+; $Id: 
 name = Menuless Node Type
 description = Makes menu configurable per node type.
 core = 6.x
 
-; Information added by drupal.org packaging script on 2010-07-11
-version = "6.x-1.x-dev"
+; Information added by drupal.org packaging script on 2010-08-11
+version = "6.x-1.0"
 core = "6.x"
 project = "menuless_nodetype"
-datestamp = "1278834859"
+datestamp = "1281563192"
 

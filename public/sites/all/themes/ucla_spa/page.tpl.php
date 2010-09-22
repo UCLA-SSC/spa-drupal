@@ -39,6 +39,7 @@
       <a href="<?php print $school->field_facebook[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/facebook-big.png"/></a>
       <a href="http://twitter.com/<?php print $school->field_twitter[0]['value']?>"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
       <a href="<?php print $school->field_youtube_page[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/youtube-big.png"/></a>
+      <a href="http://www.flickr.com/photos/uclapubaffairs/"><img src="/<?php print path_to_theme()?>/images/flickr-big.png"/></a>
     </div>
     <?php print $header; ?>
     <?php if (isset($primary_links)) : ?>

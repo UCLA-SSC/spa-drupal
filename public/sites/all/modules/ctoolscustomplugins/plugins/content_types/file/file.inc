@@ -167,6 +167,7 @@ function ctoolscustomplugins_file_content_type_edit_form_submit_validate(&$form,
     $file->weight = 0;
     $file->new = TRUE;
     $form_state['conf']['file'] = (array)$file;
+    file_set_status($file, FILE_STATUS_PERMANENT);
   }  
 }
 

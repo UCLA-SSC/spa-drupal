@@ -4,9 +4,9 @@ description = Some extra plugins for Chaos Tools that mimic CCK fields (They are
 core = 6.x
 package = Chaos tool suite
 dependencies[] = ctools
-; Information added by drupal.org packaging script on 2010-04-14
-version = "6.x-1.0"
+; Information added by drupal.org packaging script on 2010-09-10
+version = "6.x-1.2"
 core = "6.x"
 project = "ctoolscustomplugins"
-datestamp = "1271262006"
+datestamp = "1284094306"
 

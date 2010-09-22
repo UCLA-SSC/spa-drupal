@@ -1,9 +1,12 @@
 <?php
-// $Id: menuless_nodetype.module,v 1.1.4.1 2009/04/17 15:38:31 henrrrik Exp $
+// $Id:
 
 /**
  * @file
- * Makes menu configurable per node type.
+ * Menuless Node Type module.
+ *
+ * This module makes it possible to turn off the Menu node form fieldset 
+ * per content type.
  */
 
 /**
@@ -17,7 +20,7 @@ function menuless_nodetype_form_alter(&$form, $form_state, $form_id) {
   if (ereg('_node_form$', $form_id)) {
     if (is_array($active_setting = variable_get('menuless_node_type_options_'.$form['type']['#value'], 'active'))) {
       if (!in_array('active', $active_setting)) {
-        unset($form['menu']);
+        $form['menu']['#access'] = 0;
       }
     }
   }

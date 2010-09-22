@@ -20,4 +20,4 @@
   * the view is modified.
   */
 ?>
-<?php  if ($row->node_data_field_headshot_field_pdf_of_cv_data ) { print $output; }?>
+<?php  if ($row->node_data_field_headshot_field_pdf_of_cv_fid ) { print $output; }?>

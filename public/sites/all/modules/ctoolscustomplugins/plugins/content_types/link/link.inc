@@ -26,6 +26,7 @@ $plugin = array(
     'link_uri' => '',
     'link_target' => '',
     'link_css' => '',
+    'link_rel' => '',
   ),
   'render callback' => 'ctoolscustomplugins_link_content_type_render',
   'js' => array('misc/autocomplete.js', 'misc/textarea.js', 'misc/collapse.js'),
@@ -45,7 +46,7 @@ function ctoolscustomplugins_link_content_type_render($subtype, $conf, $args, $c
   $block->subtype = ++$delta;
   $block->title   = filter_xss_admin($conf['title']);
   $block->content = '';
-  $block->content .= theme_panel_link($conf['link_uri'], $conf['link_title'], $conf['link_target'], $conf['link_css']);
+  $block->content .= theme_panel_link($conf['link_uri'], $conf['link_title'], $conf['link_target'], $conf['link_css'], $conf['link_rel']);
 
   return $block;
 }
@@ -59,7 +60,7 @@ function ctoolscustomplugins_link_content_type_render($subtype, $conf, $args, $c
 function ctoolscustomplugins_link_content_type_admin_info($subtype, $conf) {
   $block = new stdClass();
   $block->title = filter_xss_admin($conf['title']);  
-  $block->content .= theme_panel_link($conf['link_uri'], $conf['link_title'], $conf['link_target'], $conf['link_css']);
+  $block->content .= theme_panel_link($conf['link_uri'], $conf['link_title'], $conf['link_target'], $conf['link_css'], $conf['link_rel']);
   
   return $block;
 }
@@ -141,7 +142,13 @@ function ctoolscustomplugins_link_content_type_edit_form(&$form, &$form_state) {
     '#title' => t('CSS Class'),
     '#description' => t("CSS class to apply to this link. This may be blank."),
   );
-
+  $form['link']['link_rel'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $conf['link_rel'],
+    '#title' => t('Rel'),
+    '#description' => t("The rel attribute specifies the relationship between the current document and the linked document."),
+  );
+  
   return $form;
 }
 
