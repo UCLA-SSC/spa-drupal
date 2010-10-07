@@ -200,6 +200,14 @@ function ucla_spa_helper_form_alter(&$form, $form_state, $form_id) {
       '#value' => '',
     );
   }
+
+  if($form_id =='constant_contact_signup_form') {
+	  //krumo($form);
+	  $form['cc_email']['#hint'] = t('your email...');
+	  $form['cc_email']['#title'] = NULL;
+  	$form['submit']['#type'] = 'image_button';
+    $form['submit']['#src'] = path_to_theme() . '/images/button_cc.png';
+	}
 }
 
 
