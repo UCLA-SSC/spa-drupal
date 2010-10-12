@@ -111,7 +111,7 @@ h2.pane-title, h2.pane-title a {
 	float: left;
 	margin-left: 30px;
 	position: absolute;
-	top: 60px;
+	top: 40px;
 }
 #ucla-logo {
   display:none;
@@ -1875,17 +1875,17 @@ body.mceContentBody {
 	background: #fff;
 }
 .view-slideshow-lewis {
-	background: #fff;
+	background: #585652;
 }
 #logo {
 	z-index: 100;
 }
 .view-slideshow-lewis .views-field-field-slide-image-fid {
 	z-index: 3;
-	float: left;
+	float: right;
 }
 .view-slideshow-lewis .views-field-title {
-	margin: -109px 0 0 30px;
+	margin: -116px 0 0 30px;
 	color: #fff;
 	font-size: 22px;
 	float: left;
@@ -1895,7 +1895,7 @@ body.mceContentBody {
 }
 
 .view-slideshow-lewis .views-field-field-link-url {
-	margin: -55px 0 0 30px;
+	margin: -65px 0 0 30px;
 	background: #FFD940;
 	color: #000;
 	padding: 5px;

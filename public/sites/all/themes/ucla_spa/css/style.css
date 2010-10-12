@@ -1442,3 +1442,46 @@ ul.links li.blog_usernames_blog {
 	 padding:3px;
 	line-height:1.1em;
 }
+
+.pane-constant-contact-0 {
+	 background:#f0f0f0;
+	 width:282px;
+	 height:104px;
+	 text-align:center;
+	 padding-top:25px;
+	 margin:15px 0 0 5px;
+}
+
+.pane-constant-contact-0 h2.pane-title {
+	color:#333333;
+	font-size:14px;
+	font-weight:normal;
+	text-align:left;
+	margin-left:30px;
+}	
+
+.constant-contact-signup-form .form-submit {
+
+	width:30px;
+	height:30px;
+	float:left;
+}
+
+#edit-cc-email-wrapper {
+	 width:213px;
+	 float:left;
+	 margin:0;
+	
+}
+
+#edit-cc-email-wrapper input.form-text,
+.edit-cc-email-wrapper .hint  {
+	  width:205px;
+	  height:25px;
+	  vertical-align:center;
+	  color:#999;
+	  margin:0;
+	  border:0;
+	  margin-left:21px;
+	  padding-left:8px;
+}
