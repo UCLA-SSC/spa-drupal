@@ -1,12 +1,12 @@
 #nice-menu-0 {
-	width: 690px;
+	width: 661px;
 	padding: 0px;
 	height: 42px;
 	background: url(../images/primary-bg.png) top left repeat;
 	font-size: 16px;
 	position: absolute;
 	top: 30px;
-	margin-left: 300px;
+	margin-left: 330px;
 }
 .admin-menu #nice-menu-0 {
 	top: 21px;
@@ -36,7 +36,7 @@ ul.nice-menu-down a {
 	text-align: center;
 	text-decoration: none;
 	color: #000;
-	padding: 9px 17px;
+	padding: 9px 16px;
 }
 ul.nice-menu-down li#menu-3376 a {
 	padding: 9px 17px;
