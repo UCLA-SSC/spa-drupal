@@ -1,5 +1,5 @@
 <?php
-// $Id: domain.module,v 1.134.2.26 2010/05/16 16:10:47 agentken Exp $
+// $Id: domain.module,v 1.134.2.33 2010/09/28 13:46:27 agentken Exp $
 
 /**
  * @defgroup domain Domain Access: A domain-based access control system
@@ -37,11 +37,20 @@ define('DOMAIN_ASSIGN_USERS', TRUE);
 define('DOMAIN_LIST_SIZE', 25);
 
 /**
- * Adds the domain user data to the $user object.
+ * Module setup tasks.
+ *
+ * 1. Adds the domain user data to the $user object.
+ * 2. Ensures that our custom_url_rewrite_outbound() is loaded.
+ *
+ * @link http://drupal.org/node/529026
+ * @link http://drupal.org/node/820062
  */
 function domain_boot() {
   global $user;
+  // Load domain information to the $user object.
   $user->domain_user = domain_get_user_domains($user);
+  // Properly load custom_url_rewrite_outbound().
+  include_once('settings_custom_url.inc');
 }
 
 /**
@@ -79,7 +88,7 @@ function domain_init() {
         drupal_set_message($error, 'error');
       }
       if (empty($hide)) {
-        watchdog('Domain Access', $error, NULL, WATCHDOG_ERROR);
+        watchdog('domain', $error, NULL, WATCHDOG_ERROR);
       }
     }
   }
@@ -114,10 +123,6 @@ function domain_init() {
 
   // Set the site name to the domain-specific name.
   $conf['site_name'] = $_domain['sitename'];
-
-  // Properly load custom_url_rewrite_outbound().
-  // See http://drupal.org/node/529026
-  include_once(drupal_get_path('module', 'domain') .'/settings_custom_url.inc');
 }
 
 /**
@@ -216,7 +221,7 @@ function domain_menu() {
     foreach ($batch as $key => $value) {
       $items['admin/build/domain/batch/'. $key] = array(
         'title' => $value['#form']['#title'],
-        'access arguments' => array('administer domains'),
+        'access arguments' => isset($value['#permission']) ? array($value['#permission']) : array('administer domains'),
         'type' => MENU_CALLBACK,
         'page callback' => 'domain_batch',
         'page arguments' => array($key),
@@ -350,10 +355,14 @@ function domain_block($op = 'list', $delta = 0, $edit = array()) {
             $this_node = node_load(arg(1));
             $output = '';
             if (!empty($this_node->subdomains)) {
-              $output .= theme('item_list', $this_node->subdomains, t('Assigned domains'));
+              $items = array();
+              foreach($this_node->subdomains as $name) {
+                $items[] = check_plain($name);
+              }
+              $output .= theme('item_list', $items, t('Assigned domains'));
             }
             $this_domain = domain_get_node_match($this_node->nid);
-            $output .= theme('item_list', array($this_domain['sitename']), t('Source domain'));
+            $output .= theme('item_list', array(check_plain($this_domain['sitename'])), t('Source domain'));
             if (empty($output)) {
               $output = t('This node is not assigned to a domain.');
             }
@@ -478,10 +487,10 @@ function domain_user($op, &$edit, &$account, $category = NULL) {
             if (abs($id) > 0) {
               if ($id > 0) {
                 $domain = domain_lookup($id);
-                $output .= '<li>'. $domain['sitename'] .'</li>';
+                $output .= '<li>'. check_plain($domain['sitename']) .'</li>';
               }
               else {
-                $output .= '<li>'. variable_get('domain_sitename', variable_get('site_name', 'Drupal')) .'</li>';
+                $output .= '<li>'. check_plain(variable_get('domain_sitename', variable_get('site_name', 'Drupal'))) .'</li>';
               }
             }
           }
@@ -519,6 +528,7 @@ function domain_user_operations() {
  * Implement hook_form_alter().
  */
 function domain_form_user_admin_account_alter(&$form, $form_state) {
+  global $_domain;
   if (!user_access('assign domain editors')) {
     return;
   }
@@ -1267,11 +1277,19 @@ function domain_nodeapi(&$node, $op, $a3 = NULL, $a4 = NULL) {
         $debug = variable_get('domain_debug', 0);
         if ($debug && user_access('set domain access')) {
           if (!empty($node->subdomains)) {
-            $output = theme('item_list', $node->subdomains, t('Assigned domains'));
+            $items = array();
+            foreach ($node->subdomains as $name) {
+              $items[] = check_plain($name);
+            }
+            $output = theme('item_list', $items, t('Assigned domains'));
             $node->content['subdomains'] = array('#value' => $output, '#weight' => 20);
           }
           if (!empty($node->editors)) {
-            $output = theme('item_list', $node->editors, t('Editors'));
+            $items = array();
+            foreach ($node->editors as $name) {
+              $items[] = check_plain($name);
+            }
+            $output = theme('item_list', $items, t('Editors'));
             $node->content['editors'] = array('#value' => $output, '#weight' => 21);
           }
           if (empty($output)) {
@@ -1680,7 +1698,7 @@ function domain_form_alter(&$form, &$form_state, $form_id) {
   // If SEO is turned on, then form actions need to be absolute paths
   // to the currently active domain.  See http://drupal.org/node/196217.
   $seo = variable_get('domain_seo', 0);
-  if ($seo) {
+  if ($seo && isset($form['#action'])) {
     // We cannot use the global domain here, since it can be modified.
     $domain = domain_initial_domain();
     $action = parse_url($form['#action']);
@@ -1861,7 +1879,7 @@ function domain_form_alter(&$form, &$form_state, $form_id) {
               foreach ($raw as $did) {
                 ($did == -1) ? $id = 0 : $id = $did;
                 $raw_domains = domain_lookup($id);
-                $list[]['data'] = $raw_domains['sitename'];
+                $list[]['data'] = check_plain($raw_domains['sitename']);
               }
             }
             if (!empty($list)) {
@@ -1990,11 +2008,13 @@ function domain_form_devel_generate_content_form_alter(&$form, &$form_state) {
  */
 function domain_grant_all($reset= FALSE) {
   static $grant;
+  $options = array();
   if (!isset($grant) || $reset) {
     $grant = FALSE;
 
     // Search is the easy case, so we check it first.
     if (variable_get('domain_search', 0) && arg(0) == 'search') {
+      $options['search'] = TRUE;
       $grant = TRUE;
     }
 
@@ -2004,9 +2024,11 @@ function domain_grant_all($reset= FALSE) {
       $ref = explode('/', request_uri());
       $script = array_pop($ref);
       if (variable_get('domain_cron_rule', 1) && $script == 'cron.php') {
+        $options['script'] = $script;
         $grant = TRUE;
       }
       else if (variable_get('domain_xmlrpc_rule', 0) && $script == 'xmlrpc.php') {
+        $options['script'] = $script;
         $grant = TRUE;
       }
     }
@@ -2014,6 +2036,7 @@ function domain_grant_all($reset= FALSE) {
     if (!$grant) {
       // We check the paths registered by the special pages setting.
       $pages = variable_get('domain_grant_all', "user/*/track");
+      $options['pages'] = $pages;
       $regexp = '/^('. preg_replace(array('/(\r\n?|\n)/', '/\\\\\*/', '/(^|\|)\\\\<front\\\\>($|\|)/'), array('|', '.*', '\1'. preg_quote(variable_get('site_frontpage', 'node'), '/') .'\2'), preg_quote($pages, '/')) .')$/';
       // Compare with the internal and path alias (if any).
       $page_match = preg_match($regexp, $_GET['q']);
@@ -2024,10 +2047,14 @@ function domain_grant_all($reset= FALSE) {
         }
       }
       if ($page_match) {
+        $options['page_match'] = TRUE;
         $grant = TRUE;
       }
     }
   }
+  // Allow other modules to change the defaults.
+  drupal_alter('domain_grant_all', $grant, $options);
+
   return $grant;
 }
 
@@ -2093,12 +2120,13 @@ function domain_resolve_host($name = '') {
  * The current (host) domain name as a String.
  */
 function domain_request_name() {
-  if (isset($_SERVER['HTTP_HOST'])) {
+  if (!empty($_SERVER['HTTP_HOST'])) {
     // We lower case this, since EXAMPLE.com == example.com.
     return strtolower(rtrim($_SERVER['HTTP_HOST']));
   }
   else {
-    return '';
+    $domain = domain_default();
+    return $domain['subdomain'];
   }
 }
 
@@ -2373,7 +2401,7 @@ function domain_batch_validate($values) {
           $error = domain_valid_domain($value);
           if (!empty($error)) {
             form_set_error('domain_batch]['. $key, $error);
-      }
+          }
         }
       }
       break;

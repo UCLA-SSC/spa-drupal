@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_views_handler_argument_domain_access_gid.inc,v 1.1 2009/04/23 21:42:20 agentken Exp $
+// $Id: domain_views_handler_argument_domain_access_gid.inc,v 1.1.2.1 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @file
@@ -37,6 +37,6 @@ class domain_views_handler_argument_domain_access_gid extends views_handler_argu
     foreach ($domains as $domain) {
       $domain_options[$domain['domain_id']] = $domain['sitename'];
     }
-    return isset($domain_options[$domain_id]) ? $domain_options[$domain_id] : t('Unknown domain');
+    return isset($domain_options[$domain_id]) ? check_plain($domain_options[$domain_id]) : t('Unknown domain');
   }
 }

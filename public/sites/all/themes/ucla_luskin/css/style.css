@@ -1988,7 +1988,7 @@ body.mceContentBody {
 	vertical-align: top;
 	width: 138px;
 }
-.page-faculty-index .views-exposed-widgets {
+/*.page-faculty-index .views-exposed-widgets {
 	width: 148px;
 	overflow: hidden;
 }
@@ -1997,7 +1997,7 @@ body.mceContentBody {
 	height: 18px;
 	overflow: hidden;
 	width: 128px;
-}
+}*/
 
 .view-id-glossary.view-display-id-panel_pane_2 {
 	padding-top:30px;
@@ -2044,4 +2044,9 @@ body.mceContentBody {
 	  border:0;
 	  margin-left:21px;
 	  padding-left:8px;
+}
+
+
+.page-private-events h2.main-title {
+	display:block;
 }

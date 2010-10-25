@@ -1,5 +1,5 @@
 <?php
-// $Id: domain.admin.inc,v 1.41.2.9 2010/05/16 16:10:47 agentken Exp $
+// $Id: domain.admin.inc,v 1.41.2.12 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @file
@@ -95,7 +95,7 @@ function domain_view() {
     $rows[] = $row;
   }
   if (!empty($rows)) {
-    $output .= theme_table($header, $rows);
+    $output .= theme_table($header, $rows, array('id' => 'domain-list'));
     $output .= theme('pager', NULL, variable_get('domain_list_size', DOMAIN_LIST_SIZE), 0);
     return $output;
   }
@@ -382,8 +382,12 @@ function domain_configure_form_submit($form, &$form_state) {
     return;
   }
   $subdomain = $form_state['values']['domain_root'];
-  db_query("UPDATE {domain} SET subdomain = '%s', sitename = '%s', scheme = '%s', valid = 1 WHERE domain_id = 0", $form_state['values']['domain_root'], $form_state['values']['domain_sitename'], $form_state['values']['domain_scheme']);
-  if (!db_affected_rows()) {
+  // Insert query or update query?
+  $count = db_result(db_query("SELECT COUNT(domain_id) FROM {domain} WHERE domain_id = 0"));
+  if ($count > 0) {
+    db_query("UPDATE {domain} SET subdomain = '%s', sitename = '%s', scheme = '%s', valid = 1 WHERE domain_id = 0", $form_state['values']['domain_root'], $form_state['values']['domain_sitename'], $form_state['values']['domain_scheme']);
+  }
+  else {
     db_query("INSERT INTO {domain} (subdomain, sitename, scheme, valid) VALUES ('%s', '%s', '%s', %d)", $form_state['values']['domain_root'], $form_state['values']['domain_sitename'], $form_state['values']['domain_scheme'], 1);
     // MySQL won't let us insert row 0 into an autoincrement table.
     db_query("UPDATE {domain} SET domain_id = 0 WHERE subdomain = '%s'", $form_state['values']['domain_root']);
@@ -740,7 +744,12 @@ function domain_batch_list($batch) {
   }
   uasort($batch, 'domain_batch_sort');
   $group = '';
+  
   foreach ($batch as $key => $value) {
+    $permission = isset($value['#permission']) ? $value['#permission'] : 'administer domains';
+    if (!user_access($permission)) {
+      continue;
+    }
     if ($group != $value['#module']) {
       $rows[] = array(array('data' => '<strong>'. t('%module options', array('%module' => $value['#module'])) .'</strong>', 'colspan' => 2));
       $group = $value['#module'];
@@ -850,7 +859,7 @@ function domain_batch_form($form_state, $action, $batch, $domains) {
     // Take the settings from the $batch array.
     $form['domain_batch'][$domain['domain_id']] = $batch['#form'];
     // Add the domain-specific elements.
-    $form['domain_batch'][$domain['domain_id']]['#sitename'] = $domain['sitename'];
+    $form['domain_batch'][$domain['domain_id']]['#sitename'] = check_plain($domain['sitename']);
     if (isset($default[$domain['domain_id']])) {
       $form['domain_batch'][$domain['domain_id']]['#default_value'] = $default[$domain['domain_id']];
     }

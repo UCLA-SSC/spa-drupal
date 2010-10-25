@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_source.module,v 1.18.2.3 2010/05/16 16:08:54 agentken Exp $
+// $Id: domain_source.module,v 1.18.2.4 2010/08/25 15:04:47 agentken Exp $
 
 /**
  * @defgroup domain_source Domain Source: editor-defined links.
@@ -260,7 +260,7 @@ function domain_source_lookup($nid, $domains = array(), $domain_site = FALSE) {
     $domain_site = $lookup['domain_site'];
     $domains = $lookup['domain_id'];
   }
-  if (empty($domain_site) && !in_array($source, $domains)) {
+  if (empty($domain_site) && !in_array($source, $domains) && !empty($domains)) {
     $source = current($domains);
   }
   $domain_id = ($source == -1) ? 0 : $source;

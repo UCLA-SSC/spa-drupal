@@ -1,4 +1,63 @@
-// $Id: CHANGELOG.txt,v 1.257.2.60 2010/05/16 16:10:47 agentken Exp $
+// $Id: CHANGELOG.txt,v 1.257.2.79 2010/09/28 14:12:13 agentken Exp $
+
+28-SEP-2010
+
+-- Patch #924610 by mrfelton. Fixes typo in Domain Conf.
+-- #920292 by Jorkkeri. Fixes missing variable in user form.
+-- #912990 by bleen18. Only set form action when one is present.
+-- Creates the 6.x.2.7 release.
+
+22-SEP-2010
+
+-- Creates the 6.x.2.6 release.
+
+31-AUG-2010
+
+-- #632950 by zserno. Fixes $db_prefix when used as an array in Domain Prefix.
+
+30-AUG-2010
+
+-- #895284 by mac_perlinksi. Fixes bad variable from #873706.
+
+25-AUG-2010
+
+-- #884756 by nonsie. Fix watchdog label.
+-- #873706 by Jasu_M. Domain settings must filter checkbox values.
+-- #227947 by yhager and bleen18 (and others). Fix redirect to primary domain issue.
+
+24-AUG-2010
+
+-- #848856 by jastern. Ensure that emoty HTTP_HOST value does not crash DA.
+
+23-AUG-2010
+
+-- #883180 by morningtime and zerno. Domain Prefix does not properly reset when switching domains.
+
+01-AUG-2010
+
+-- #864128 by OnkelTem and brt. Duplicate entry of default domain.
+-- #842338 by johnpitcairn. Allow other modules to alter domain_grant_all().
+
+01-JUL-2010
+
+-- #840220 by dougp. Pass full form values to hook_domain_settings().
+
+26-JUN-2010
+
+-- patch #754092 by mathiaz.sk. Bad variable reset in Domain Prefix.
+
+25-JUN-2010
+
+-- patch #835208 by dougp. Fixes type check on zero values for Domain Conf.
+
+19-JUN-2010
+
+-- patch #820062 by threeps, obstikle, whatmiami. Load custom_url handler in domain_boot()
+    to prevent possible conflicts with other modules.
+
+20-MAY-2010
+
+-- patch #803700 by Michelle. Adds a div id to the domain list table, for theming.
 
 16-MAY-2010
 

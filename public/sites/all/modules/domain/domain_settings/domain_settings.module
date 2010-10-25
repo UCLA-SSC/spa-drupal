@@ -1,6 +1,6 @@
 <?php
 
-// $Id: domain_settings.module,v 1.1.2.10 2010/04/29 21:31:23 agentken Exp $
+// $Id: domain_settings.module,v 1.1.2.13 2010/08/30 18:23:36 agentken Exp $
 
 /**
  * @defgroup domain_settings Domain Settings : expanded site configuration options for Domain Access
@@ -120,6 +120,10 @@ function domain_settings_form_submit($form, &$form_state) {
   }
   // -1 is the primary domain.
   foreach ($values as $name => $value) {
+    // Handle checkboxes when array_filter is set. (Do not return empty checkboxes at all.)
+    if (is_array($value) && isset($form_state['values']['array_filter'])) {
+      $value = array_keys(array_filter($value));
+    }
     if ($domain_id == -1 || $domain_id == -5) {
       if ($reset) {
         variable_del($name);
@@ -156,7 +160,7 @@ function domain_settings_form_submit($form, &$form_state) {
       }
     }
   }
-  module_invoke_all('domain_settings', $domain_id, $values);
+  module_invoke_all('domain_settings', $domain_id, $form_state['values']);
   cache_clear_all();
 }
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: content_complete.views.inc,v 1.1.2.6 2010/01/22 13:30:13 pvhee Exp $
+// $Id: content_complete.views.inc,v 1.1.2.7 2010/10/08 13:55:11 pvhee Exp $
 
 /**
  *  @file
@@ -37,7 +37,18 @@ function content_complete_views_data() {
       'handler' => 'views_handler_sort',
     ),
   );
-  
+
+  $data['content_complete']['completed'] = array(
+    'title' => t('Completed'),
+    'help' => t('Filter to view whether or not a node is 100% completed.'),
+    'filter' => array(
+      'real field' => 'completeness',
+      'title' => t('Completed'),
+      'handler' => 'content_complete_views_handler_filter_complete_nodes',
+      'type' => 'yes-no',
+    ),
+  );
+
   $data['content_complete']['data'] = array(
     'title' => t('Completeness Data'),
     'help' => t('The completeness data of the node.'),
@@ -80,7 +91,9 @@ function content_complete_views_handlers() {
       'content_complete_views_handler_filter_content_type' => array(
         'parent' => 'views_handler_filter_boolean_operator',
       ),
-      
+      'content_complete_views_handler_filter_complete_nodes' => array(
+        'parent' => 'views_handler_filter_boolean_operator',
+      ),
     ),
   );
 }

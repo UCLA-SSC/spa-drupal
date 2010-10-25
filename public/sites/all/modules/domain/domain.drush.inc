@@ -1,6 +1,6 @@
 <?php
 
-// $Id: domain.drush.inc,v 1.1.2.2 2010/03/01 03:00:09 agentken Exp $
+// $Id: domain.drush.inc,v 1.1.2.3 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @file
@@ -47,7 +47,7 @@ function drush_domain_list() {
   foreach ($domains as $domain) {
     $row = array();
     foreach ($header as $key => $name) {
-      $row[] = $domain[$key];
+      $row[] = check_plain($domain[$key]);
     }
     $rows[] = $row;
   }

@@ -2052,3 +2052,8 @@ body.mceContentBody {
 	  margin-left:21px;
 	  padding-left:8px;
 }
+
+
+.page-private-events h2.main-title {
+	display:block;
+}

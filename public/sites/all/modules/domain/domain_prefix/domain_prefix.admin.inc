@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_prefix.admin.inc,v 1.9.2.2 2010/03/10 18:24:26 agentken Exp $
+// $Id: domain_prefix.admin.inc,v 1.9.2.3 2010/06/26 14:34:54 agentken Exp $
 
 /**
  * @file
@@ -408,8 +408,8 @@ function domain_prefix_form_submit($form, &$form_state) {
         if ($value == DOMAIN_PREFIX_CREATE) {
           if (!$exists) {
             // TODO: Make this a nice update function with a progress bar.
-            $data = db_create_table_sql($newtable, $table_schema);
-            db_query($data[0]);
+            $data_table = db_create_table_sql($newtable, $table_schema);
+            db_query($data_table[0]);
             if ($msg) {
               drupal_set_message(t('!string table created.', array('!string' => $newtable)));
             }
@@ -422,8 +422,8 @@ function domain_prefix_form_submit($form, &$form_state) {
         else if ($value == DOMAIN_PREFIX_COPY) {
           if (!$exists) {
             // TODO: Make this a nice update function with a progress bar.
-            $data = db_create_table_sql($newtable, $table_schema);
-            db_query($data[0]);
+            $data_table = db_create_table_sql($newtable, $table_schema);
+            db_query($data_table[0]);
             domain_prefix_insert_data($table_schema, $newtable, $sourcetable);
             if ($msg) {
               drupal_set_message(t('!string table copied.', array('!string' => $newtable)));

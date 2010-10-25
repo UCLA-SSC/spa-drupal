@@ -451,20 +451,8 @@ function userreference_widget(&$form, &$form_state, $field, $items, $delta = 0) 
 function userreference_autocomplete_value($element, $edit = FALSE) {
   $field_key  = $element['#columns'][0];
   if (!empty($element['#default_value'][$field_key])) {
-    $values = array();
-    $uids = array();
-    if (!empty($element['#views'])) {
-      $uids = $element['#default_value'][$field_key];
-    }
-    else {
-      $uids = array($element['#default_value'][$field_key]);
-    }
-
-    $result = db_query('SELECT name FROM {users} n WHERE n.uid IN ('. db_placeholders($uids) .')', $uids);
-    while ($data = db_fetch_object($result)) {
-      $values[] = $data->name;
-    }
-    return array($field_key => implode(', ', $values));
+    $value = db_result(db_query("SELECT name FROM {users} WHERE uid = '%d'", $element['#default_value'][$field_key]));
+    return array($field_key => $value);
   }
   return array($field_key => NULL);
 }
@@ -548,15 +536,11 @@ function userreference_autocomplete_process($element, $edit, $form_state, $form)
   // path and some extra processing to it.
   // Add a validation step where the value can be unwrapped.
   $field_key  = $element['#columns'][0];
-  $field_name = $element['#field_name'];
-  if (!empty($element['#views']) && empty($element['#views_single'])) {
-    $field_name = 'views_'. $field_name;
-  }
 
   $element[$field_key] = array(
     '#type' => 'text_textfield',
     '#default_value' => isset($element['#value']) ? $element['#value'] : '',
-    '#autocomplete_path' => 'userreference/autocomplete/'. $field_name,
+    '#autocomplete_path' => 'userreference/autocomplete/'. $element['#field_name'],
     // The following values were set by the content module and need
     // to be passed down to the nested element.
     '#title' => $element['#title'],
@@ -566,7 +550,6 @@ function userreference_autocomplete_process($element, $edit, $form_state, $form)
     '#type_name' => $element['#type_name'],
     '#delta' => $element['#delta'],
     '#columns' => $element['#columns'],
-    '#views' => $element['#views'],
   );
   if (empty($element[$field_key]['#element_validate'])) {
     $element[$field_key]['#element_validate'] = array();
@@ -625,30 +608,16 @@ function userreference_autocomplete_validate($element, &$form_state) {
   $field_key = $element['#columns'][0];
   $value = $element['#value'][$field_key];
   $uid = NULL;
-  $uids = array();
   if (!empty($value)) {
-    if (!empty($element['#views'])) {
-      $value = drupal_explode_tags($value);
+    $reference = _userreference_potential_references($field, $value, 'equals', NULL, 1);
+    if (empty($reference)) {
+      form_error($element[$field_key], t('%name: found no valid user with that name.', array('%name' => t($field['widget']['label']))));
     }
     else {
-      $value = array($value);
-    }
-
-    foreach ($value as $v) {
-      $uid = NULL;
-      $reference = _userreference_potential_references($field, $v, 'equals', NULL, 1);
-      if (empty($reference)) {
-        form_error($element[$field_key], t('%name: found no valid user with that name.', array('%name' => t($field['widget']['label']))));
-      }
-      else {
-        $uid = key($reference);
-      }
-      if (!empty($uid)) {
-        $uids[] = $uid;
-      }
+      $uid = key($reference);
     }
   }
-  form_set_value($element, (empty($element['#views']) ? $uid : $uids), $form_state);
+  form_set_value($element, $uid, $form_state);
 }
 
 /**
@@ -859,16 +828,6 @@ function _userreference_potential_references_standard($field, $string = '', $mat
  */
 function userreference_autocomplete($field_name, $string = '') {
   $fields = content_fields();
-  $prefix = '';
-
-  // Check for a views field.
-  if (0 === substr_compare($field_name, 'views_', 0, 6)) {
-    $field_name = str_replace('views_', '', $field_name);
-    $array = drupal_explode_tags($string);
-    $string = trim(array_pop($array));
-    $prefix = count($array) ? implode(', ', $array) .', ' : '';
-  }
-
   $field = $fields[$field_name];
   $match = isset($field['widget']['autocomplete_match']) ? $field['widget']['autocomplete_match'] : 'contains';
   $matches = array();
@@ -876,7 +835,7 @@ function userreference_autocomplete($field_name, $string = '') {
   $references = _userreference_potential_references($field, $string, $match, array(), 10);
   foreach ($references as $id => $row) {
     // Add a class wrapper for a few required CSS overrides.
-    $matches[$prefix . $row['title']] = '<div class="reference-autocomplete">'. $row['rendered'] . '</div>';
+    $matches[$row['title']] = '<div class="reference-autocomplete">'. $row['rendered'] . '</div>';
   }
   drupal_json($matches);
 }

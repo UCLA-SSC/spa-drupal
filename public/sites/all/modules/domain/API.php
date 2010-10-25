@@ -1,5 +1,5 @@
 <?php
-// $Id: API.php,v 1.51.2.6 2010/05/16 16:10:47 agentken Exp $
+// $Id: API.php,v 1.51.2.9 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @defgroup domain_hooks Domain hook functions
@@ -318,6 +318,9 @@ function hook_domainform(&$form) {
  *  Allows a warning message to be printed when entering specific forms that
  *  may have values that vary on each domain.
  *
+ * NOTE: The responding module is required to check that the user has access to this form
+ * setting. Failure to check access on the form elements may introduce a security risk.
+ *
  * @return
  *   An associative array where the keys form_id values representing forms
  *   that require warnings. The value should return a link for where the
@@ -474,6 +477,9 @@ function hook_domainconf() {
  * --- 'domain_delete' == used to delete rows from specific tables.  If this is used, the #table value must be present.
  * --- 'custom' == used if you need your own submit handler. Must be paired with a #submit parameter.
  *
+ * - '#permission' [optional] A string identifying the permission required to access this setting.
+ *    If not provided, defaults to 'administer domains'.
+ *
  * - '#submit' [optional] Used with the 'custom' #domain_action to define a custom submit handler for the form.  This value
  * should be a valid function name.  It will be passed the $form_values array for processing.
  *
@@ -526,6 +532,7 @@ function hook_domainbatch() {
       '#description' => t('A description for the form'),
       '#required' => TRUE,
     ),
+    '#permission' => 'administer domains',
     '#domain_action' => 'domain_conf',
     '#meta_description' => t('Edit my setting value.'),
     '#variable' => 'domain_mysetting',
@@ -773,7 +780,7 @@ function hook_domain_warnings_alter(&$forms) {
  *   The domain the variable is being saved for. This is not always
  *   the current domain.
  * @param $values
- *   The variable values being changed, an array in the format $name => $value.
+ *   The form values being submitted, an array in the format $name => $value.
  *  @return
  *   No return required.
  */
@@ -812,5 +819,50 @@ function hook_domain_validate_alter(&$error_list, $subdomain) {
   // Only allow TLDs to be .org for our site.
   if (substr($subdomain, -4) != '.org') {
     $error_list[] = t('Only .org domains may be registered.');
+  }
+}
+
+/**
+ * Allow modules to change the status of the 'domain_all' grant.
+ *
+ * hook_domain_grant_all_alter() fires _after_ Domain Access has
+ * determined if a page should ignore Domain Access rules or not. It
+ * can be used to extend the core functionality. For a use-case see the
+ * discussion about autocomplete callbacks.
+ *
+ * @link http://drupal.org/node/842338
+ *
+ * Note that granting access may introduce security issues,
+ * so module authors need to be very aware of the conditions that should
+ * trigger a TRUE response.
+ *
+ * Also note that the status of this function cannot be changed _during_ a
+ * page load. Drupal's Node Access system only allows these permissions
+ * to be set once per callback.
+ *
+ * @param $grant
+ *   A boolean value. FALSE indicates that Domain Access rules should
+ *   be enforced. TRUE indicates to ignore Domain Access.
+ * @param $options
+ *   An array of optional information gathered by domain_grant_all(). This
+ *   keyed array may contain the following values:
+ *    'script' == The name of invoking script if the page is called by cron.php
+ *      or xmlrpc.php instead of Drupal's standard index.php. Presence indicates
+ *      that the function returned TRUE.
+ *    'search' == Indicates that we are on a search page and searching across
+ *      all domains has been enabled.
+ *    'pages' == The matching pattern list for page-specific access.
+ *    'page_match' == Indicates that one of the page-specific matches returned
+ *      TRUE.
+ * @return
+ *   No return value. Alter $grant by reference.
+ *
+ * @see domain_grant_all()
+ */
+function hook_domain_grant_all_alter(&$grant, $options) {
+  // Always show all nodes on admin pages.
+  $base_path = arg(0);
+  if ($base_path == 'admin') {
+    $grant = TRUE;
   }
 }

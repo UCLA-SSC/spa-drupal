@@ -1,5 +1,5 @@
 <?php
-// $Id: content_complete.module,v 1.1.2.41 2010/05/16 14:25:44 pvhee Exp $
+// $Id: content_complete.module,v 1.1.2.43 2010/10/08 14:09:28 pvhee Exp $
 
 /**
  * @file
@@ -317,7 +317,7 @@ function content_complete_get_data(&$node, $recalculate = FALSE) {
     $data['completed'] = $complete;
     $data['incomplete'] = $incomplete;
     $data['total'] = $total;
-    $data['nextfield'] = t($nextfield);
+    $data['nextfield'] = $nextfield;
     $data['nextpercent'] = $nextpercent;
     $data['nextname'] = $nextname;
     $data['type'] = $node->type;
@@ -519,26 +519,30 @@ function content_complete_get_fields($content_type) {
    * If a field has the 'view' parameter set we need to add that one instead of the key
    * of the array (for example, it is 'body' instead of 'body_field')
    */
-  foreach ($type['extra'] as $code => $data) {
-    if (! in_array($code, $ignore)) {
-      if (isset($data['view'])) {
-        $key = $data['view'];
-      } 
-      else {
-        $key = $code;
+  if (isset($type['extra'])) {
+    foreach ($type['extra'] as $code => $data) {
+      if (! in_array($code, $ignore)) {
+        if (isset($data['view'])) {
+          $key = $data['view'];
+        } 
+        else {
+          $key = $code;
+        }
+        $fields[$key] = $data;
       }
-      $fields[$key] = $data;
     }
   }
   
   /**
    * Add custom CCK fields
    */
-  foreach ($type['fields'] as $code => $data) {
-    if (! in_array($code, $ignore)) {
-      $label = (isset($data['widget']['label'])) ? $data['widget']['label'] : $code;
-      $data['label'] = $label;
-      $fields[$code] = $data;
+  if (isset($type['fields'])) {
+    foreach ($type['fields'] as $code => $data) {
+      if (! in_array($code, $ignore)) {
+        $label = (isset($data['widget']['label'])) ? $data['widget']['label'] : $code;
+        $data['label'] = $label;
+        $fields[$code] = $data;
+      }
     }
   }
   

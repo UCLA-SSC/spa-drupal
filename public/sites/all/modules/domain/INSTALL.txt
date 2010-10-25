@@ -1,4 +1,4 @@
-// $Id: INSTALL.txt,v 1.26.2.2 2010/05/04 13:58:41 agentken Exp $
+// $Id: INSTALL.txt,v 1.26.2.3 2010/08/31 21:35:49 agentken Exp $
 
 /**
  * @file
@@ -291,8 +291,8 @@ in the event that you run more than one site from a single database.
 $db_prefix can be used normally with Domain Access.
 
 However, the Domain Prefix module provides for dynamic table prefixing
-based on the currently active domain.  If you use the Domain Prefix module
-you can only set $db_prefix as a string value, not an array.
+based on the currently active domain. If you use the Domain Prefix module
+you can set $db_prefix as a string value as well as an array.
 
 For more detail, see INSTALL.txt in the domain_prefix folder.
 

@@ -1,5 +1,5 @@
 <?php
-// $Id: domain_views_handler_filter_domain_domain_id.inc,v 1.3 2009/05/01 19:51:16 agentken Exp $
+// $Id: domain_views_handler_filter_domain_domain_id.inc,v 1.3.2.1 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @file
@@ -18,7 +18,7 @@ class domain_views_handler_filter_domain_domain_id extends views_handler_filter_
       $domain_options = array('***CURRENT_DOMAIN***' => t('Current Domain'));
       $domains = domain_domains();
       foreach ($domains as $domain) {
-        $domain_options[$domain['domain_id']] = $domain['sitename'];
+        $domain_options[$domain['domain_id']] = check_plain($domain['sitename']);
         }
       $this->value_options = $domain_options;
     }
