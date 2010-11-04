@@ -41,7 +41,7 @@ if (!$is_front ) {
 ?>
     <div id="logo">
       <a class="logo-top" href="<?php print url();?>"><img src="<?php print $logo?>"/></a>
-      <a class="logo-black" href="http://publicaffairs.ucla.edu/"><img src="<?php print path_to_theme(); ?>/images/black-uclaspa-logo.png"/></a>
+      <a class="logo-black" href="http://publicaffairs.ucla.edu/"><img src="/<?php print path_to_theme(); ?>/images/black-uclaspa-logo.png"/></a>
     </div>
     <div id="ucla-logo">
       <a href="http://publicaffairs.ucla.edu"><img src="/<?php print path_to_theme() ?>/images/ucla-white.png"/></a>
