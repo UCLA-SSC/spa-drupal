@@ -1,0 +1,317 @@
+<?php
+// $Id: icalreferencefield.module,v 1.1 2010/09/21 22:20:34 crell Exp $
+
+/**
+ * @file
+ * Defines an iCal reference field type.
+ */
+
+/**
+ * Implementation of hook_theme().
+ */
+function icalreferencefield_theme() {
+  return array(
+    'icalreferencefield_formatter_default' => array(
+      'arguments' => array('element' => NULL),
+    ),
+    'icalreference_text' => array(
+      'arguments' => array('element' => NULL),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_inheritedformatter_reference_field_types_info().
+ */
+function icalreferencefield_inheritedformatter_reference_field_types_info() {
+  return array(
+    'icalreference' => array(
+      'nid_callback' => 'inheritedformatter_nid_callback_simple',
+    ),
+  );
+}
+
+function icalreferencefield_uuid_nid_lookup($field) {
+
+}
+
+///// Field related hooks and callbacks. /////
+
+/**
+ * Implementation of hook_field_info().
+ */
+function icalreferencefield_field_info() {
+  return array(
+    'icalreference' => array(
+      'label' => t('iCal reference'),
+      'description' => t('Reference an iCal rule in another node.'),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_field_settings().
+ */
+function icalreferencefield_field_settings($op, $field) {
+  if ($field['type'] == 'icalreference') {
+    switch ($op) {
+      case 'form':
+        $form = array();
+
+        $form['referenceable_types'] = array(
+          '#type' => 'checkboxes',
+          '#title' => t('Content types that can be referenced'),
+          '#multiple' => TRUE,
+          '#default_value' => is_array($field['referenceable_types']) ? $field['referenceable_types'] : array(),
+          '#options' => array_map('check_plain', node_get_types('names')),
+        );
+        return $form;
+
+      case 'save':
+        return array();
+
+      case 'database columns':
+        $columns['nid'] = array(
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'index' => TRUE,
+          'views' => TRUE, // CCK-specific hack to make this the "real" column that Views uses.  I think.
+        );
+        // The name of the field in the referenced node where the ical record lives.
+        $columns['field'] = array(
+          'type' => 'text',
+          'size' => 'small',
+          'not null' => TRUE,
+        );
+        // The ID of the property in the referenced field that holds the rule.
+        $columns['property_id'] = array(
+          'type' => 'text',
+          'size' => 'small',
+          'not null' => TRUE,
+        );
+        return $columns;
+
+      // The following is copied near verbatim from nodereference.module,
+      // since we want to be ablet o just use this field like a nodereference.
+      // @TODO add interesting things to do with the other fields, when we
+      // figure out what that is.
+      case 'views data':
+        $data = content_views_field_views_data($field);
+        $db_info = content_database_info($field);
+        $table_alias = content_views_tablename($field);
+
+        // Filter: swap the handler to the 'in' operator.
+        $data[$table_alias][$field['field_name'] .'_nid']['filter']['handler'] = 'content_handler_filter_many_to_one';
+        // Argument: use node.title for summaries.
+        $data["node_$table_alias"]['table']['join']['node'] = array(
+          'table' => 'node',
+          'field' => 'nid',
+          'left_table' => $table_alias,
+          'left_field' => $field['field_name'] .'_nid',
+        );
+        $data[$table_alias][$field['field_name'] .'_nid']['argument']['handler'] = 'content_handler_argument_reference';
+        $data[$table_alias][$field['field_name'] .'_nid']['argument']['name table'] = "node_$table_alias";
+        $data[$table_alias][$field['field_name'] .'_nid']['argument']['name field'] = 'title';
+        // Relationship: add a relationship for related node.
+        $data[$table_alias][$field['field_name'] .'_nid']['relationship'] = array(
+          'base' => 'node',
+          'field' => $db_info['columns']['nid']['column'],
+          'handler' => 'content_handler_relationship',
+          'label' => t($field['widget']['label']),
+          'content_field_name' => $field['field_name'],
+        );
+        return $data;
+      }
+  }
+}
+
+/**
+ * Implementation of hook_field().
+ */
+function icalreferencefield_field($op, &$node, $field, &$items, $teaser, $page) {
+  if ($field['type'] == 'icalreference') {
+    static $sanitized_nodes = array();
+    switch ($op) {
+      case 'validate':
+        // @todo: Confirm that the nid exists, and that node type has a field by that name.
+
+        break;
+      case 'sanitize':
+        // Extract nids to check.
+        $ids = array();
+        foreach ($items as $delta => $item) {
+          if (is_array($item)) {
+            // Default to 'non accessible'.
+            $items[$delta]['safe'] = array();
+            if (!empty($item['nid']) && is_numeric($item['nid'])) {
+              $ids[] = $item['nid'];
+            }
+          }
+        }
+        if ($ids) {
+          // Load information about nids that we haven't already loaded during
+          // this page request.
+          $missing_ids = array_diff($ids, array_keys($sanitized_nodes));
+          if (!empty($missing_ids)) {
+            $where = array('n.nid in ('. db_placeholders($missing_ids) . ')');
+            if (!user_access('administer nodes')) {
+              $where[] = 'n.status = 1';
+            }
+            $result = db_query(db_rewrite_sql('SELECT n.nid, n.title, n.status FROM {node} n WHERE '. implode(' AND ', $where)), $missing_ids);
+            while ($row = db_fetch_array($result)) {
+              $sanitized_nodes[$row['nid']] = $row;
+            }
+          }
+          foreach ($items as $delta => $item) {
+            if (is_array($item) && !empty($item['nid']) && isset($sanitized_nodes[$item['nid']])) {
+              $items[$delta]['safe'] = $sanitized_nodes[$item['nid']];
+            }
+          }
+        }
+        return $items;
+        break;
+    }
+  }
+}
+
+/**
+ * Implementation of hook_content_is_empty().
+ */
+function icalreferencefield_content_is_empty($item, $field) {
+  if ($field['type'] == 'icalreferencefield') {
+    if (empty($item['nid']) || empty($item['field']) || empty($item['property_id'])) {
+      return TRUE;
+    }
+    return FALSE;
+  }
+}
+
+///// Formatter related hooks and callbacks. /////
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function icalreferencefield_field_formatter_info() {
+  return array(
+    'default' => array(
+      'label' => t('Default'),
+      'field types' => array('icalreference'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+  );
+}
+
+/**
+ * Simple formatter for iCal fields.
+ *
+ * @ingroup themeable
+ */
+function theme_icalreferencefield_formatter_default($element) {
+  $output = '';
+  if (!empty($element['#item']['safe']['nid'])) {
+    $output = l($element['#item']['safe']['title'], 'node/'. $element['#item']['safe']['nid']);
+    if (!$element['#item']['safe']['status']) {
+      $output = '<span class="node-unpublished"> '. t('(Unpublished)') ." $output</span>";
+    }
+  }
+  return $output;
+}
+
+///// Widget related hooks and callbacks. /////
+
+/**
+* Implementation of hook_widget_info().
+*/
+function icalreferencefield_widget_info() {
+  return array(
+    'icalreference_text' => array(
+      'label' => 'Text fields (manual)',
+      'field types' => array('icalreference'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+      'callbacks' => array(
+        'default value' => CONTENT_CALLBACK_DEFAULT,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_widget().
+ */
+function icalreferencefield_widget(&$form, &$form_state, $field, $items, $delta = 0) {
+  switch ($field['widget']['type']) {
+    case 'icalreference_text':
+      $element = array(
+        '#type' => 'icalreference_text',
+        '#default_value' => $items,
+      );
+      break;
+  }
+
+  return $element;
+}
+
+/**
+ * Implementation of FAPI hook_elements().
+ */
+function icalreferencefield_elements() {
+  return array(
+    'icalreference_text' => array(
+      '#input' => TRUE,
+      '#columns' => array(
+        'nid',
+        'field',
+        'property_id',
+      ),
+      '#delta' => 0,
+      '#process' => array('icalreference_text_process'),
+    ),
+  );
+}
+
+/**
+ * Process callback for the ical_text widget element type.
+ */
+function icalreference_text_process($element, $edit, $form_state, $form) {
+  $field = $form['#field_info'][$element['#field_name']];
+  $delta = $element['#delta'];
+  $required = ($delta == 0 && $field['required'] == TRUE);
+  // fapi metadata that is common to and must (?) be appended to all fields
+  $common = array(
+    '#delta' => $delta,
+    '#field_name' => $element['#field_name'],
+    '#type_name' => $element['#type_name'],
+    '#columns' => $element['#columns'],
+  );
+
+  $element['nid'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Node'),
+    '#default_value' => isset($element['#value'][$delta]['nid']) ? $element['#value'][$delta]['nid'] : NULL,
+  ) + $common;
+  $element['field'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Field'),
+    '#default_value' => isset($element['#value'][$delta]['field']) ? $element['#value'][$delta]['field'] : NULL,
+  ) + $common;
+  $element['property_id'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Property'),
+    '#default_value' => isset($element['#value'][$delta]['property_id']) ? $element['#value'][$delta]['property_id'] : NULL,
+  ) + $common;
+
+  return $element;
+}
+
+/**
+ * Theme function for the ical_text widget element.
+ *
+ * @ingroup themeable
+ */
+function theme_icalreference_text($element) {
+  $output = $element['#children'];
+  $output = theme('form_element', $element, $element['#children']);
+  return $output;
+}
+

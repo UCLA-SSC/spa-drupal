@@ -1,0 +1,135 @@
+<?php
+// $Id: icalstatus.module,v 1.1 2010/09/21 22:20:34 crell Exp $
+
+/**
+ * @file
+ *
+ * @copyright (C) Copyright 2010 Palantir.net
+ * @license http://www.gnu.org/licenses/gpl-2.0.html
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/**
+ * The ical status widget provides the ical spec status for instance nodes.
+ * There are only 3 optional values (if only Drupal supported enums) for
+ * vevents, which is all this widget supports. The possible options are:
+ * - TENTATIVE
+ * - CONFIRMED
+ * - CANCELLED
+ *
+ * There can, also, be no value meaning the value is left blank and not
+ * displayed. For more detail see the spec.
+ * @link http://www.kanzaki.com/docs/ical/status.html
+ *
+ * The widget and the formatter are based around the text field.
+ */
+
+/**
+ * Implementation of hook_widget_info().
+ */
+function icalstatus_widget_info() {
+  return array(
+    'icalstatus' => array(
+      'label' => t('iCal Status'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+      'callbacks' => array(
+        'default value' => CONTENT_CALLBACK_DEFAULT,
+      ),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_widget().
+ *
+ * This lets optionwidgets handle the actual widget form elements.
+ */
+function icalstatus_widget(&$form, &$form_state, $field, $items, $delta = NULL) {
+
+  $element['value'] = array(
+    '#title' => t('Status'),
+    '#type' => 'select',
+    '#options' => icalstatus_options(),
+    '#default_value' => isset($items[$delta]) ? $items[$delta] : '',
+    '#required' => $field['required'],
+    '#field_name' => $field['field_name'],
+    '#type_name' => $field['type_name'],
+    '#delta' => $delta,
+    '#columns' => $field['columns'],
+  );
+
+  return $element;
+}
+
+/**
+ * The formatter functions for the ical status. The field for the status is a
+ * text field making the formatter work for that but it should only be used
+ * for ical status.
+ */
+
+/**
+ * Implementation of hook_field_formatter_info().
+ */
+function icalstatus_field_formatter_info() {
+  return array(
+    'icalstatus' => array(
+      'label' => t('iCal Status'),
+      'field types' => array('text'),
+      'multiple values' => CONTENT_HANDLE_CORE,
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function icalstatus_theme() {
+  return array(
+    'icalstatus_formatter_icalstatus' => array(
+      'arguments' => array('element' => NULL),
+    ),
+  );
+}
+
+/**
+ * A simple formatter for ical status.
+ *
+ * @ingroup themeable
+ */
+function theme_icalstatus_formatter_icalstatus($element) {
+  $options = icalstatus_options();
+  $option = $options[$element['#item']['value']];
+  return $option;
+}
+
+/**
+ * Helper function; the possible options for the ical status.
+ *
+ * For more detail on the possible options for the vevent status see:
+ * @link http://www.kanzaki.com/docs/ical/status.html
+ *
+ * @return array
+ *   An array of the possible options for the ical status with the key as the
+ *   name and the value as the name in a translation safe manner.
+ */
+function icalstatus_options() {
+  return array(
+    '' => '', // One of the options is to not choose an option.
+    'TENTATIVE' => t('Tentative'),
+    'CONFIRMED' => t('Confirmed'),
+    'CANCELLED' => t('Cancelled'),
+  );
+}

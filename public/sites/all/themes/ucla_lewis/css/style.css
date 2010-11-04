@@ -13,6 +13,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 body .container {
 	margin: 0 auto 0 auto;
+	position:relative;
 }
 a:link, a {
 	color: #fead23;
@@ -109,10 +110,15 @@ h2.pane-title, h2.pane-title a {
 }
 #logo {
 	float: left;
-	margin-left: 30px;
+	margin-left: 1px;
 	position: absolute;
-	top: 40px;
+	top: 1px;
+	width:200px;
 }
+#logo .logo-black {
+	clear:both;
+}
+
 #ucla-logo {
   display:none;
 	float: left;
@@ -1876,31 +1882,39 @@ body.mceContentBody {
 }
 .view-slideshow-lewis {
 	background: #585652;
+	height:300px;
 }
 #logo {
 	z-index: 100;
+}
+.view-slideshow-lewis .views_slideshow_singleframe_slide .views-row {
+	position:relative;
+	margin-bottom:0px;
 }
 .view-slideshow-lewis .views-field-field-slide-image-fid {
 	z-index: 3;
 	float: right;
 }
 .view-slideshow-lewis .views-field-title {
-	margin: -116px 0 0 30px;
+	margin: -35px 0 0 0px;
 	color: #fff;
-	font-size: 22px;
+	font-size: 16px;
 	float: left;
 	z-index: 4;
 	padding: 5px 10px;
 	background: url(../images/transbg.png) repeat;
+	display:block;
 }
 
 .view-slideshow-lewis .views-field-field-link-url {
-	margin: -65px 0 0 30px;
+	margin: -35px 0 0 500px;
 	background: #FFD940;
 	color: #000;
-	padding: 5px;
+	padding: 5px 10px;
+	font-size:16px;
 	float: left;
 	z-index: 4;
+	display:block;
 }
 .view-slideshow-lewis .views-field-field-link-url a {
 	color: #000;
