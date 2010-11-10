@@ -72,7 +72,7 @@ a:visited {
 	width: 1006px;
 }
 .content-wrapper {
-	padding: 45px 35px;
+	padding: 15px 35px 45px 35px;
 	margin: 0px auto;
 	background: #fff;
 }
@@ -112,7 +112,7 @@ h2.main-title {
 h2.pane-title, h2.pane-title a {
 	font-size: 1.6em;
 	font-weight: normal;
-	color: #ccc;
+	color: #555;
 	text-decoration: none;
 }
 
@@ -1777,7 +1777,7 @@ body.mceContentBody {
 	clear: both;
 	width: 1006px;
 	background: #3399FF;
-	margin: -59px 0 10px -66px;
+	margin: -29px 0 10px -66px;
 }
 #luskin-home .panel-col-top .panel-region-separator {
 	display: none;
@@ -1879,7 +1879,7 @@ body.mceContentBody {
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-field-description {
 	font-size: 12px;
 	margin: 5px 15px 0 15px;
-	color: #9f9f9f;
+	color: #555;
 }
 .view-id-slideshow_luskin ul.views-showcase-mini-list .views-showcase-pager-item {
 	opacity: 1;
@@ -2002,7 +2002,7 @@ body.mceContentBody {
 .view-id-glossary.view-display-id-panel_pane_2 {
 	padding-top:30px;
 }
-
+/*
 .pane-constant-contact-0 {
 	 background:#f0f0f0;
 	 width:282px;
@@ -2044,7 +2044,7 @@ body.mceContentBody {
 	  border:0;
 	  margin-left:21px;
 	  padding-left:8px;
-}
+}*/
 
 
 .page-events-dashboard h2.main-title {

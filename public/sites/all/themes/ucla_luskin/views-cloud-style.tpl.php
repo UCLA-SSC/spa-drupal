@@ -22,6 +22,6 @@
 ?>
 <div class="views-cloud"<?php print $font_size ? ' style="font-size: ' . $font_size . 'em"' : '' ?>>
   <?php foreach ($rows as $row): ?>
-    <span class="views-cloud-size-<?php print $row->cloud_size; ?>"><?php $link=explode(',', $row->output);?><a href="/faculty-index?keys=&field_areas_of_interest_nid=<?php  print $link[0]; ?>"><?php print $link[1]; ?></a></span>
+    <span class="views-cloud-size-<?php print $row->cloud_size; ?>"><?php $link=explode(',', $row->output);?><a href="/faculty-index?keys=&field_areas_of_interest_nid[name][name]=<?php  print $link[1]; ?>"><?php print $link[1]; ?></a></span>
   <?php endforeach; ?>
 </div>
