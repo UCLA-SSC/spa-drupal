@@ -16,11 +16,11 @@ body .container {
 	position:relative;
 }
 a:link, a {
-	color: #fead23;
+	color: #b39624;
 	text-decoration: none;
 }
 a:visited {
-	color: #a86913;
+	color: #6c5c1c;
 }
 ul.primary {
 	border-bottom:0px;
@@ -1895,26 +1895,33 @@ body.mceContentBody {
 	z-index: 3;
 	float: right;
 }
+.view-slideshow-lewis .link-wrapper {
+   margin: -35px 0 0 0px;
+   float:left;
+   height:35px;
+}
 .view-slideshow-lewis .views-field-title {
-	margin: -35px 0 0 0px;
+	margin: 0;
 	color: #fff;
 	font-size: 16px;
-	float: left;
+	display:block;
+	float:left;
 	z-index: 4;
 	padding: 5px 10px;
 	background: url(../images/transbg.png) repeat;
-	display:block;
+	height:25px;
 }
 
 .view-slideshow-lewis .views-field-field-link-url {
-	margin: -35px 0 0 500px;
+	margin: 0;
 	background: #FFD940;
 	color: #000;
-	padding: 5px 10px;
-	font-size:16px;
-	float: left;
+	padding: 7px 10px;
+	font-size:12px;
+	float:left;
 	z-index: 4;
 	display:block;
+	height:21px;
 }
 .view-slideshow-lewis .views-field-field-link-url a {
 	color: #000;
