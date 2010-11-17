@@ -2050,3 +2050,7 @@ body.mceContentBody {
 .page-events-dashboard h2.main-title {
 	display:block;
 }
+
+.newsletter-wrapper {
+  margin:15px 0 0 15px;
+  }

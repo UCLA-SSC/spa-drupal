@@ -110,10 +110,9 @@ h2.pane-title, h2.pane-title a {
 }
 #logo {
 	float: left;
-	margin-left: 1px;
+
 	position: absolute;
-	top: 1px;
-	width:200px;
+		width:200px;
 }
 #logo .logo-black {
 	clear:both;
@@ -2078,3 +2077,7 @@ body.mceContentBody {
 .page-events-dashboard h2.main-title {
 	display:block;
 }
+
+.newsletter-wrapper {
+  margin:15px 0 0 15px;
+  }
