@@ -1790,7 +1790,7 @@ ul.links li.blog_usernames_blog {
 	background: url(../images/news-icon.jpg) top right no-repeat;
 }
 #term-panel {
-	width: 635px;
+	/*width: 635px;*/
 }
 #mini-panel-term_left .panel-col-first,
 #mini-panel-term_left .panel-col-last {
