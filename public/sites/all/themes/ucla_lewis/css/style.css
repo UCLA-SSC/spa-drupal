@@ -110,7 +110,7 @@ h2.pane-title, h2.pane-title a {
 }
 #logo {
 	float: left;
-
+    top:0px;
 	position: absolute;
 		width:200px;
 }
