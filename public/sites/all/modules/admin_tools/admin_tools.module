@@ -88,8 +88,12 @@ function admin_tools_block($op = 'list', $delta = 0, $edit = array()) {
   else if ($op == 'view') {
     switch($delta) {
       case 'clearcache':
-        $block = array('subject' => t('Admin Tools'),
-          'content' => admin_tools_admin_content());
+        if (user_access('administer site configuration')) {
+          $block = array(
+            'subject' => t('Admin Tools'),
+            'content' => admin_tools_admin_content(),
+          );
+        }
         break;
     }
     return $block;
