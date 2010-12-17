@@ -1,4 +1,4 @@
-# $Id$
+# $Id: ja.po,v 1.1.2.1 2008/09/15 10:09:10 imagine Exp $
 # -----------------------------------------------------------------------------
 # Japanese translation of Drupal (modules-popups)
 #

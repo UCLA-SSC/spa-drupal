@@ -1,4 +1,37 @@
-// $Id: CHANGELOG.txt,v 1.257.2.79 2010/09/28 14:12:13 agentken Exp $
+// $Id: CHANGELOG.txt,v 1.257.2.94 2010/12/10 20:41:46 agentken Exp $
+
+10-DEC-2010
+
+-- Patch #361018 by Dave Reid. Fixes token handling.
+-- Creates the 6.x.2.8 release.
+
+31-OCT-2010
+
+-- Patch #928472 by longwave, espirates. Fixes domain conf display error.
+-- Patch #951936 by nclavaud. Fixes domain_conf_variable_save() empty check.
+-- Patch #951276 by longwave. Missing $form_state for domain_conf_default() form.
+-- #934636. Apply a static cache to domain_source_lookup().
+-- #934860 by xjm. Remove reference to old prefixing docs.
+-- #921984 by sitordance. Removes check_url(), which may cause errors. Force HTTP or HTTPS.
+-- #927808 by pyrello, ejh3. Do not fire API calls until modules loaded.
+-- #925368 by mrfelton. Allow source domain to be inactive.
+
+22-OCT-2010
+
+-- #938150 by jahmal. Fixes bug in db_prefix array handling.
+-- #934200 by jamesHF. Ensure proper source domain.
+
+21-OCT-2010
+
+-- #948668 by sgabe (part 1). Fixes typo in domain_block.
+
+16-OCT-2010
+
+-- Proper validation check for a (.) in domain names.
+
+07-OCT-2010
+
+-- Patch #929540 by lilott8. Do not load domain_prefix.path.inc twice.
 
 28-SEP-2010
 

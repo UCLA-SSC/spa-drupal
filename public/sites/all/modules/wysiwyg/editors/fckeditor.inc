@@ -1,5 +1,5 @@
 <?php
-// $Id: fckeditor.inc,v 1.17.2.2 2010/01/23 00:51:32 sun Exp $
+// $Id: fckeditor.inc,v 1.17.2.4 2010/11/13 18:31:24 sun Exp $
 
 /**
  * @file
@@ -52,6 +52,9 @@ function wysiwyg_fckeditor_editor() {
  */
 function wysiwyg_fckeditor_version($editor) {
   $library = $editor['library path'] . '/fckeditor.js';
+  if (!file_exists($library)) {
+    return;
+  }
   $library = fopen($library, 'r');
   $max_lines = 100;
   while ($max_lines && $line = fgets($library, 60)) {
@@ -134,11 +137,11 @@ function wysiwyg_fckeditor_settings($editor, $config, $theme) {
     }
   }
 
+  // Use our custom toolbar set.
+  $settings['ToolbarSet'] = 'Wysiwyg';
+  // Populate our custom toolbar set for fckeditor.config.js.
+  $settings['buttons'] = array();
   if (!empty($config['buttons'])) {
-    // Use our custom toolbar set.
-    $settings['ToolbarSet'] = 'Wysiwyg';
-    // Populate our custom toolbar set for fckeditor.config.js.
-    $settings['buttons'] = array();
     $plugins = wysiwyg_get_plugins($editor['name']);
     foreach ($config['buttons'] as $plugin => $buttons) {
       foreach ($buttons as $button => $enabled) {
@@ -159,11 +162,9 @@ function wysiwyg_fckeditor_settings($editor, $config, $theme) {
         }
       }
     }
-    // For now, all buttons are placed into one row.
-    if (!empty($settings['buttons'])) {
-      $settings['buttons'] = array($settings['buttons']);
-    }
   }
+  // For now, all buttons are placed into one row.
+  $settings['buttons'] = array($settings['buttons']);
 
   return $settings;
 }

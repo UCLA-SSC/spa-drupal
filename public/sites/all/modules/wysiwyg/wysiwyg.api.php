@@ -1,5 +1,5 @@
 <?php
-// $Id: wysiwyg.api.php,v 1.3.2.1 2009/08/09 02:46:55 sun Exp $
+// $Id: wysiwyg.api.php,v 1.3.2.2 2010/11/13 19:46:55 sun Exp $
 
 /**
  * @file
@@ -149,6 +149,12 @@ function hook_INCLUDE_plugin() {
     // An alternative filename of the integration JavaScript; defaults to
     // '[plugin-name].js'.
     'js file' => 'awesome.js',
+    // An alternative path to the integration stylesheet; defaults to
+    // '[path-to-module]/[plugins-directory]/[plugin-name]'.
+    'css path' => drupal_get_path('module', 'mymodule') . '/awesomeness',
+    // An alternative filename of the integration stylesheet; defaults to
+    // '[plugin-name].css'.
+    'css file' => 'awesome.css',
     // An array of settings for this button. Required, but API is still in flux.
     'settings' => array(
     ),

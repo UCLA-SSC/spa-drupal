@@ -17,7 +17,9 @@
 
   LIMITATIONS
   ------------------------------------------------------------------------------------  
-  Does not work with tinymce. Unlikely to work with other WYSIWYG's.
+  Does not work with tinymce. Unlikely to work with other WYSIWYG's. (Is this still true?)
+  Conflicts with: 
+    Devel Theme Developer module.
 
   HOW TO USE THE POPUPS API
   ------------------------------------------------------------------------------------  
@@ -34,8 +36,6 @@
   
   // In your module
   popups_add_popups(array('#mylink', '#mylink2=>array('width'=>'200px')));  
-  IMPORTANT: You can only put popups_add_popups in module, NOT in a .tpl file 
-             or the template.php file.
   This is the simplest method if you want to pass in per-link options.
   The first key is a jQuery selector. It should select an 'a' element (unless you 
   are using the 'href' option). See http://docs.jquery.com/Selectors to learn more 
@@ -76,27 +76,54 @@
   Leaving off the options array is equal to a link with class="popup-form".
   This is equivent to using a series of popup_add_popups() calls.
   
-   Rule Format Example:
-   'admin/content/taxonomy' => array( // Act only on the links on this page. 
-     'div#tabs-wrapper a:eq(1)',  // No options, so use defaults.
-     'table td:nth-child(2) a' => array( 
-       'noUpdate' => true, // Popup will not modify original page.
-     ),
-   );
+  Rule Format Example:
+    'admin/content/taxonomy' => array( // Act only on the links on this page. 
+      'div#tabs-wrapper a:eq(1)',  // No options, so use defaults.
+      'table td:nth-child(2) a' => array( 
+        'noUpdate' => true, // Popup will not modify original page.
+      ),
+    );
+  
+  #4) Make your module alter the default popup rules with hook_popups_alter().
+  ----------------------------------------------------------------------------
+  hook_popups_alter() allows you to modify how the popup rules are
+  registered. This is useful to modify the default behavior of some
+  already existing popup rules.
+
+  See hook_popups_alter() in popups.api.php for an example.
+
 
   LIST OF POPUP OPITIONS
-  ------------------------------------------------------------------------------------  
-   noUpdate: Does the popup NOT modify the original page (Default: FALSE).
+  ------------------------------------------------------------------------------------ 
+  DEPRECATED OPTIONS
+//   noUpdate: Does the popup NOT modify the original page (Default: FALSE).
+//   reloadWhenDone: Force the entire page to reload after the popup form is submitted (Default: FALSE)
+//   nonModel: Not working.
+//   forceReturn: url to force a stop to work flow (Advanced. Use in conjunction with noUpdate or targetSelectors).  
+//   afterSubmit: function to call when updating after successful form submission.   
+   
+   doneTest: how do we know when the multiform flow is done?
+     null: flow is done when returned path = original path (default).
+     *path*: 
+     *regexp*: done when returned path matches regexp.
+   updateMethod:
+     none: do not update the initial page 
+     ajax: targeted replacement of parts of the initial page (default).
+     reload: full replacement of initial page with new page.
+     callback: use onUpdate(data, options, element).
+   updateSource (only used if updateMethod is not none):
+     initial: use the initial page (default).
+     final: use the path returned at the end of the multiform flow.
    href: Override the href in the a element, or attach an href to a non-link element.
    width: Override the width specified in the css.
    targetSelectors: Hash of jQuery selectors that define the content to be swapped out.
    titleSelectors: Array of jQuery selectors to place the new page title.
-   reloadWhenDone: Force the entire page to reload after the popup form is submitted (Default: FALSE)
    reloadOnError: Force the entire page to reload if the popup href is unaccessable (Default: FALSE)
    noMessage: Don't show drupal_set_message messages.
-   nonModel: Not working.
-   forceReturn: url to force a stop to work flow (Advanced. Use in conjunction with noUpdate or targetSelectors).
-   [These last two can only be called from the hook, not the attribute]
-   additionalJavascript: Array of JavaScript files that must be included to correctly run the page in the popup. 
-   additionalCss: Array of CSS files that must be included to correctly style the page in the popup. 
+   onUpdate: function to call when updating after successful form submission.   
+   skipDirtyCheck: If true, this popup will not check for edits on the originating page.  
+                   Often used with custom target selectors. Redundant is noUpdate is true. (Default: FALSE)
+   hijackDestination: Use the destiination param to force a form submit to return to the originating page.
+                      Overwrites any destination already set one the link (Default: TRUE)
+   
  

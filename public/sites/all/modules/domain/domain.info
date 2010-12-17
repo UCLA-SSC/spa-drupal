@@ -4,9 +4,9 @@ description = A domain-based access control system
 package = Domain Access
 core = 6.x
 
-; Information added by drupal.org packaging script on 2010-09-28
-version = "6.x-2.7"
+; Information added by drupal.org packaging script on 2010-12-10
+version = "6.x-2.8"
 core = "6.x"
 project = "domain"
-datestamp = "1285683663"
+datestamp = "1292013973"
 

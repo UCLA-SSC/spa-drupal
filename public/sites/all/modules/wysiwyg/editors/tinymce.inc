@@ -1,5 +1,5 @@
 <?php
-// $Id: tinymce.inc,v 1.35.2.3 2010/02/10 21:16:50 twod Exp $
+// $Id: tinymce.inc,v 1.35.2.10 2010/11/13 18:31:25 sun Exp $
 
 /**
  * @file
@@ -82,9 +82,12 @@ function wysiwyg_tinymce_editor() {
  */
 function wysiwyg_tinymce_version($editor) {
   $script = $editor['library path'] . '/tiny_mce.js';
+  if (!file_exists($script)) {
+    return;
+  }
   $script = fopen($script, 'r');
-  // Version is contained in the first 100 chars.
-  $line = fgets($script, 100);
+  // Version is contained in the first 200 chars.
+  $line = fgets($script, 200);
   // 2.x: this.majorVersion="2";this.minorVersion="1.3"
   // 3.x: majorVersion:'3',minorVersion:'2.0.1'
   if (preg_match('@majorVersion[=:]["\'](\d).+?minorVersion[=:]["\']([\d\.]+)@', $line, $version)) {
@@ -196,11 +199,10 @@ function wysiwyg_tinymce_settings($editor, $config, $theme) {
   // Find the enabled buttons and the button row they belong on.
   // Also map the plugin metadata for each button.
   // @todo What follows is a pain; needs a rewrite.
+  // $settings['buttons'] are stacked into $settings['theme_advanced_buttons1']
+  // later.
+  $settings['buttons'] = array();
   if (!empty($config['buttons']) && is_array($config['buttons'])) {
-    // $settings['buttons'] are stacked into
-    // $settings['theme_advanced_buttons1'] later.
-    // @todo Add a toolbar designer based on jQuery UI.
-    $settings['buttons'] = array();
     // Only array keys in $settings['extensions'] matter; added to
     // $settings['plugins'] later.
     $settings['extensions'] = array();
@@ -291,11 +293,9 @@ function wysiwyg_tinymce_settings($editor, $config, $theme) {
   unset($settings['buttons']);
 
   // Convert the config values into the form expected by TinyMCE.
-  foreach ($settings as $key => $value) {
-    if (is_bool($value)) {
-      continue;
-    }
-    if (is_array($value)) {
+  $csv_settings = array('plugins', 'extended_valid_elements', 'theme_advanced_buttons1', 'theme_advanced_buttons2', 'theme_advanced_buttons3');
+  foreach ($csv_settings as $key) {
+    if (isset($settings[$key]) && is_array($settings[$key])) {
       $settings[$key] = implode(',', $settings[$key]);
     }
   }
@@ -407,7 +407,7 @@ function wysiwyg_tinymce_plugins($editor) {
     'advimage' => array(
       'path' => $editor['library path'] . '/plugins/advimage',
       'extensions' => array('advimage' => t('Advanced image')),
-      'extended_valid_elements' => array('img[src|alt|title|align|width|height|hspace|vspace|border|style|class|onmouseover|onmouseout|id|name]'),
+      'extended_valid_elements' => array('img[src|alt|title|align|width|height|usemap|hspace|vspace|border|style|class|onmouseover|onmouseout|id|name]'),
       'url' => 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/advimage',
       'internal' => TRUE,
       'load' => TRUE,
@@ -577,11 +577,29 @@ function wysiwyg_tinymce_plugins($editor) {
       );
     }
   }
+  if (version_compare($editor['installed version'], '3.2.5', '>=')) {
+    $plugins['autoresize'] = array(
+      'path' => $editor['library path'] . '/plugins/autoresize',
+      'extensions' => array('autoresize' => t('Auto resize')),
+      'url' => 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/autoresize',
+      'internal' => TRUE,
+      'load' => TRUE,
+    );
+  }
   if (version_compare($editor['installed version'], '3.3', '>=')) {
     $plugins['advlist'] = array(
       'path' => $editor['library path'] . '/plugins/advlist',
       'extensions' => array('advlist' => t('Advanced list')),
       'url' => 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/advlist',
+      'internal' => TRUE,
+      'load' => TRUE,
+    );
+  }
+  if (version_compare($editor['installed version'], '3.2.6', '>=')) {
+    $plugins['wordcount'] = array(
+      'path' => $editor['library path'] . '/plugins/wordcount',
+      'extensions' => array('wordcount' => t('Word count')),
+      'url' => 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/wordcount',
       'internal' => TRUE,
       'load' => TRUE,
     );
