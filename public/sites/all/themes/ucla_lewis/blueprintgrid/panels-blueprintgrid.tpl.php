@@ -19,7 +19,10 @@
 
 
 <div class="container panel-display clear-block" <?php if (!empty($css_id)) { print "id=\"$css_id\""; } ?>>
-  <div class="span-24 last top-pane panel-top"><?php print $content[top]; ?></div>
+  <?php if ($content[top]): ?>
+    <div class="span-24 last top-pane panel-top"><?php print $content[top]; ?></div>
+  <?php endif; ?>  
+  
    <?php if ($content[right]):?>
   <div class="blue-right  span-8 last panel-right <?php if ($breadcrumbshort) { print 'breadup';}?>"><?php print $content[right]; ?></div>
   <?php endif;?>

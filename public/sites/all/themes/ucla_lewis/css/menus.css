@@ -93,7 +93,7 @@ ul.nice-menu-down .menuparent ul li a {
 	padding: 10px 1px 10px 1px;
 	text-align: center;
 	font-weight: normal;
-	font-size: .88em;
+	font-size: .8em;
 }
 
 ul.nice-menu-down li ul li ul,
@@ -422,7 +422,7 @@ font-size: 1.1em;
 	
 }
 #block-menu-menu-lewis-primary {
-	margin-left: 50px;
+	/*margin-left: 50px;*/
 	margin-top: 20px;
 	font-family: helvetica,arial;
 }
@@ -431,7 +431,8 @@ font-size: 1.1em;
 	list-style-image: none;
 	margin-bottom: 1px;
 	display: inline;
-	margin: 0 9px;
+	margin:0px;
+	
 }
 #block-menu-menu-lewis-primary ul li ul {
 	display: none;
@@ -439,7 +440,15 @@ font-size: 1.1em;
 
 #block-menu-menu-lewis-primary ul li a, #block-menu-menu-lewis-primary ul li a:visited {
 	color: #111;
+	padding: 0 15px;
+	border-right:1px solid #555;
+	font-weight: bold;
 }
+
+#block-menu-menu-lewis-primary ul li.last a, #block-menu-menu-lewis-primary ul li.last a:visited {
+    border-right:0px;
+}
+
 #footer .block-menu_block ul.menu {
 	margin: 0px;
 }
@@ -451,6 +460,7 @@ font-size: 1.1em;
 	font-size: .75em;
 	text-decoration: none;
 	font-weight: normal;
+	
 }
 
 #block-block-1 {

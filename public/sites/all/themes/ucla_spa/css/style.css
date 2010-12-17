@@ -1490,3 +1490,8 @@ ul.links li.blog_usernames_blog {
 .page-events-dashboard h2.main-title {
 	display:block;
 }
+
+.view-content .views-field-view-node a {  
+	text-transform:uppercase;
+}
+

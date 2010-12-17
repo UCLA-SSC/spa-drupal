@@ -8,7 +8,7 @@ strong, em, b, i {
 	font-family: "Times New Roman",times,serif;
 }
 h1, h2, h3, h4, h5, h6 {
-	font-family: helvetica, arial;
+	font-family: Arial, Helvetica, sans-serif;
 	font-weight: bold;
 }
 body .container {
@@ -95,7 +95,7 @@ h2.pane-title, h2.pane-title a {
 
 .pane-term-description h2.pane-title {
 	font-size: 23pt;
-	font-family: Arial;
+
 	font-weight: bold;
 	color: #474e58;
 	text-decoration: none;
@@ -258,7 +258,7 @@ h2.pane-title, h2.pane-title a {
 	margin-right: 3px;
 }
 .teasers .views-field-name, .teasers .views-field-created, .teasers .views-field-name-1 {
-	font-family: helvetica;
+	
 	font-size: .9em;
 	color: #333333;
 }
@@ -305,7 +305,6 @@ h2.pane-title, h2.pane-title a {
 	color: #336699;
 	font-size: 1.3em;
 	text-decoration: none;
-	font-family: helvetica;
 	font-weight: normal;
 }
 #read-blogs .views-field-title a {
@@ -319,7 +318,7 @@ h2.pane-title, h2.pane-title a {
 	padding: 0 10px 10px 0;
 }
 .teasers .views-field-field-date-published-value {
-	font-family: helvetica;
+	font-family: Arial, Helvetica, sans-serif;
 	display: inline;
 	float: left;
 	font-size: .9em;
@@ -378,8 +377,10 @@ h2.pane-title, h2.pane-title a {
 	font-weight: bold;
 	margin-right: 3px;
 	font-size: .9em;
+	font-family: Arial, Helvetica, sans-serif;
 }
-.view-date-browser .views-field-tid, .teasers .views-field-tid {
+.view-date-browser .views-field-tid, .teasers .views-field-tid,
+.view-date-browser .views-field-tid a, .teasers .views-field-tid a {
 /*background:url(../images/diamond.png) 0 5px no-repeat;*/
 
 
@@ -396,7 +397,7 @@ color:#964300;
 	display: none;
 }
 .view-id-date_browser.view-display-id-panel_pane_1 {
-	font-family: "Times New Roman";
+
 	color: #101010;
 }
 .view-id-date_browser.view-display-id-panel_pane_1 .views-field-field-date-value {
@@ -704,7 +705,7 @@ padding:10px;
 
 .view-News.view-display-id-panel_pane_2 .views-field-title a {
 	color: #333;
-	font-family: helvetica;
+	
 	font-weight: normal;
 	font-size: 1.5em;
 	text-decoration: none;
@@ -747,13 +748,13 @@ padding-left: 10px;
 	margin-top: 25px;
 }
 .view-News.view-display-id-panel_pane_2 .views-field-view-node a {
-	font-family: helvetica;
+	
 	font-weight: normal;
 	text-decoration: none;
 	text-transform: capitalize;
 }
 .view-News.view-display-id-panel_pane_2 .inline-more a {
-	font-family: helvetica;
+	
 	font-weight: normal;
 	text-decoration: none;
 	font-size: 11px;
@@ -780,7 +781,7 @@ padding-left: 10px;
 /*blogs */
 .view-blogs.view-display-id-panel_pane_1 .views-field-title a {
 	color: #336699;
-	font-family: helvetica;
+	
 	font-weight: normal;
 	font-size: 1.5em;
 	text-decoration: none;
@@ -863,7 +864,7 @@ padding-left: 10px;
 	text-align: center;
 }
 #mini-panel-dept_header .panels-flexible-row-15-main-row-middle h2 {
-	font-family: helvetica;
+	
 	font-size: 1.5em;
 	color: #cccccc;
 	text-align: center;
@@ -889,7 +890,7 @@ padding-left: 10px;
 #mini-panel-dept_header .field-field-areas-of-focus .field-item {
 	background: transparent url(../images/rt-arrow-big-blue.png) no-repeat scroll 3px 16px;
 	color: #cccccc;
-	font-family: helvetica;
+
 	font-size: 1.2em;
 	border-top: 1px solid #424856;
 	padding: 7px 0 7px 15px;
@@ -986,7 +987,7 @@ padding-left: 10px;
 }
 /*contacts*/
 .page-contacts h2.pane-title {
-	font-family: helvetica;
+	
 	padding: 15px 0 0 0;
 	border-top: 1px solid #dedede;
 	margin-top: 30px;
@@ -1170,7 +1171,7 @@ padding-left: 10px;
 	border-top: 4px solid #744b84;
 	color: #fff;
 	text-decoration: none;
-	font-family: helvetica;
+	
 	font-size: 10px;
 }
 .selector a.all {
@@ -1250,7 +1251,7 @@ ul.alpha-index li a {
 .node-title-pane {
 	display: block;
 	color: #000;
-	font-size: 2.2em;
+	font-size: 2em;
 }
 .page-node .field-field-date-published {
 	font-weight: normal;
@@ -1353,7 +1354,7 @@ ul.alpha-index li a {
 	text-decoration: none;
 	font-size: 1.2em;
 	font-weight: normal;
-	font-family=helvetica;
+	
 }
 .breadcrumb .sep {
 	font-size: 1.4em;
@@ -1483,15 +1484,16 @@ ul.links li.mollom_node_report {
 .view-id-date_browser.view-display-id-panel_pane_4 {
 	margin-bottom: 20px;
 }
-.view-id-date_browser.view-display-id-panel_pane_4 .views-field-name, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-date-value-1, .views-field-field-date-value2, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-presented-by-value, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-phone-number-value, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-rsvp-email {
+.view-id-date_browser.view-display-id-panel_pane_4 .views-field-name, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-date-value-1, .views-field-field-date-value2, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-presented-by-value, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-phone-number-value, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-rsvp-email, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-open-to-value, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-address, .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-contact-phone-value {
 	border-bottom: 1px dotted #e2e2e2;
 	padding: 10px 0 10px 0;
 }
 .view-id-date_browser.view-display-id-panel_pane_4 .views-field-field-date-value {
 	font-weight: bold;
+	font-size:16px;
 }
 .view-id-date_browser.view-display-id-panel_pane_4 .views-field-tid {
-	margin-left: 5px;
+	margin: 5px;
 }
 .view-id-date_browser.view-display-id-panel_pane_4 .views-field-tid a, .teasers .views-field-tid a {
 	text-decoration: none;
@@ -1499,8 +1501,8 @@ ul.links li.mollom_node_report {
 }
 
 .view-id-date_browser.view-display-id-panel_pane_4 .left-block,.view-id-date_browser.view-display-id-panel_pane_4 .right-block {
-	border-top: 1px solid #ccc;
-	padding-top: 20px;
+	/*border-top: 1px solid #ccc;
+	padding-top: 20px;*/
 	width: 380px;
 }
 .view-id-date_browser.view-display-id-panel_pane_4 .left-block {
@@ -1670,7 +1672,7 @@ ul.links li.blog_usernames_blog {
 	border: 2px solid #303440;
 	border-width: 2px 0px 2px 0px;
 	padding: 20px 5px;
-	font-family: "Times New Roman";
+
 	font-size: 1.4em;
 	color: #101010;
 }
@@ -1678,7 +1680,7 @@ ul.links li.blog_usernames_blog {
 }
 
 .view-Initiatives-terms {
-	font-family: helvetica,arial;
+	
 }
 .view-id-Initiatives_terms.view-display-id-panel_pane_2 .views-row {
 	background: #ffd940;
@@ -1698,7 +1700,7 @@ ul.links li.blog_usernames_blog {
 }
 .view-id-Initiatives_terms.view-display-id-panel_pane_3 {
 	border: 2px solid #343440;
-	border-width: 2px 0px 2px 0px;
+	border-width: 2px 0px 0px 0px;
 }
 .view-id-Initiatives_terms.view-display-id-panel_pane_3 .views-row {
 	border: 0px;
@@ -1770,7 +1772,7 @@ ul.links li.blog_usernames_blog {
 }
 #mini-panel-term_left .view-News,
 #mini-panel-term_left .view-blogs {
-	font-family: "Times New Roman";
+	
 	color: #222;
 }
 
@@ -1969,14 +1971,14 @@ body.mceContentBody {
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-title a {
 	font-size: 14px;
 	color: #000;
-	font-family: helvetica;
+	
 	font-weight: bold;
 	padding: 0 0 5px 0;
 }
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-field-subtitle-value,
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-field-author-value {
 	color: #666;
-	font-family: helvetica;
+
 	font-weight: bold;
 }
 .view-id-glossary.view-display-id-panel_pane_3 .views-field-field-description-value {
@@ -2016,7 +2018,7 @@ body.mceContentBody {
 .view-glossary.view-display-id-attachment_2 .view-header {
 	color: #666;
 	margin: 0 0 10px 0;
-	font-family: helvetica;
+
 }
 
 
@@ -2079,5 +2081,27 @@ body.mceContentBody {
 }
 
 .newsletter-wrapper {
-  margin:15px 0 0 15px;
-  }
+	margin:15px 0 0 15px;
+}
+
+
+.calendar {
+	
+}
+  
+
+
+.calendar-calendar .inner div  {
+	padding:10px;
+	font-size:14px;
+}	
+
+.calendar-calendar .view-data-node-title  {
+	font-weight: bold;
+	font-size:16px;
+}
+
+.views-widget .date-views-filter-wrapper {
+	min-width:0px;
+}	
+  
