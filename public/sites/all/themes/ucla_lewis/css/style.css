@@ -1778,7 +1778,7 @@ ul.links li.blog_usernames_blog {
 
 #mini-panel-term_left .views-field-tid a:link,
 #mini-panel-term_left .views-field-view-node a:link {
-	text-decoration: underline;
+	/*text-decoration: underline;*/
 }
 #mini-panel-term_left .views-field-created {
 	display: inline;
