@@ -442,7 +442,7 @@ font-size: 1.1em;
 	color: #111;
 	padding: 0 15px;
 	border-right:1px solid #555;
-	font-weight: bold;
+	font-weight: normal;
 }
 
 #block-menu-menu-lewis-primary ul li.last a, #block-menu-menu-lewis-primary ul li.last a:visited {
