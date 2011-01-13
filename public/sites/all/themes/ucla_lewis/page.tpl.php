@@ -29,16 +29,7 @@
 <div class="container">
 <?php print $skinr; ?>
   <div id="header">
-    <?php
-
-if (!$is_front ) {
- $block = module_invoke('headerimage', 'block', 'view', 1);
- print $block['content'];
-
-}
-
-
-?>
+    <?php print $header; ?>
     <div id="logo">
       <a class="logo-top" href="<?php print url();?>"><img src="<?php print $logo?>"/></a>
       <a class="logo-black" href="http://publicaffairs.ucla.edu/"><img src="/<?php print path_to_theme(); ?>/images/black-uclaspa-logo.png"/></a>
@@ -46,7 +37,7 @@ if (!$is_front ) {
     <div id="ucla-logo">
       <a href="http://publicaffairs.ucla.edu"><img src="/<?php print path_to_theme() ?>/images/ucla-white.png"/></a>
     </div>  
-    <?php print $header; ?>
+    
     <?php if (isset($primary_links)) : ?>
       <?php print theme('nice_menu_primary_links'); ?>
     <?php endif; ?>
