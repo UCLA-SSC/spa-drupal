@@ -713,23 +713,28 @@ ul.pager li.pager-next a:hover, ul.pager li.pager-previous a:hover, ul.pager li.
 	padding: 20px 0 0px 0;
 	border: 0px;
 }
-#mini-panel-dept_header .field-field-areas-of-focus .field-items {
+#mini-panel-dept_header .field-field-areas-of-focus .field-items,
+#mini-panel-dept_header .view-areas-of-focus .views-field-field-focus-link-url {
 	margin: auto;
 }
-#mini-panel-dept_header .lefty, #mini-panel-dept_header .righty {
+#mini-panel-dept_header .lefty, #mini-panel-dept_header .righty,
+#mini-panel-dept_header .view-areas-of-focus td {
 	width: 165px;
 	margin: 10px;
 	text-align: left;
 }
-#mini-panel-dept_header .lefty {
+#mini-panel-dept_header .lefty,
+#mini-panel-dept_header .view-areas-of-focus  col-1 {
 	margin-left: 28px;
 	margin-right: 5px;
 }
-#mini-panel-dept_header .righty {
+#mini-panel-dept_header .righty,
+#mini-panel-dept_header .view-areas-of-focus col-2 {
 	margin-right: 0px;
 }
 
-#mini-panel-dept_header .field-field-areas-of-focus .field-item {
+#mini-panel-dept_header .field-field-areas-of-focus .field-item,
+#mini-panel-dept_header .view-areas-of-focus .views-field-field-focus-link-url {
 	background: transparent url(../images/rt-arrow-big-blue.png) no-repeat scroll 3px 16px;
 	color: #cccccc;
 	font-family: Georgia;
@@ -740,11 +745,18 @@ ul.pager li.pager-next a:hover, ul.pager li.pager-previous a:hover, ul.pager li.
 	text-transform: capitalize;
 }
 
-#mini-panel-dept_header .field-field-areas-of-focus {
+#mini-panel-dept_header .field-field-areas-of-focus,
+#mini-panel-dept_header .view-areas-of-focus .views-field-field-focus-link-url span
+{
 	width: 380px;
 	height: 230px;
 	overflow: hidden;
 	text-align: center;
+}
+
+#mini-panel-dept_header .view-areas-of-focus .views-field-field-focus-link-url a {
+    color:#ccc;
+    text-decoration:none;
 }
 
 #mini-panel-dept_header {
