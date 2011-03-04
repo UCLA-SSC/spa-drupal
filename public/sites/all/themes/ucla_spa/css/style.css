@@ -693,18 +693,22 @@ ul.pager li.pager-next a:hover, ul.pager li.pager-previous a:hover, ul.pager li.
 	color: #666666;
 	padding-bottom: 50px;
 }
+
 #mini-panel-dept_header {
 	padding-bottom: 22px;
 	margin-bottom: 4px;
 }
+
 #mini-panel-dept_header .panels-flexible-row-15-main-row-middle {
 	height: 300px;
 	width: 380px;
 	background: #1a2234;
 }
+
 #mini-panel-dept_header .panels-flexible-row-15-main-row-middle .inside {
 	text-align: center;
 }
+
 #mini-panel-dept_header .panels-flexible-row-15-main-row-middle h2 {
 	font-family: Georgia;
 	font-size: 1.5em;
@@ -713,21 +717,29 @@ ul.pager li.pager-next a:hover, ul.pager li.pager-previous a:hover, ul.pager li.
 	padding: 20px 0 0px 0;
 	border: 0px;
 }
+
 #mini-panel-dept_header .field-field-areas-of-focus .field-items,
 #mini-panel-dept_header .view-areas-of-focus .views-field-field-focus-link-url {
 	margin: auto;
 }
+
 #mini-panel-dept_header .lefty, #mini-panel-dept_header .righty,
 #mini-panel-dept_header .view-areas-of-focus td {
 	width: 165px;
 	margin: 10px;
 	text-align: left;
 }
+
+#mini-panel-dept_header .view-areas-of-focus td {
+    padding:0px;
+}
+
 #mini-panel-dept_header .lefty,
 #mini-panel-dept_header .view-areas-of-focus  col-1 {
 	margin-left: 28px;
 	margin-right: 5px;
 }
+
 #mini-panel-dept_header .righty,
 #mini-panel-dept_header .view-areas-of-focus col-2 {
 	margin-right: 0px;
