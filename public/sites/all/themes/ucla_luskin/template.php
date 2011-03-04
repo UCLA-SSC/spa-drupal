@@ -107,6 +107,22 @@ function phptemplate_preprocess_page(&$vars) {
   unset($css['all']['module']['sites/all/modules/contrib/plus1/plus1.css']);
   $vars['styles'] = drupal_get_css($css);   
   */
+  
+  //switchable background images via headerimage
+  global $base_url;
+  
+  //3 is the number of the block for background images...
+  $background = headerimage_select_node('3');
+  
+  $background_node = node_load($background);
+  
+  if (!empty($background_node)) {
+    $background = $background_node->field_background_image[0]['filepath'];
+    $background_tag = 'style="background-image: url(' . $base_url .'/'. $background .');"'; 
+  } 
+  
+  //krumo($background_tag);
+  $vars['background_tag'] = $background_tag;
 }
 
 /**

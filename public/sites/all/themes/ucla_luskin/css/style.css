@@ -2,7 +2,10 @@ body {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
 	color: #666666;
 	font-size: 13px;
-	background: #26465b url(../images/bg.jpg) top center repeat-y;
+	/*background: #26465b url(../images/bg.jpg) top center repeat-y;*/
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-color: #26465b;
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
@@ -12,16 +15,21 @@ h1, h2, h3, h4, h5, h6 {
 background: #26465b url(../images/0_home_bg.jpg) top center repeat-y;
 }
 */
+/*
 body.page-faculty-index {
 	background: #26465b url(../images/2_scholars_bg.jpg) top center repeat-y;
 }
 body.page-news {
 	background: #26465b url(../images/4_news_bg.jpg) top center repeat-y;
 }
+*/
+
 /*body.page-events {
 background: #26465b url(../images/5_events_bg.jpg) top center repeat-y;
 }
 */
+
+/*
 body.page-node.About {
 	background: #26465b url(../images/1_about_us_bg.jpg) top center repeat-y;
 }
@@ -37,6 +45,7 @@ body.term46 {
 body.term29 {
 	background: #26465b url(../images/greentech-bg.jpg) top center repeat-y;
 }
+*/
 
 strong, em, b, i {
 	font-family: "Lucida Sans", "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;

@@ -22,7 +22,8 @@
   <?php endif; ?>
 </head>
 
-<body class="<?php print $body_classes; print arg(1); print arg(2); print arg(3); print ' '. $title .' ';?>">
+<body class="<?php print $body_classes; print arg(1); print arg(2); print arg(3); print ' '. $title .' ';?>" <?php print $background_tag; ?> >
+  
   <?php if (!empty($admin)):?>
    <?php print $admin; ?>
   <?php endif; ?>
