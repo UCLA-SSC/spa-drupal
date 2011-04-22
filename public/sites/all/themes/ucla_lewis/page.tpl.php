@@ -23,9 +23,7 @@
 </head>
 
 <body class="<?php print $body_classes; print arg(1) ?>">
-  <?php if (!empty($admin)):?>
-   <?php print $admin; ?>
-  <?php endif; ?>
+
 <div class="container">
 <?php print $skinr; ?>
   <div id="header">

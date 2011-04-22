@@ -1671,7 +1671,8 @@ ul.links li.blog_usernames_blog {
 }
 #term-panel .panel-col-last {
 }
-.pane-views-panes.pane-initiatives-terms-panel-pane-1, .pane-views-panes.pane-initiatives-terms-panel-pane-5 {
+.pane-views-panes.pane-initiatives-terms-panel-pane-1 .pane-content,
+.pane-views-panes.pane-initiatives-terms-panel-pane-5 .pane-content {
 	padding-left: 15px;
 }
 .field-wrapper.Luskin.Center {
@@ -1771,7 +1772,7 @@ body.mceContentBody {
 
 .pane-slideshow-luskin-panel-pane-1 {
 	background: #3399ff;
-	width: 612px;
+	width: 642px;
 	height: 330px;
 	float: left;
 }
@@ -1797,7 +1798,8 @@ body.mceContentBody {
 	height: 330px;
 	clear: both;
 	background: none;
-	margin: 0 0 0 31px;
+	margin: 0 0 0 30px;
+	position:relative;
 }
 
 .view-id-slideshow_luskin .views-showcase-content-container
