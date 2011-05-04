@@ -132,27 +132,38 @@ h2.pane-title, h2.pane-title a {
 	float: left;
 	margin-right: 3px;
 }
-.teasers .views-field-name, .teasers .views-field-created, .teasers .views-field-name-1 {
+.teasers .views-field-name,
+.teasers .views-field-created,
+.teasers .views-field-name-1,
+.view-faculty-updates .views-field-tid {
 	font-family: Verdana;
 	font-size: .9em;
 	color: #333333;
 }
-.views-field-name a {
+.views-field-name a,
+.view-faculty-updates .views-field-tid a
+{
 	color: #339892;
 	text-decoration: none;
 }
-.views-field-name-1 a {
+.views-field-name-1 a,
+.view-faculty-updates .views-field-title-1 a
+{
 	color: #000;
 	text-decoration: none;
 }
 .teasers label {
 	font-weight: normal;
 }
-.teasers .views-field-view-node {
+.teasers .views-field-view-node,
+.view-faculty-updates .views-field-view-node {
 	clear: both;
 	padding: 15px 0 15px 0;
 }
-.teasers .views-field-view-node a, .more-link a, .views-field-field-publication-url a {
+.teasers .views-field-view-node a,
+.view-faculty-updates .views-field-view-node a,
+.more-link a,
+.views-field-field-publication-url a {
 	color: #336699;
 	text-decoration: none;
 	background: #f4f5f7;
@@ -1534,3 +1545,8 @@ ul.links li.blog_usernames_blog {
 	margin-right:30px;
 	padding:20px 400px 10px 0;
 }
+
+.pane-faculty-updates-panel-pane-3 {
+  margin-top:15px;
+  }
+

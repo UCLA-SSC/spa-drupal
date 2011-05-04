@@ -1899,7 +1899,7 @@ body.mceContentBody { background: #fff; }
 
 .view-slideshow-lewis .views_slideshow_singleframe_slide .views-row
 {
-	position: relative;
+
 	margin-bottom: 0px;
 }
 
@@ -1908,6 +1908,10 @@ body.mceContentBody { background: #fff; }
 	z-index: 3;
 	float: right;
 }
+
+.view-slideshow-lewis .views-field-field-slide-image-fid span.field-content {
+  display:block;
+  }
 
 .view-slideshow-lewis .link-wrapper
 {
@@ -1950,6 +1954,7 @@ body.mceContentBody { background: #fff; }
 	top: 313px;
 	z-index: 4;
 	width: 990px;
+	display:none;
 }
 
 #views_slideshow_singleframe_controls_slideshow_lewis-panel_pane_1
@@ -2129,3 +2134,7 @@ body.mceContentBody { background: #fff; }
 .date-heading { margin-top: 15px; }
 
 #header .block { margin-bottom:0px; }
+
+#admin-menu {
+  width:100% !important;
+  }

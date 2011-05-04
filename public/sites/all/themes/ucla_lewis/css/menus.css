@@ -5,11 +5,11 @@
 	background: url(../images/primary-bg.png) top left repeat;
 	font-size: 16px;
 	position: absolute;
-	top: 20px;
+	top: 0px;
 	margin-left: 329px;
 }
 .admin-menu #nice-menu-0 {
-	top: 21px;
+	top: 0px;
 }
 
 ul.nice-menu-down {
