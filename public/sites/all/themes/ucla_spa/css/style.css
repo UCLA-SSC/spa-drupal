@@ -1522,3 +1522,15 @@ ul.links li.blog_usernames_blog {
 .introtext {
 	font-size:16px;
 }
+
+.hasvideo {
+	background-image: url(../images/hasvideo.png);
+	background-position: top right;
+	background-repeat: no-repeat;
+	margin-right:30px;
+	padding-right:30px;
+}
+.page-news .hasvideo {
+	margin-right:30px;
+	padding:20px 400px 10px 0;
+}
