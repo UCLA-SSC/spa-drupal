@@ -1541,7 +1541,7 @@ ul.links li.blog_usernames_blog {
 	margin-right:30px;
 	padding-right:30px;
 }
-.page-news .hasvideo {
+.page-news .hasvideo, .page-news .Yes_Has_Video {
 	margin-right:30px;
 	padding:20px 400px 10px 0;
 }
