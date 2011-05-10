@@ -1534,7 +1534,7 @@ ul.links li.blog_usernames_blog {
 	font-size:16px;
 }
 
-.hasvideo {
+.hasvideo, .Yes_Has_Video {
 	background-image: url(../images/hasvideo.png);
 	background-position: top right;
 	background-repeat: no-repeat;
