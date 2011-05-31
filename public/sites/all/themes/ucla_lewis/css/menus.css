@@ -91,7 +91,7 @@ ul.nice-menu-down ul li {
 
 ul.nice-menu-down .menuparent ul li a {
 	padding: 10px 1px 10px 1px;
-	text-align: center;
+	text-align: left;
 	font-weight: normal;
 	font-size: .8em;
 }
