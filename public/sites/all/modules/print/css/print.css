@@ -3,7 +3,7 @@
 body {
   margin: 1em;
   background-color: #fff;
-  font-family: sans-serif;
+  font-family: "times new roman", times, serif;
 }
 th {
   text-align: left; /* LTR */
@@ -55,3 +55,14 @@ img.print-logo {border: 0;}
 .print-source_url {font-size: small;}
 .print-links {font-size: small;}
 .print-footer {text-align: center;}
+
+
+/*  CUSTOM CSS FOR POSTER PRINTOUT */
+
+#print-poster body {margin:1in 1in 0;}
+#print-poster .meta {display:none;}
+
+.field-field-poster-head-img {text-align:center;}
+.field-field-poster-left {width:200px;float:left;padding:30px 10px;height:590px;overflow: hidden;}
+.field-field-poster-info {margin-left:220px;width:430px;height:600px;overflow:hidden;padding-top:30px;}
+.field-field-poster-foot {clear:both;height:70px;overflow: hidden;}
