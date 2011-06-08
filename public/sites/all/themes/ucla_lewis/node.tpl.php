@@ -10,9 +10,7 @@
     <div class="submitted"><?php print $submitted ?></div>
   <?php endif; ?>
   <?php //krumo(menu_get_active_trail()); ?>
-  <?php if ($terms): ?>
-    <div class="terms"><?php print $terms ?></div>
-  <?php endif;?>
+
   </div>
 <?php endif; ?>
 
@@ -21,10 +19,14 @@
     <?php print $content ?>
   </div>
 
-<?php
-  if ($links) {
-    print '<div class="node-links">'. $links .'</div>';
-  }
-?>
+  <?php
+    if ($links) {
+      print '<div class="node-links">'. $links .'</div>';
+    }
+  ?>
+
+  <?php if ($terms): ?>
+    <div class="terms"><?php print $terms ?></div>
+  <?php endif;?>
 
 </div>
