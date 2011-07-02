@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_prefix.admin.inc,v 1.9.2.3 2010/06/26 14:34:54 agentken Exp $
 
 /**
  * @file

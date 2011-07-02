@@ -1,5 +1,4 @@
 <?php
-// $Id: headerimage.module,v 1.13.2.8 2009/04/14 19:23:31 sutharsan Exp $
 
 /**
  * @file headerimage.module
@@ -144,18 +143,18 @@ function headerimage_block($op = 'list', $delta = 0, $edit = array()) {
           $node = node_build_content($node, $teaser, false);
           $content = drupal_render($node->content);
           if ($teaser) {
-              $node->teaser = $content;
-              unset($node->body);
-            }
-            else {
-              $node->body = $content;
-              unset($node->teaser);
-            }
+            $node->teaser = $content;
+            unset($node->body);
+          }
+          else {
+            $node->body = $content;
+            unset($node->teaser);
+          }
           node_invoke_nodeapi($node, 'alter', $teaser);
 
           $block['content'] = theme('headerimage_block', $node, $teaser);
+          return $block;
         }
-        return $block;
       }
       break;
   }

@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_views_plugin_cache_time.inc,v 1.1.2.2 2010/05/16 16:10:48 agentken Exp $
 
 /**
  * @file

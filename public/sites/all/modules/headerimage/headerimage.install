@@ -1,5 +1,4 @@
 <?php
-  // $Id: headerimage.install,v 1.4.2.3 2008/07/28 06:50:55 sutharsan Exp $
   
 /**
  * Implementation of hook_schema()

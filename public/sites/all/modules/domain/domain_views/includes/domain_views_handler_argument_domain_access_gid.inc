@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_views_handler_argument_domain_access_gid.inc,v 1.1.2.1 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @file

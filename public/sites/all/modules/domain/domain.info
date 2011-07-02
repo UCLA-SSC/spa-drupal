@@ -1,12 +1,11 @@
-;  $Id: domain.info,v 1.4 2008/10/10 20:19:27 agentken Exp $
 name = Domain Access
 description = A domain-based access control system
 package = Domain Access
 core = 6.x
 
-; Information added by drupal.org packaging script on 2010-12-10
-version = "6.x-2.8"
+; Information added by drupal.org packaging script on 2011-06-06
+version = "6.x-2.11"
 core = "6.x"
 project = "domain"
-datestamp = "1292013973"
+datestamp = "1307326615"
 

@@ -1,5 +1,3 @@
-// $Id: README.txt,v 1.72.2.5 2010/05/16 16:10:47 agentken Exp $
-
 /**
  * @file
  * README file for Domain Access.
@@ -330,6 +328,13 @@ installation, you may activate the module and configure its settings.
 No matter how many domains resolve to the same IP, you only need one instance
 of Drupal's settings.php file.  The sites folder should be named 'default' or
 named for your root domain.
+
+NOTE: If you choose the WildCard DNS option, any subdomain not controlled
+by the Domain module, including misspelled subdomains, will go to the default
+domain without a redirect. To properly redirect invalid subdomains, use the
+Domain Alias module and set *.example.com as an alias of your primary domain
+with the 'redirect' setting checked. More information can be found in the
+README.txt in the domain_alias directory.
 
 ----
 2.3 Creating Domain Records

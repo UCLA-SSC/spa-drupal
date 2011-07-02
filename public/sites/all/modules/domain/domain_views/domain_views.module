@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_views.module,v 1.13 2009/10/11 19:07:51 agentken Exp $
 
 /**
  * @defgroup domain_views Domain Views: provides a views filter

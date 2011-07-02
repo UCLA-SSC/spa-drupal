@@ -1,5 +1,4 @@
 <?php
-// $Id: settings_domain_prefix.inc,v 1.12 2009/02/21 15:45:37 agentken Exp $
 
 /**
  * @file

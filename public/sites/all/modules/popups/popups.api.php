@@ -1,5 +1,4 @@
 <?php
-// $Id: popups.api.php,v 1.1.4.3 2010/12/10 02:09:16 drewish Exp $
 
 /**
  * @file

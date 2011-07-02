@@ -1,5 +1,4 @@
 <?php
-// $Id: headerimage.admin.inc,v 1.1 2008/04/07 07:46:01 sutharsan Exp $
 
 /**
  * @file headerimage.admin.inc

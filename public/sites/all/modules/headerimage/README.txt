@@ -1,4 +1,3 @@
-// $Id: README.txt,v 1.5 2008/01/14 11:08:34 sutharsan Exp $
 
 This module allows you to display an image in a block where the selection
 of the image is based on conditions per image.

@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_alias.module,v 1.17.2.1 2010/02/13 20:22:42 agentken Exp $
 
 /**
  * @defgroup domain_alias Domain Alias: Advanced domain matching

@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_prefix.module,v 1.29.2.4 2010/10/07 14:09:02 agentken Exp $
 
 /**
  * @defgroup domain_prefix Domain Prefix: dynamic table prefixing
@@ -70,8 +69,8 @@ function domain_prefix_domain_bootstrap_full($domain) {
     return;
   }
   // Check for prefixes of the url_alias table, and if present add hook_domainprefix().
-  $count = db_result(db_query("SELECT COUNT(*) FROM {domain_prefix} WHERE status > 1 AND tablename = 'url_alias'"));
-  if (!empty($count)) {
+  $count = db_result(db_query("SELECT 1 FROM {domain_prefix} WHERE status > 1 AND tablename = 'url_alias'"));
+  if ($count > 0) {
     include 'domain_prefix.path.inc';
   }
 }

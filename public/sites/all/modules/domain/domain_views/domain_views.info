@@ -1,4 +1,3 @@
-;  $Id: domain_views.info,v 1.4 2008/06/01 14:19:54 agentken Exp $
 name = Domain Views
 description = Provides Views integration for the Domain Access module.
 package = Domain Access
@@ -6,9 +5,9 @@ dependencies[] = domain
 dependencies[] = views
 core = 6.x
 
-; Information added by drupal.org packaging script on 2010-12-10
-version = "6.x-2.8"
+; Information added by drupal.org packaging script on 2011-06-06
+version = "6.x-2.11"
 core = "6.x"
 project = "domain"
-datestamp = "1292013973"
+datestamp = "1307326615"
 

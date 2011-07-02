@@ -1,5 +1,4 @@
 <?php
-// $Id: domain.module,v 1.134.2.39 2010/12/10 18:25:46 agentken Exp $
 
 /**
  * @defgroup domain Domain Access: A domain-based access control system
@@ -570,9 +569,11 @@ function domain_form_user_admin_account_alter(&$form, $form_state) {
     $form['domain']['domains']['#multiple'] = TRUE;
     $form['domain']['domains']['#size'] = count($options) > 10 ? 10 : count($options);
   }
-  // Add our domain elements.
-  foreach (array_keys($form['name']) as $uid) {
-    $form['user_domains'][$uid][0] = array('#value' => theme('item_list', _domain_user_list($uid)));
+  // Add our domain elements. $form['name'] should be an array of matching users.
+  if (!empty($form['name'])) {
+    foreach (array_keys($form['name']) as $uid) {
+      $form['user_domains'][$uid][0] = array('#value' => theme('item_list', _domain_user_list($uid)));
+    }
   }
   $form['#theme'] = 'domain_admin_users_form';
   $form['#submit'][] = 'domain_update_users';
@@ -807,7 +808,7 @@ function domain_default($reset = FALSE, $alter = TRUE) {
     $default['valid'] = TRUE;
     if ($alter) {
       // Let submodules overwrite the defaults, if they wish.
-      $default = domain_api($default);
+      $default = domain_api($default, $reset);
     }
   }
   return $default;
@@ -852,10 +853,10 @@ function domain_domains($reset = FALSE) {
   if (empty($domains) || $reset) {
     $domains = array();
     // Query the db for active domain records.
-    $result = db_query("SELECT domain_id FROM {domain}");
-    while ($data = db_fetch_array($result)) {
-      $domain = domain_lookup($data['domain_id'], NULL, TRUE);
-      $domains[$domain['domain_id']] = $domain;
+    $result = db_query("SELECT domain_id, subdomain, sitename, scheme, valid FROM {domain}");
+    while ($domain = db_fetch_array($result)) {
+      $domains[$domain['domain_id']] = domain_api($domain, $reset);
+      $domains[0] = domain_default();
     }
   }
   $sort = variable_get('domain_sort', 'id');
@@ -951,8 +952,8 @@ function domain_validate($subdomain) {
 function domain_valid_domain($subdomain) {
   $error_list = array();
   // Check for at least one dot.
-  if (substr_count($subdomain, '.') == 0) {
-    $error_list[] = t('At least one dot (.) is required.');
+  if (substr_count($subdomain, '.') == 0 && $subdomain != 'localhost') {
+    $error_list[] = t('At least one dot (.) is required, except for <em>localhost</em>.');
   }
   // Check for one colon only.
   if (substr_count($subdomain, ':') > 1) {
@@ -1002,7 +1003,7 @@ function domain_valid_domain($subdomain) {
  *   TRUE if unique; FALSE if duplicate.
  */
 function domain_unique_domain($subdomain) {
-  $count = db_result(db_query("SELECT COUNT(domain_id) FROM {domain} WHERE subdomain = '%s'", $subdomain));
+  $count = db_result(db_query("SELECT 1 FROM {domain} WHERE subdomain = '%s'", $subdomain));
   return !(bool) $count;
 }
 
@@ -1224,9 +1225,7 @@ function domain_get_uri($domain) {
   $modules = _domain_path_modules();
   if (!empty($modules) && !drupal_is_front_page()) {
     // If needed, let modules modify the path alias.
-    $alias = domain_path($domain['domain_id'], $_GET['q']);
-    // Run the result through url() for proper language and path handling.
-    $request_uri = url($alias);
+    $request_uri = base_path() . domain_path($domain['domain_id'], $_GET['q']);
   }
 
   $path = domain_check_scheme($domain['scheme']) .'://'. $domain['subdomain'] . $request_uri;
@@ -1391,16 +1390,22 @@ function domain_get_node_match($nid) {
   }
   // Load the domain data for this node -- but only take the first match.
   $id = db_result(db_query_range("SELECT gid FROM {domain_access} WHERE nid = %d AND realm = '%s' ORDER BY gid", $nid, 'domain_id', 0, 1));
-  $source = domain_lookup($id);
-  drupal_alter('domain_source', $source, $nid);
-  $domain[$nid] = $source;
+
+  // If a match was found, return it. Otherwise, we may be saving a node
+  // in which case, let it fall through. See http://drupal.org/node/624360.
+  $source = NULL;
+  if ($id !== FALSE) {
+    $source = domain_lookup($id);
+    drupal_alter('domain_source', $source, $nid);
+    $domain[$nid] = $source;
+  }
   return $source;
 }
 
 /**
  * Allow the lookup of path rewrites.
  *
- * Note that unlinke domain_get_node_match(), this function assumes
+ * Note that unlike domain_get_node_match(), this function assumes
  * that all links will be written to the current domain.
  *
  * @param $path
@@ -1670,7 +1675,7 @@ function _domain_store_grants($nid, $grants = array()) {
 function domain_set_default_grant() {
   static $check = NULL;
   if (is_null($check)) {
-    $check = db_result(db_query("SELECT COUNT(nid) FROM {node_access} WHERE realm = '%s' AND gid = %d", 'domain_all', 0));
+    $check = db_result(db_query("SELECT 1 FROM {node_access} WHERE realm = '%s' AND gid = %d", 'domain_all', 0));
     if ($check == 0) {
       db_query("INSERT INTO {node_access} (nid, gid, realm, grant_view, grant_update, grant_delete) VALUES (%d, %d, '%s', %d, %d, %d)", 0, 0, 'domain_all', 1, 0, 0);
     }
@@ -1687,7 +1692,7 @@ function domain_enable() {
   domain_set_default_grant();
   // Thanks to the new way that batch processing of node grants is handled, we have to
   // manually define our records if none are present.
-  $count = (bool) db_result(db_query("SELECT COUNT(*) FROM {domain_access}"));
+  $count = (bool) db_result(db_query("SELECT 1 FROM {domain_access}"));
   if (empty($count)) {
     $rule = variable_get('domain_behavior', DOMAIN_INSTALL_RULE);
     $site = DOMAIN_SITE_GRANT;
@@ -1708,7 +1713,7 @@ function domain_enable() {
   }
   $result = db_query("SELECT uid FROM {users} WHERE uid > 0");
   while ($data = db_fetch_object($result)) {
-    $check = (bool) db_result(db_query("SELECT COUNT(*) FROM {domain_editor} WHERE uid = %d", $data->uid));
+    $check = (bool) db_result(db_query("SELECT 1 FROM {domain_editor} WHERE uid = %d", $data->uid));
     if (empty($check)) {
       db_query("INSERT INTO {domain_editor} VALUES (%d, %d)", $data->uid, 0);
     }
@@ -1829,7 +1834,14 @@ function domain_form_alter(&$form, &$form_state, $form_id) {
               $user_domains[] = $value;
             }
           }
-          $first_domain = current($user_domains);
+          // Set the best match for the user's primary domain.
+          // If they are a member of the current domain, use that one.
+          if (in_array($_domain['domain_id'], $user_domains)) {
+            $first_domain = $_domain['domain_id'];
+          }
+          else {
+            $first_domain = current($user_domains);
+          }
           foreach ($options as $key => $value) {
             if (in_array($key, $user_domains)) {
               $user_options[$key] = $value;
@@ -2427,8 +2439,8 @@ function domain_batch_validate($values) {
       $errors = array();
       foreach ($batch as $key => $value) {
         $subdomain = strtolower(urlencode($value));
-        $check = db_result(db_query("SELECT COUNT(domain_id) FROM {domain} WHERE subdomain = '%s' AND domain_id <> %d", $value, $key));
-        if ($check > 0 || ($key > 0 && $value == variable_get('domain_root', ''))) {
+        $check = db_result(db_query("SELECT 1 FROM {domain} WHERE subdomain = '%s' AND domain_id <> %d", $value, $key));
+        if ($check || ($key > 0 && $value == variable_get('domain_root', ''))) {
           form_set_error('domain_batch]['. $key, t('Each domain value must be unique.'));
         }
         else {
@@ -2441,8 +2453,8 @@ function domain_batch_validate($values) {
       break;
     case 'domain_sitename':
       foreach ($batch as $key => $value) {
-        $check = db_result(db_query("SELECT COUNT(domain_id) FROM {domain} WHERE sitename = '%s' AND domain_id <> %d", $value, $key));
-        if ($check > 0 || ($key > 0 && $value == variable_get('domain_sitename', 'Drupal'))) {
+        $check = db_result(db_query("SELECT 1 FROM {domain} WHERE sitename = '%s' AND domain_id <> %d", $value, $key));
+        if ($check || ($key > 0 && $value == variable_get('domain_sitename', 'Drupal'))) {
           form_set_error('domain_batch]['. $key, t('Each site name value must be unique.'));
         }
       }

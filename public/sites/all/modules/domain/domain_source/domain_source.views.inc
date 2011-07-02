@@ -1,6 +1,5 @@
 <?php
 
-// $Id: domain_source.views.inc,v 1.2 2009/05/31 18:16:41 agentken Exp $
 
 /**
  * @file

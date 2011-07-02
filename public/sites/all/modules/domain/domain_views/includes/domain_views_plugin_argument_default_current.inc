@@ -1,5 +1,4 @@
 <?php
-// $Id: domain_views_plugin_argument_default_current.inc,v 1.1 2009/10/05 15:17:10 agentken Exp $
 
 /**
  * @file

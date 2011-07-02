@@ -1,5 +1,4 @@
 <?php
-// $Id: API.php,v 1.51.2.9 2010/09/22 20:53:39 agentken Exp $
 
 /**
  * @defgroup domain_hooks Domain hook functions

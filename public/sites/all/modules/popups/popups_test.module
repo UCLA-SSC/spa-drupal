@@ -1,5 +1,4 @@
 <?php
-// $Id: popups_test.module,v 1.1.4.7 2010/12/10 02:09:16 drewish Exp $
 
 /**
  * @file
@@ -95,7 +94,7 @@ function _popups_test_popups() {
                array( 'attributes' => array('id' => 'reload-target'),
                ));
   $output .= "<span id='response2'> (Auto Fade checkbox is: " . (variable_get('popups_autoclose_final_message', 1) ? 'on' : 'off') . ')</span>';
-  popups_add_popups(array('#reload-target'=>array('targetSelectors'=>array('#response2'))));
+  popups_add_popups(array('#reload-target' => array('targetSelectors' => array('#response2'))));
 
   $output .= '<li>'. l("Change Settings and ajax update multiple targets with data from other page (tricky!).", 'admin/settings/popups',
              array( 'attributes' => array(
@@ -110,10 +109,10 @@ function _popups_test_popups() {
 
   $output .= '<li>'. l("Pop up defined by popups_add_popups rule.", 'popups/test/response',
                      array('attributes' => array('id' => 'rule-test')));
-  popups_add_popups(array('#rule-test'=>array('width'=>'300px')));
+  popups_add_popups(array('#rule-test' => array('width' => '300px')));
   $output .= '<li>'. l('Ajax update just Page Title (only works if you theme uses id="page-title")', 'popups/test/namechange',
                      array('attributes' => array('id' => 'title-test')));
-  popups_add_popups(array('#title-test'=>array('titleSelectors'=>array('#page-title'), 'noUpdate'=> TRUE, 'forceReturn'=>'popups/test/namechange')));
+  popups_add_popups(array('#title-test' => array('titleSelectors' => array('#page-title'), 'noUpdate' => TRUE, 'forceReturn' => 'popups/test/namechange')));
 
   global $user;
   $output .= "<li>You are user number $user->uid</li>";
@@ -130,7 +129,7 @@ function _popups_test_popups() {
                      array('attributes' => array('id' => 'logout')));
   }
   // Need to have the rule outside the else, or it won't get loaded on ajax reload.
-  popups_add_popups(array('#logout'=>array('noUpdate'=>TRUE, 'reloadOnError'=>TRUE)));
+  popups_add_popups(array('#logout' => array('noUpdate' => TRUE, 'reloadOnError' => TRUE)));
 
   $output .= '<li>'. l("Add Poll (test inline)", 'node/add/poll',
                        array('attributes' => array('class' => 'popups-form')));
@@ -165,7 +164,7 @@ function _popups_test_popups_old() {
                array( 'attributes' => array('id' => 'reload-target'),
                ));
   $output .= "<span id='response2'> (Auto Fade checkbox is: " . (variable_get('popups_popup_final_message', 1) ? 'on' : 'off') . ')</span>';
-  popups_add_popups(array('#reload-target'=>array('targetSelectors'=>array('#response2'))));
+  popups_add_popups(array('#reload-target' => array('targetSelectors' => array('#response2'))));
 
   $output .= '<li>'. l("Change Settings and ajax update multiple targets with data from other page (tricky!).", 'admin/settings/popups',
              array( 'attributes' => array(
@@ -180,10 +179,10 @@ function _popups_test_popups_old() {
 
   $output .= '<li>'. l("Pop up defined by popups_add_popups rule.", 'popups/test/response',
                      array('attributes' => array('id' => 'rule-test')));
-  popups_add_popups(array('#rule-test'=>array('width'=>'300px')));
+  popups_add_popups(array('#rule-test' => array('width' => '300px')));
   $output .= '<li>'. l('Ajax update just Page Title (only works if you theme uses id="page-title")', 'popups/test/namechange',
                      array('attributes' => array('id' => 'title-test')));
-  popups_add_popups(array('#title-test'=>array('titleSelectors'=>array('#page-title'), 'noUpdate'=> TRUE, 'forceReturn'=>'popups/test/namechange')));
+  popups_add_popups(array('#title-test' => array('titleSelectors' => array('#page-title'), 'noUpdate' => TRUE, 'forceReturn' => 'popups/test/namechange')));
 
   global $user;
   $output .= "<li>You are user number $user->uid</li>";
@@ -200,7 +199,7 @@ function _popups_test_popups_old() {
                      array('attributes' => array('id' => 'logout')));
   }
   // Need to have the rule outside the else, or it won't get loaded on ajax reload.
-  popups_add_popups(array('#logout'=>array('noUpdate'=>TRUE, 'reloadOnError'=>TRUE)));
+  popups_add_popups(array('#logout' => array('noUpdate' => TRUE, 'reloadOnError' => TRUE)));
 
   $output .= '<li>'. l("Add Poll (test inline)", 'node/add/poll',
                        array('attributes' => array('class' => 'popups-form')));

@@ -1,4 +1,3 @@
-// $Id: popups.js,v 1.9.8.19 2010/12/10 02:51:17 drewish Exp $
 
 /**
  * Popup Modal Dialog API
@@ -15,60 +14,6 @@
  */
 
 // ***************************************************************************
-// DRUPAL Namespace
-// ***************************************************************************
-
-/**
- * Attach the popups bevior to the all the requested links on the page.
- *
- * @param context
- *   The jQuery object to apply the behaviors to.
- */
-
-Drupal.behaviors.popups = function(context) {
-  Popups.saveSettings();
-
-  var $body = $('body');
-  if(!$body.hasClass('popups-processed')) {
-    $body.addClass('popups-processed');
-    $(document).bind('keydown', Popups.keyHandle);
-    var $popit = $('#popit');
-    if ($popit.length) {
-      $popit.remove();
-      Popups.message($popit.html());
-    }
-
-    // Make note of all the CSS and JS on the page so when we load a popup we
-    // don't try to add them a second time.
-    $('link[rel="stylesheet"][href]').each(function(i, v) {
-      Popups.originalCSS[$(this).attr('href').replace(/^(\/.+)\?\w$/, '$1')] = 1;
-    });
-    if (Drupal.settings.popups && Drupal.settings.popups.originalCSS) {
-      $.extend(Popups.originalCSS, Drupal.settings.popups.originalCSS);
-    }
-    $('script[src]').each(function(i, v) {
-      Popups.originalJS[$(this).attr('src').replace(/^(\/.+)\?\w$/, '$1')] = 1;
-    });
-    if (Drupal.settings.popups && Drupal.settings.popups.originalJS) {
-      $.extend(Popups.originalJS, Drupal.settings.popups.originalJS);
-    }
-  }
-
-  // Add the popups-link-in-dialog behavior to links defined in Drupal.settings.popups.links array.
-  // Get these from current Drupal.settings, not Popups.originalSettings, as each page has it's own hooks.
-  if (Drupal.settings.popups && Drupal.settings.popups.links) {
-    jQuery.each(Drupal.settings.popups.links, function (link, options) {
-      Popups.attach(context, link, Popups.options(options));
-    });
-  }
-
-  Popups.attach(context, '.popups', Popups.options({updateMethod: 'none'}));
-  Popups.attach(context, '.popups-form', Popups.options({updateMethod: 'ajax'})); // ajax reload.
-  Popups.attach(context, '.popups-form-reload', Popups.options({updateMethod: 'reload'})); // whole page reload.
-  Popups.attach(context, '.popups-form-noupdate', Popups.options({updateMethod: 'none'}));  // no reload at all.
-};
-
-// ***************************************************************************
 // Popups Namespace **********************************************************
 // ***************************************************************************
 /**
@@ -77,7 +22,7 @@ Drupal.behaviors.popups = function(context) {
  * * The state of the original page,
  * * Functions for managing both of the above.
  */
-Popups = function(){};
+var Popups = function(){};
 
 /**
  * Static variables in the Popups namespace.
@@ -156,7 +101,7 @@ Popups.Popup.prototype.$popupFooter = function() {
  */
 Popups.Popup.prototype.fill = function(title, body, buttons) {
   return $(Drupal.theme('popupDialog', this.id, title, body, buttons));
-}
+};
 
 /**
  * Hide the popup by pushing it off to the side.
@@ -236,7 +181,7 @@ Popups.Popup.prototype.isDone = function(path) {
        // Test if we are back to the original page's path.
       done = (path === Popups.originalSettings.popups.originalPath);
     }
-  };
+  }
   return done;
 };
 
@@ -286,7 +231,7 @@ Popups.pop = function(popup) {
 Popups.options = function(overrides) {
   var defaults = Popups.defaultOptions;
   return Popups.overrideOptions(defaults, overrides);
-}
+};
 
 /**
  * Build an options hash.
@@ -298,32 +243,33 @@ Popups.options = function(overrides) {
  *   Hash of values to override the defaults with.
  */
 Popups.overrideOptions = function(defaults, overrides) {
-  var options = {};
-  for(var option in defaults) {
-    var value;
-    if (Popups.isset(overrides[option])) {
-      options[option] = overrides[option];
-    }
-    else {
-      options[option] = defaults[option];
+  var options = {}, option;
+  for (option in defaults) {
+    if (defaults.hasOwnProperty(option)) {
+      if (Popups.isset(overrides[option])) {
+        options[option] = overrides[option];
+      }
+      else {
+        options[option] = defaults[option];
+      }
     }
   }
   // Map deprecated options.
-  if (overrides['noReload'] || overrides['noUpdate']) {
-    options['updateMethod'] = 'none';
+  if (overrides.noReload || overrides.noUpdate) {
+    options.updateMethod = 'none';
   }
-  if (overrides['reloadWhenDone']) {
-    options['updateMethod'] = 'reload';
+  if (overrides.reloadWhenDone) {
+    options.updateMethod = 'reload';
   }
-  if (overrides['afterSubmit']) {
-    options['updateMethod'] = 'callback';
-    options['onUpdate'] = overrides['afterSubmit'];
+  if (overrides.afterSubmit) {
+    options.updateMethod = 'callback';
+    options.onUpdate = overrides.afterSubmit;
   }
-  if (overrides['forceReturn']) {
-    options['doneTest'] = overrides['forceReturn'];
+  if (overrides.forceReturn) {
+    options.doneTest = overrides.forceReturn;
   }
   return options;
-}
+};
 
 /**
  * Attach the popups behavior to all elements inside the context that match the selector.
@@ -400,7 +346,7 @@ Popups.activeLayerIsEdited = function() {
   // TODO: better test for edited page, maybe capture change event on :inputs.
   var edited = $context.find('span.tabledrag-changed').length;
   return edited;
-}
+};
 
 /**
  * Show dialog offering to save form on parent layer.
@@ -469,7 +415,7 @@ Popups.open = function(popup, title, body, buttons, width){
 
   // Add button function callbacks.
   if (buttons) {
-    jQuery.each(buttons, function(id, button){
+    $.each(buttons, function(id, button){
       $('#' + id).click(button.func);
     });
   }
@@ -616,7 +562,7 @@ Popups.removePopup = function(popup) {
   }
   if (popup) {
     popup.$popup().remove();
-    Popups.popupStack.splice(jQuery.inArray(popup,Popups.popupStack), 1); // Remove popup from stack.  Probably should rework into .pop()
+    Popups.popupStack.splice($.inArray(popup,Popups.popupStack), 1); // Remove popup from stack.  Probably should rework into .pop()
   }
 };
 
@@ -660,10 +606,13 @@ Popups.restoreSettings = function() {
  * Remove as much of the effects of jit loading as possible.
  */
 Popups.restorePage = function() {
+  var i;
   Popups.restoreSettings();
   // Remove the CSS files that were jit loaded for popup.
-  for (var i in Popups.addedCSS) if (Popups.addedCSS.hasOwnProperty(i)) {
-    $('link[href='+ Popups.addedCSS[i] + ']').remove();
+  for (i in Popups.addedCSS) {
+    if (Popups.addedCSS.hasOwnProperty(i)) {
+      $('link[href='+ Popups.addedCSS[i] + ']').remove();
+    }
   }
   Popups.addedCSS = [];
 };
@@ -727,15 +676,20 @@ Popups.nextCounter = function() {
  * Add additional CSS to the page.
  */
 Popups.addCSS = function(css) {
+  var type, file, link, href;
   Popups.addedCSS = [];
-  for (var type in css) if (css.hasOwnProperty(type)) {
-    for (var file in css[type]) if (css[type].hasOwnProperty(file)) {
-      var link = css[type][file];
-      var href = $(link).attr('href');
-      // Does the page already contain this stylesheet?
-      if (!Popups.originalCSS[href.replace(/^(\/.+)\?\w$/, '$1')] && !Popups.addedCSS[href]) {
-        $('head').append(link);
-        Popups.addedCSS[href] = 1; // Keep a list, so we can remove them later.
+  for (type in css) {
+    if (css.hasOwnProperty(type)) {
+      for (file in css[type]) {
+        if (css[type].hasOwnProperty(file)) {
+          link = css[type][file];
+          href = $(link).attr('href');
+          // Does the page already contain this stylesheet?
+          if (!Popups.originalCSS[href.replace(/^(\/.+)\?\w$/, '$1')] && !Popups.addedCSS[href]) {
+            $('head').append(link);
+            Popups.addedCSS[href] = 1; // Keep a list, so we can remove them later.
+          }
+        }
       }
     }
   }
@@ -746,30 +700,30 @@ Popups.addCSS = function(css) {
  */
 Popups.addJS = function(js) {
   // Parse the json info about the new context.
-  var scripts = [];
-  var inlines = [];
-  var src;
-  for (var type in js) if (js.hasOwnProperty(type)) {
-    if (type != 'setting') {
-      for (var file in js[type]) if (js[type].hasOwnProperty(file)) {
-        if (type == 'inline') {
-          inlines.push($(js[type][file]).text());
-        }
-        else {
-          src = $(js[type][file]).attr('src');
-          if (!Popups.originalJS[src.replace(/^(\/.+)\?\w$/, '$1')] && !Popups.addedJS[src]) {
-            // Get the script from the server and execute it.
-            $.ajax({
-              type: 'GET',
-              url: src,
-              dataType: 'script',
-              async : false,
-              success: function(script) {
-                eval(script);
-              }
-            });
-            // Mark the js as added to the underlying page.
-            Popups.addedJS[src] = 1;
+  var inlines = [], src, type, file,
+    evalOnSuccess = function(script) { eval(script); };
+
+  for (type in js) {
+    if (js.hasOwnProperty(type) && type !== 'setting') {
+      for (file in js[type]) {
+        if (js[type].hasOwnProperty(file)) {
+          if (type === 'inline') {
+            inlines.push($(js[type][file]).text());
+          }
+          else {
+            src = $(js[type][file]).attr('src');
+            if (!Popups.originalJS[src.replace(/^(\/.+)\?\w$/, '$1')] && !Popups.addedJS[src]) {
+              // Get the script from the server and execute it.
+              $.ajax({
+                type: 'GET',
+                url: src,
+                dataType: 'script',
+                async : false,
+                success: evalOnSuccess
+              });
+              // Mark the js as added to the underlying page.
+              Popups.addedJS[src] = 1;
+            }
           }
         }
       }
@@ -777,7 +731,7 @@ Popups.addJS = function(js) {
   }
 
   // Add new JS settings to the page, needed for #ahah properties to work.
-  Drupal.settings = js.setting;
+  $.extend(true, Drupal.settings, js.setting);
 
   return inlines;
 };
@@ -790,11 +744,12 @@ Popups.addJS = function(js) {
  *   Array of inline scripts.
  */
 Popups.addInlineJS = function(inlines) {
+  var i, l;
   // Load the inlines into the page.
-  for (var n in inlines) {
+  for (i = 0, l = inlines.length; i < l; i++) {
     // If the script is not already in the page, execute it.
     //if (!$('script:not([src]):contains(' + inlines[n] + ')').length) {
-      eval(inlines[n]);
+      eval(inlines[i]);
     //}
   }
 };
@@ -874,7 +829,6 @@ Popups.openPath = function(element, options, parent) {
     }
   };
 
-  var ajaxOptions;
   if (options.reloadOnError) {
     ajaxOptions.error = function() {
       location.reload(); // Reload on error. Is this working?
@@ -1009,8 +963,8 @@ Popups.formSuccess = function(popup, data) {
 
         Popups.restoreSettings(); // Need to restore original Drupal.settings.popups.links before running attachBehaviors.  This probably has CSS side effects!
         if (popup.options.targetSelectors) { // Pick and choose what returned content goes where.
-          jQuery.each(popup.options.targetSelectors, function(t_new, t_old) {
-            if(!isNaN(t_new)) {
+          $.each(popup.options.targetSelectors, function(t_new, t_old) {
+            if (!isNaN(t_new)) {
               t_new = t_old; // handle case where targetSelectors is an array, not a hash.
             }
             var new_content = $(t_new, data.content);
@@ -1027,8 +981,8 @@ Popups.formSuccess = function(popup, data) {
 
       // Update the title of the page.
       if (popup.options.titleSelectors) {
-        jQuery.each(popup.options.titleSelectors, function() {
-          $(''+this).html(data.title);
+        $.each(popup.options.titleSelectors, function() {
+          $(this).html(data.title);
         });
       }
 
@@ -1063,7 +1017,7 @@ Popups.getLayerContext = function(layer) {
     $context = layer.$popupBody();
   }
   return $context;
-}
+};
 
 /**
  * Submit the page and reload the results, before popping up the real dialog.
@@ -1114,6 +1068,62 @@ Popups.testContentSelector = function() {
 };
 
 
+// ***************************************************************************
+// DRUPAL Namespace
+// ***************************************************************************
+
+/**
+ * Attach the popups bevior to the all the requested links on the page.
+ *
+ * @param context
+ *   The jQuery object to apply the behaviors to.
+ */
+
+Drupal.behaviors.popups = function(context) {
+  Popups.saveSettings();
+
+  var $body = $('body'),
+    $popit;
+
+  if (!$body.hasClass('popups-processed')) {
+    $body.addClass('popups-processed');
+    $(document).bind('keydown', Popups.keyHandle);
+    $popit = $('#popit');
+    if ($popit.length) {
+      $popit.remove();
+      Popups.message($popit.html());
+    }
+
+    // Make note of all the CSS and JS on the page so when we load a popup we
+    // don't try to add them a second time.
+    $('link[rel="stylesheet"][href]').each(function(i, v) {
+      Popups.originalCSS[$(this).attr('href').replace(/^(\/.+)\?\w$/, '$1')] = 1;
+    });
+    if (Drupal.settings.popups && Drupal.settings.popups.originalCSS) {
+      $.extend(Popups.originalCSS, Drupal.settings.popups.originalCSS);
+    }
+    $('script[src]').each(function(i, v) {
+      Popups.originalJS[$(this).attr('src').replace(/^(\/.+)\?\w$/, '$1')] = 1;
+    });
+    if (Drupal.settings.popups && Drupal.settings.popups.originalJS) {
+      $.extend(Popups.originalJS, Drupal.settings.popups.originalJS);
+    }
+  }
+
+  // Add the popups-link-in-dialog behavior to links defined in Drupal.settings.popups.links array.
+  // Get these from current Drupal.settings, not Popups.originalSettings, as each page has it's own hooks.
+  if (Drupal.settings.popups && Drupal.settings.popups.links) {
+    $.each(Drupal.settings.popups.links, function (link, options) {
+      Popups.attach(context, link, Popups.options(options));
+    });
+  }
+
+  Popups.attach(context, '.popups', Popups.options({updateMethod: 'none'}));
+  Popups.attach(context, '.popups-form', Popups.options({updateMethod: 'ajax'})); // ajax reload.
+  Popups.attach(context, '.popups-form-reload', Popups.options({updateMethod: 'reload'})); // whole page reload.
+  Popups.attach(context, '.popups-form-noupdate', Popups.options({updateMethod: 'none'}));  // no reload at all.
+};
+
 // ****************************************************************************
 // * Theme Functions   ********************************************************
 // ****************************************************************************
@@ -1139,7 +1149,7 @@ Drupal.theme.prototype.popupDialog = function(popupId, title, body, buttons) {
 
   var themedButtons = '';
   if (buttons) {
-    jQuery.each(buttons, function (id, button) {
+    $.each(buttons, function (id, button) {
       themedButtons += Drupal.theme('popupButton', button.title, id);
     });
   }
@@ -1161,3 +1171,5 @@ Drupal.theme.prototype.popupTemplate = function(popupId) {
   template += '</div>';
   return template;
 };
+/*jslint devel: true, onevar: false, browser: true, evil: true, undef: true, maxerr: 50, indent: 2 */
+

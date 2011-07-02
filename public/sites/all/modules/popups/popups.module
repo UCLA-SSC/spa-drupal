@@ -1,5 +1,4 @@
 <?php
-// $Id: popups.module,v 1.11.8.14 2010/12/10 19:58:10 drewish Exp $
 
 /**
  * @file
@@ -214,7 +213,7 @@ function popups_get_css() {
         $theme_styles[] = basename($theme_style);
       }
     }
-    foreach($css[$media][$type] as $file => $preprocess) {
+    foreach ($css[$media][$type] as $file => $preprocess) {
       // If the theme supplies its own style using the name of the module style, skip its inclusion.
       // This includes any RTL styles associated with its main LTR counterpart.
       if ($type == 'module' && in_array(str_replace('-rtl.css', '.css', basename($file)), $theme_styles)) {
@@ -231,7 +230,7 @@ function popups_get_css() {
         }
         // If a CSS file is not to be preprocessed and it's a theme CSS file, it needs to *always* appear at the *bottom*,
         // regardless of whether preprocessing is on or off.
-        else if ($type == 'theme') {
+        elseif ($type == 'theme') {
           $popup_css['theme'][$file] = '<link type="text/css" rel="stylesheet" media="'. $media .'" href="'. base_path() . $file . $query_string .'" />'."\n";
         }
         else {
@@ -300,7 +299,7 @@ function popups_add_popups($rules=NULL) {
         $settings['popups']['links'][$options] = array();
       }
     }
-    if($added) {
+    if ($added) {
       drupal_add_js( $settings, 'setting' );
     }
   }
@@ -309,7 +308,7 @@ function popups_add_popups($rules=NULL) {
     global $custom_theme;
     $theme = $custom_theme;
     if (!$theme) {
-      $theme = variable_get('theme_default','none');
+      $theme = variable_get('theme_default', 'none');
     }
 
     drupal_add_js('misc/jquery.form.js');
@@ -319,7 +318,7 @@ function popups_add_popups($rules=NULL) {
     // Allow skinning of the popup.
     $skin = variable_get('popups_skin', 'Basic');
     $skins = popups_skins();
-    if (!$skins[$skin]['css']) { // $skin == 'Unskinned'
+    if (!isset($skins[$skin]['css'])) { // $skin == 'Unskinned'
       // Look in the current theme for popups-skin.js
       drupal_add_js(drupal_get_path('theme', $theme) . '/popups-skin.js');
     }

@@ -1,5 +1,4 @@
 <?php
-// $Id: domain.bootstrap.inc,v 1.10.2.7 2010/10/22 21:05:38 agentken Exp $
 /**
  * @file
  * Domain bootstrap file.

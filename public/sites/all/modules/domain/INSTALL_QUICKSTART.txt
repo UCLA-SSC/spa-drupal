@@ -1,5 +1,3 @@
-// $Id: INSTALL_QUICKSTART.txt,v 1.10 2009/10/27 16:08:59 agentken Exp $
-
 /**
  * @file
  * Quickstart INSTALL file for Domain Access.

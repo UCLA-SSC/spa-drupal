@@ -1,12 +1,11 @@
-; $Id: headerimage.info,v 1.4 2008/04/07 07:46:01 sutharsan Exp $
 name = Header Image
 description = Displays an image in a header block.
 core = 6.x
 package = Other
 
-; Information added by drupal.org packaging script on 2010-07-11
+; Information added by drupal.org packaging script on 2011-05-06
 version = "6.x-1.x-dev"
 core = "6.x"
 project = "headerimage"
-datestamp = "1278834465"
+datestamp = "1304683731"
 
