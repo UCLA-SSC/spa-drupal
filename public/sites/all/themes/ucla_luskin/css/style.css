@@ -205,6 +205,8 @@ h2.pane-title, h2.pane-title a {
 
 .top-pane {
 	margin-bottom: 20px;
+  /* RG 20110708 */
+  margin-left: -31px;
 }
 
 .yellow-block {
