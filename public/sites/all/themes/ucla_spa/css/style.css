@@ -1556,6 +1556,8 @@ ul.links li.blog_usernames_blog {
 .view-student-profile-view img.imagefield-field_student_profile_photo, 
 .node-type-student-profile .field-field-student-profile-photo
 {float:left;border:1px solid #666;margin:0 10px 10px 0;}
+.node-type-student-profile .field-field-student-profile-photo
+{margin-top:-20px;}
 .node-type-student-profile .field-field-student-profile-name
-{font-size:1.2em;margin-left:257px;}
+{font-size:1.4em;margin:20px 0 0 257px;}
 
