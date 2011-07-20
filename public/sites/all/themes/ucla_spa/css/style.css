@@ -1550,3 +1550,8 @@ ul.links li.blog_usernames_blog {
   margin-top:15px;
   }
 
+
+/*student profiles*/
+
+.view-student-profile-view img.imagefield-field_student_profile_photo
+{float:left;border:1px solid #666;margin:0 10px 10px 0;}
