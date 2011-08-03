@@ -63,6 +63,6 @@ img.print-logo {border: 0;}
 #print-poster .meta {display:none;}
 
 .field-field-poster-head-img {text-align:center;}
-.field-field-poster-left {width:200px;float:left;padding:30px 10px;height:590px;overflow: hidden;}
-.field-field-poster-info {margin-left:220px;width:430px;height:600px;overflow:hidden;padding-top:30px;}
-.field-field-poster-foot {clear:both;height:70px;overflow: hidden;}
+.field-field-poster-left {width:190px;float:left;padding:30px 20px 30px 10px;height:550px;overflow: hidden;font-family:helvetica,arial,sans-serif;}
+.field-field-poster-info {margin-left:220px;width:430px;height:560px;overflow:hidden;padding-top:30px;}
+.field-field-poster-foot {clear:both;height:110px;overflow: hidden;vertical-align: bottom;}
