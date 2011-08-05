@@ -155,10 +155,14 @@ h2.pane-title, h2.pane-title a {
 .teasers label {
 	font-weight: normal;
 }
-.teasers .views-field-view-node,
-.view-faculty-updates .views-field-view-node {
+.teasers .views-field-view-node {
 	clear: both;
 	padding: 15px 0 15px 0;
+}
+
+.view-faculty-updates .views-field-view-node {
+	clear: both;
+	padding: 0 0 15px 0;
 }
 .teasers .views-field-view-node a,
 .view-faculty-updates .views-field-view-node a,
