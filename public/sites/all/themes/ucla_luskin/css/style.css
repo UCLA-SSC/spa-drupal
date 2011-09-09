@@ -199,6 +199,17 @@ h2.pane-title, h2.pane-title a {
 	display: inline;
 	font-size: 90%;
 }
+/* RG 20110909 */
+#newsletter-signup {
+  background-color: #333;
+  border-radius: 10px 10px 10px 10px;
+  clear: both;
+  color: white;
+  float: right;
+  font-size: 0.9em;
+  margin: 4px 0 0;
+  padding: 0 44px 2px;
+}
 #edit-menu-parent-hierarchical-select-selects-0 {
 	display: none;
 }
@@ -1742,6 +1753,13 @@ ul.links li.blog_usernames_blog {
 }
 .calendar-calendar .date-prev, .calendar-calendar .date-next {
 	display: none;
+}
+/* RG changes */
+.page-events .calendar-calendar .date-prev, .page-events .calendar-calendar .date-next {
+  display: block;
+  font-size: 1.5em;
+  position: relative;
+  top: -.2em;
 }
 .calendar-calendar th.days,
 .calendar-calendar div.date-nav,
