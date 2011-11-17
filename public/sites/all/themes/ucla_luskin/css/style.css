@@ -1942,12 +1942,13 @@ body.mceContentBody {
 	margin: -10px 15px 0 0;
 }
 
-
-
 .view-id-date_browser.view-display-id-panel_pane_2 .views-field-title a {
 	color: #666;
 }
 
+.view-id-date_browser.view-display-id-panel_pane_2 .views-field-title a:hover {
+  color: #111;
+}
 
 
 /*publications*/
