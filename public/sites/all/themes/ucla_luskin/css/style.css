@@ -392,7 +392,7 @@ h2.pane-title, h2.pane-title a {
 	clear: both;
 }
 .view-date-browser .views-field-field-date-value {
-	color: #3399ff;
+	color: #666;
 	font-weight: bold;
 	margin-right: 3px;
 	font-size: .9em;
@@ -1943,12 +1943,14 @@ body.mceContentBody {
 }
 
 .view-id-date_browser.view-display-id-panel_pane_2 .views-field-title a {
-	color: #666;
+	color: #3399FF;
 }
 
+/*
 .view-id-date_browser.view-display-id-panel_pane_2 .views-field-title a:hover {
   color: #111;
 }
+*/
 
 
 /*publications*/
