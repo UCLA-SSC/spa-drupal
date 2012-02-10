@@ -1688,6 +1688,16 @@ ul.links li.blog_usernames_blog {
 .pane-views-panes.pane-initiatives-terms-panel-pane-5 .pane-content {
 	padding-left: 15px;
 }
+/* Correct 2nd column width on initiative pages RG 20120310 */
+.Topic .panel-2col-stacked .panel-col-first {
+    float: left;
+    width: 45%;
+    margin-right: 8px;
+}
+.Topic .panel-2col-stacked .panel-col-last {
+    float: left;
+    width: 45%;
+}
 .field-wrapper.Luskin.Center {
 	display: none;
 }
