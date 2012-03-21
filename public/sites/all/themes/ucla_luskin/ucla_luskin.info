@@ -5,6 +5,7 @@ base theme = blueprint
 
 stylesheets[screen,projection][] = css/style.css
 stylesheets[screen,projection][] = css/menus.css
+stylesheets[print][] = css/print.css
 
 regions[left] = Left sidebar
 regions[right] = Right sidebar
