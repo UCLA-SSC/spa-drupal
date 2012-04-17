@@ -469,13 +469,13 @@ float: left;
 	padding: 10px 0 10px 0;
 }
 
-.pane-date-browser-panel-pane-5 {
+#event-list-pane {
   margin-left: 10px;
   margin-top: 22px;
   border-bottom: 2px solid #303440;
 }
 
-.pane-date-browser-panel-pane-5 h2 a {
+#event-list-pane h2 a {
   font-size: 20.8px;
 }
 
