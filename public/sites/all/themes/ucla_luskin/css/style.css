@@ -363,10 +363,18 @@ h2.pane-title, h2.pane-title a {
 	color: #336699;
 }
 /*Events Page */
-.view-date-browser .views-row,
 .view-id-News.view-display-id-panel_pane_1 .views-row {
 	clear: both;
 	border-bottom: 1px solid #E2E2E2;
+}
+.view-date-browser .views-row {
+	clear: both;
+  padding-top: 5px;
+  margin-bottom: 5px;
+}
+.view-date-browser .views-row + .views-row {
+	border-top: 1px solid #E2E2E2;
+  padding-top: 10px;
 }
 .view-date-browser .views-field-view-node,
 .view-id-News.view-display-id-panel_pane_1 .views-field-view-node {
@@ -388,7 +396,8 @@ h2.pane-title, h2.pane-title a {
 	padding-bottom: 5px;
 	font-size: 1.8em;
 	margin-bottom: 0px;
-	margin-top: 20px;
+	/*margin-top: 20px;*/
+	margin-top: 12px;
 	clear: both;
 }
 .view-date-browser .views-field-field-date-value {
@@ -460,6 +469,15 @@ float: left;
 	padding: 10px 0 10px 0;
 }
 
+.pane-date-browser-panel-pane-5 {
+  margin-left: 10px;
+  margin-top: 22px;
+  border-bottom: 2px solid #303440;
+}
+
+.pane-date-browser-panel-pane-5 h2 a {
+  font-size: 20.8px;
+}
 
 /*Faculty Index */
 
