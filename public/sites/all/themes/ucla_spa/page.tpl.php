@@ -35,6 +35,7 @@
     </div>
       <div id="top-right">
       <?php $school=node_load(422);?>
+      <a href="<?php print $school->field_luskin_online[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/LuskinOnlinewb.jpg"/></a>      
       <a href="<?php print $school->field_linkedin[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/linkedin-big.png"/></a>
       <a href="<?php print $school->field_facebook[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/facebook-big.png"/></a>
       <a href="http://twitter.com/<?php print $school->field_twitter[0]['value']?>"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
