@@ -1757,6 +1757,7 @@ ul.links li.blog_usernames_blog {
 }
 
 
+#calendar-block-month,
 .pane-views-calendar-calendar-block-1 {
 	width: 284px;
 	margin-left: 10px;
@@ -1796,7 +1797,8 @@ ul.links li.blog_usernames_blog {
 	border: 0px;
 	background: none;
 }
-#calendar-block-month .feed-icon {
+#calendar-block-month .feed-icon, 
+.pane-views-calendar-calendar-block-1 .feed-icon {
 	display: none;
 }
 .calendar-calendar tr td {
