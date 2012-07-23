@@ -377,6 +377,18 @@ function ucla_spa_comment_wrapper($content, $node) {
 }
 
 /**
+ * Override comment wrapper to hide comments in Full publications.
+ */
+function ucla_luskin_comment_wrapper($content, $node) {
+  if ($node->type == 'full_publication') {
+    $content = '';
+
+    return $content;
+  }
+
+}
+
+/**
  * Override, use better icons, source: http://drupal.org/node/102743#comment-664157
  *
  * Format the icon for each individual topic.
