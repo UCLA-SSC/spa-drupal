@@ -5,6 +5,7 @@
   background:#333;
   margin-top:17px;
   font-size:12px;
+  z-index: 10;
   }
 ul.nice-menu-down {
   float: left;

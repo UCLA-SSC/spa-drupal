@@ -9,6 +9,10 @@
 	<?php print $meta; ?>
   <?php print $head; ?>
   <?php print $styles; ?>
+  <!--[if IE 8]>
+    <link rel="stylesheet" href="<?php print $path; ?>blueprint/blueprint/ie.css" type="text/css" media="screen, projection">
+  	<link href="<?php print $path; ?>css/ie8.css" rel="stylesheet"  type="text/css"  media="screen, projection" />
+  <![endif]-->  
   <!--[if lte IE 7]>
     <link rel="stylesheet" href="<?php print $path; ?>blueprint/blueprint/ie.css" type="text/css" media="screen, projection">
   	<link href="<?php print $path; ?>css/ie.css" rel="stylesheet"  type="text/css"  media="screen, projection" />
