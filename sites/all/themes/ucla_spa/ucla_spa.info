@@ -1,0 +1,47 @@
+name = UCLA SPA
+description = Theme for UCLA SPA built on the Blueprint css framework
+core = 6.x
+base theme = blueprint
+
+stylesheets[screen,projection][] = css/style.css
+stylesheets[screen,projection][] = css/menus.css
+
+regions[left] = Left sidebar
+regions[right] = Right sidebar
+regions[content] = Content
+regions[header] = Header
+regions[top] = Top
+regions[footer] = Footer
+regions[footer_1] = Footer 1
+regions[footer_2] = Footer 2
+regions[footer_3] = Footer 3
+regions[footer_4] = Footer 4
+
+plugins[panels][layouts] = blueprintgrid
+
+skinr[menu-style][1][label] = Menu Style: Upper drop down
+skinr[menu-style][1][class] = menu-style upper-drop-down
+skinr[menu-style][2][label] = Menu Style: Left Navy and Gray
+skinr[menu-style][2][class] = menu-style left-navy-gray
+
+skinr[block-style][1][label] = Block Style: Right Yellow Header
+skinr[block-style][1][class] = block-style right-yellow-header
+skinr[block-style][2][label] = Block Style: Right Baby Blue Header
+skinr[block-style][2][class] = block-style right-baby-blue-header
+skinr[block-style][3][label] = Block Style: Right Green Header
+skinr[block-style][3][class] = block-style right-green-header
+skinr[block-style][4][label] = Block Style: Right Full Blue 
+skinr[block-style][4][class] = block-style right-full-blue
+skinr[block-style][5][label] = Block Style: Right Grey Links 
+skinr[block-style][5][class] = block-style right-grey-links
+skinr[block-style][6][label] = Block Style: Center Teasers
+skinr[block-style][6][class] = block-style center-teasers
+skinr[block-style][7][label] = Block Style: Spotlight
+skinr[block-style][7][class] = block-style spotlight
+
+
+
+
+
+skinr[rounded][label] = Rounded
+skinr[rounded][class] = rounded

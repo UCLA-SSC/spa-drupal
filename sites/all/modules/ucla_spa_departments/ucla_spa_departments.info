@@ -1,0 +1,6 @@
+; $Id: $
+name = ucla_spa_departments export module
+description = Export objects from CTools
+dependencies[] = page_manager
+package = Chaos tool suite
+core = 6.x

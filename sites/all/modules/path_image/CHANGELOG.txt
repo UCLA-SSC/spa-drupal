@@ -1,0 +1,17 @@
+// $Id: CHANGELOG.txt,v 1.4 2009/05/13 13:45:17 sun Exp $
+
+Path Image x.x-x.x, xxxx-xx-xx
+------------------------------
+
+
+Path Image 6.x-1.x, xxxx-xx-xx
+------------------------------
+
+
+Path Image 6.x-1.0, 2009-05-13
+------------------------------
+#365480 by sun: Code clean-up; Added support for URL aliases.
+#365480 by sun: Code clean-up and sync of branches.
+#352291 by sun: Ported Path Image to 6.x.
+
+

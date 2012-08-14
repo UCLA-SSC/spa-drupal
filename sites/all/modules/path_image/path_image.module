@@ -1,0 +1,482 @@
+<?php
+// $Id: path_image.module,v 1.12 2009/05/13 13:41:32 sun Exp $
+
+/**
+ * @file
+ * Path image module; provides an image block depending on the path.
+ */
+
+/**
+ * Implementation of hook_perm().
+ */
+function path_image_perm() {
+  return array('Path image admin');
+}
+
+/**
+ * Implementation of hook_theme().
+ */
+function path_image_theme() {
+  return array(
+    'path_image_block_0' => array(
+      'arguments' => array('params' => NULL),
+    ),
+    'path_image_form_wrapper' => array(
+      'arguments' => array('arg' => NULL, 'params' => array()),
+    ),
+  );
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function path_image_menu() {
+  $items['admin/settings/path_image'] = array(
+    'title' => 'Path image',
+    'access arguments' => array('Path image admin'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('path_image_settings_form'),
+    'description' => 'Provides an block containing an image dependent upon the URL path',
+  );
+  return $items;
+}
+
+/**
+ * Implementation of hook_form_FORM_ID_alter().
+ */
+function path_image_form_block_admin_configure_alter(&$form, $form_state, $form_id) {
+  if (isset($form['module']['#value']) && 'path_image' == $form['module']['#value']) {
+    $form['path_image'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Block content set-up'),
+      '#collapsible' => TRUE,
+      '#weight' => -100,
+    );
+    $form['path_image']['markup_help'] = array(
+      '#type' => 'markup',
+      '#value' => t('This section allows you to control the visibility of the block. To administer the content please visit the <a href="@path-image-settings-url">administration section</a>.', array('@path-image-settings-url' => url('admin/settings/path_image'))),
+    );
+  }
+}
+
+/**
+ * Implementation of hook_block().
+ */
+function path_image_block($op = 'list', $delta = 0, $edit = array()) {
+  switch ($op) {
+    case 'list':
+      $blocks[0] = array(
+        'info' => t('Path image'),
+        'weight' => -10,
+        'region' => 'left',
+      );
+      return $blocks;
+
+    case 'view':
+      return _path_image_block_main($delta);
+  }
+}
+
+function _path_image_block_main() {
+  global $base_url;
+
+  $is_forbidden = (strpos(drupal_set_header(), '403 Forbidden') !== FALSE);
+  $is_front = ($_GET['q'] == variable_get('site_frontpage', 'node'));
+
+  if (!$is_forbidden || !$is_front) {
+    $parts = array();
+    foreach (explode('/', $_GET['q']) as $arg) {
+      if (is_numeric($arg) && variable_get('path_image_numeric_use', 1)) {
+        break;
+      }
+      else {
+        $parts[] = $arg;
+      }
+    }
+    $alias = drupal_get_path_alias($_GET['q']);
+    if ($alias != $_GET['q']) {
+      $alias_parts = array();
+      foreach (explode('/', $alias) as $arg) {
+        if (is_numeric($arg) && variable_get('path_image_numeric_use', 1)) {
+          break;
+        }
+        else {
+          $alias_parts[] = $arg;
+        }
+      }
+    }
+  }
+
+  if (!empty($parts)) {
+    // Build query conditions by climbing up the path arguments.
+    $query_args = array();
+    $path_prefix = '';
+    $path_wildcard_prefix = '';
+    foreach ($parts as $arg) {
+      $path_prefix .= (empty($path_prefix) ? $arg : '/' . $arg);
+      $query_args[] = $path_prefix;
+      if (is_numeric($arg)) {
+        $arg = '%';
+      }
+      $path_wildcard_prefix .= (empty($path_wildcard_prefix) ? $arg : '/' . $arg);
+      if ($path_prefix != $path_wildcard_prefix) {
+        $query_args[] = $path_wildcard_prefix;
+      }
+    }
+    if (!empty($alias_parts)) {
+      $alias_prefix = '';
+      $alias_wildcard_prefix = '';
+      foreach ($alias_parts as $arg) {
+        $alias_prefix .= (empty($alias_prefix) ? $arg : '/' . $arg);
+        $query_args[] = $alias_prefix;
+        if (is_numeric($arg)) {
+          $arg = '%';
+        }
+        $alias_wildcard_prefix .= (empty($alias_wildcard_prefix) ? $arg : '/' . $arg);
+        if ($alias_prefix != $alias_wildcard_prefix) {
+          $query_args[] = $alias_wildcard_prefix;
+        }
+      }
+    }
+    $sql = "SELECT image_file FROM {path_image_data} WHERE path IN (" . db_placeholders($query_args, 'varchar') . ") ORDER BY LENGTH(path) DESC";
+    $file = db_result(db_query($sql, $query_args, 0, 1));
+  }
+
+  // If no matching path was found, determine whether we need to display the
+  // front page image or default image.
+  if (empty($file)) {
+    if ($is_front && variable_get('path_image_homepage_use', 0)) {
+      $file = variable_get('path_image_homepage_image', FALSE);
+    }
+    elseif (variable_get('path_image_default_use', 0)) {
+      $file = variable_get('path_image_default_image', FALSE);
+    }
+    // Return an empty block if we have no image file to display.
+    else {
+      return array();
+    }
+  }
+
+  $filepath = file_directory_path() . '/' . variable_get('path_image_repository', 'images') . '/' . $file;
+  if (!file_exists($filepath)) {
+    return array();
+  }
+  $params = array(
+    'filepath' => $filepath,
+    'full_uri' => file_create_url($filepath),
+  );
+  return array(
+    'subject' => variable_get('path_image_block_subject', t('Path image')),
+    'content' => theme('path_image_block_0', $params),
+  );
+}
+
+/**
+ * Render Path image block content.
+ *
+ * @param $params
+ *   An array containing image file parameters.
+ */
+function theme_path_image_block_0($params) {
+  return theme('image', $params['filepath'], '', '');
+}
+
+/**
+ * Form builder function for Path image settings.
+ */
+function path_image_settings_form() {
+  $form = array();
+  $files = _path_image_get_image_files();
+
+  $form['path_image']['block_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Block title'),
+    '#default_value' => variable_get('path_image_block_subject', t('Path image')),
+    '#size' => 40,
+    '#description' => t('The title of the block. Leave blank to display no title.'),
+  );
+  $form['path_image']['repos'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Image repository'),
+    '#default_value' => variable_get('path_image_repository', 'images'),
+    '#size' => 40,
+    '#description' => t('Set this to the location of your image files stored on the server. This folder is relative to your <b>file system path</b> folder. <em>Note, no leading / (slash)</em>'),
+  );
+
+  $form['path_image']['file_types'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowable file types in repository'),
+    '#default_value' => implode(', ', variable_get('path_image_file_types', array('gif', 'jpg', 'png'))),
+    '#size' => 40,
+    '#description' => t('Comma seperated list of allowable file types to look for within the specified image file repository'),
+  );
+
+  $form['path_image']['numeric_use'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Numeric parse halt'),
+    '#default_value' => variable_get('path_image_numeric_use', 1),
+    '#description' => t('When scanning a path this halts the scan at the first numeric found. If you want to scan the entire path then ensure this is off (default is on)'),
+  );
+
+  $form['path_image']['homepage_image'] = array(
+    '#type' => 'select',
+    '#title' => t('Default image for the homepage'),
+    '#default_value' => variable_get('path_image_homepage_image', reset($files)),
+    '#options' => $files,
+    '#prefix' => theme('path_image_form_wrapper', 'cell_first_prefix', array('cell' => array('valign' => 'top'))),
+  );
+  $form['path_image']['homepage_use'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use this image on the homepage'),
+    '#default_value' => variable_get('path_image_homepage_use', 0),
+    '#suffix' => theme('path_image_form_wrapper', 'cell_middle_suffix'),
+  );
+
+  $form['path_image']['mid_markup'] = array(
+    '#type' => 'markup',
+    // Add white-space between table cells.
+    '#value' => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+    '#prefix' => theme('path_image_form_wrapper', 'cell_middle_prefix', array('cell' => array('valign' => 'top'))),
+    '#suffix' => theme('path_image_form_wrapper', 'cell_middle_suffix'),
+  );
+
+  $form['path_image']['default_image'] = array(
+    '#type' => 'select',
+    '#title' => t('Default image when no match made'),
+    '#default_value' => variable_get('path_image_default_image', reset($files)),
+    '#options' => $files,
+    '#prefix' => theme('path_image_form_wrapper', 'cell_middle_prefix', array('cell' => array('valign' => 'top'))),
+  );
+  $form['path_image']['default_use'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use this image when no match is made'),
+    '#default_value' => variable_get('path_image_default_use', 0),
+    '#suffix' => theme('path_image_form_wrapper', 'cell_last_suffix'),
+  );
+
+  $form['path_image']['new_entry'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('New path entry'),
+    '#tree' => TRUE,
+  );
+  $form['path_image']['new_entry']['new_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Add a new path'),
+    '#default_value' => '',
+    '#size' => 50,
+    '#description' => t('Enter a new path. <em>Note, no leading / (slash)</em>'),
+    '#prefix' => theme('path_image_form_wrapper', 'cell_first_prefix', array('table' => array('border' => '0'), 'cell' => array('valign' => 'top'))),
+    '#suffix' => theme('path_image_form_wrapper', 'cell_first_suffix'),
+    '#disabled' => count($files) ? FALSE : TRUE,
+  );
+  if (count($files)) {
+    $form['path_image']['new_entry']['new_image'] = array(
+      '#type' => 'select',
+      '#title' => t('Select an image'),
+      '#default_value' => '',
+      '#options' => $files,
+      '#prefix' => theme('path_image_form_wrapper', 'cell_last_prefix', array('cell' => array('valign' => 'top'))),
+      '#suffix' => theme('path_image_form_wrapper', 'cell_last_suffix'),
+    );
+  }
+  else {
+    $form['path_image']['new_entry']['new_image_markup'] = array(
+      '#type' => 'markup',
+      '#value' => t('No files available for selection'),
+      '#prefix' => theme('path_image_form_wrapper', 'cell_last_prefix', array('cell' => array('valign' => 'top'))),
+      '#suffix' => theme('path_image_form_wrapper', 'cell_last_suffix'),
+    );
+  }
+
+  $result = db_query("SELECT * FROM {path_image_data} ORDER BY path ASC");
+  $row_counter = 0;
+  while ($row = db_fetch_object($result)) {
+    if (count($files)) {
+      $form['path_image']['existing_entries'][$row_counter]['pid'] = array(
+        '#type' => 'hidden',
+        '#default_value' => $row->pid,
+      );
+      $form['path_image']['existing_entries'][$row_counter]['path'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Alter a path'),
+        '#default_value' => $row->path,
+        '#size' => 50,
+        '#description' => t('Amend the path. <em>Note, no leading / (slash)</em>'),
+        '#prefix' => theme('path_image_form_wrapper', 'cell_first_prefix', array('cell' => array('valign' => 'top'))),
+        '#suffix' => theme('path_image_form_wrapper', 'cell_first_suffix'),
+      );
+      $form['path_image']['existing_entries'][$row_counter]['image_file'] = array(
+        '#type' => 'select',
+        '#title' => t('Select an image'),
+        '#default_value' => $row->image_file,
+        '#options' => $files,
+        '#prefix' => theme('path_image_form_wrapper', 'cell_middle_prefix', array('cell' => array('valign' => 'top'))),
+        '#suffix' => theme('path_image_form_wrapper', 'cell_middle_suffix'),
+      );
+      $form['path_image']['existing_entries'][$row_counter]['delete'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Delete'),
+        '#prefix' => theme('path_image_form_wrapper', 'cell_last_prefix', array('cell' => array('valign' => 'middle'))),
+        '#suffix' => theme('path_image_form_wrapper', 'cell_last_suffix'),
+      );
+    }
+    else {
+      $form['path_image']['existing_entries'][$row_counter]['path_markup'] = array(
+        '#type' => 'markup',
+        '#value' => check_plain($row->path),
+        '#suffix' => '&nbsp; -- &nbsp;',
+      );
+      $form['path_image']['existing_entries'][$row_counter]['image_file_markup'] = array(
+        '#type' => 'markup',
+        '#value' => t('No files available for selection'),
+        '#suffix' => theme('path_image_form_wrapper', 'new_line'),
+      );
+    }
+    $row_counter++;
+  }
+  if ($row_counter) {
+    $form['path_image']['existing_entries']['#type'] = 'fieldset';
+    $form['path_image']['existing_entries']['#title'] = format_plural($row_counter, '1 existing path entry', '@count existing path entries');
+    $form['path_image']['existing_entries']['#tree'] = TRUE;
+  }
+
+  $form['path_image']['submit'] = array('#type' => 'submit', '#value' => t('Save'));
+
+  return $form;
+}
+
+/**
+ * Form validation function for Path image settings form.
+ */
+function path_image_settings_form_validate($form, &$form_state) {
+  if ($form_state['values']['default_image'] == 'no image selected') {
+    form_set_error('default_image', t('You must set this even if you do not intend to use it'));
+  }
+}
+
+/**
+ * Form submit function for Path image settings form.
+ */
+function path_image_settings_form_submit($form, &$form_state) {
+  variable_set('path_image_block_subject', $form_state['values']['block_subject']);
+  variable_set('path_image_repository', $form_state['values']['repos']);
+  variable_set('path_image_default_image', $form_state['values']['default_image']);
+  variable_set('path_image_default_use', $form_state['values']['default_use']);
+  variable_set('path_image_homepage_image', $form_state['values']['homepage_image']);
+  variable_set('path_image_homepage_use', $form_state['values']['homepage_use']);
+  variable_set('path_image_numeric_use', $form_state['values']['numeric_use']);
+
+  $file_types = explode(',', $form_state['values']['file_types']);
+  if (is_array($file_types)) {
+    foreach ($file_types as $k => $v) {
+      $file_types[$k] = trim($v);
+    }
+    variable_set('path_image_file_types', $file_types);
+  }
+
+  if (strlen($form_state['values']['new_entry']['new_path']) && strlen($form_state['values']['new_entry']['new_image'])) {
+    db_query("INSERT INTO {path_image_data} SET path = '%s', image_file = '%s'", $form_state['values']['new_entry']['new_path'], $form_state['values']['new_entry']['new_image']);
+  }
+
+  if (isset($form_state['values']['existing_entries']) && is_array($form_state['values']['existing_entries'])) {
+    foreach ($form_state['values']['existing_entries'] as $entry) {
+      if (isset($entry['delete']) && (int)$entry['delete']) {
+        db_query("DELETE FROM {path_image_data} WHERE pid = %d", $entry['pid']);
+      }
+      else {
+        if (isset($entry['pid']) && is_numeric($entry['pid']) && strlen($entry['image_file'])) {
+          db_query("UPDATE {path_image_data} SET path = '%s', image_file = '%s' WHERE pid = %d", $entry['path'], $entry['image_file'], $entry['pid']);
+        }
+      }
+    }
+  }
+
+  drupal_set_message(t('Your settings have been saved'));
+}
+
+/**
+ * Theme function for form element wrappers.
+ */
+function theme_path_image_form_wrapper($arg, $params = array()) {
+  $table_attribs = '';
+  if (isset($params['table']) && is_array($params['table'])) {
+    foreach ($params['table'] as $key => $attrib) {
+      $table_attribs .= $key . '="' . $attrib . '" ';
+    }
+  }
+
+  $row_attribs = '';
+  if (isset($params['row']) && is_array($params['row'])) {
+    foreach ($params['row'] as $key => $attrib) {
+      $row_attribs .= $key . '="' . $attrib . '" ';
+    }
+  }
+
+  $cell_attribs = '';
+  if (isset($params['cell']) && is_array($params['cell'])) {
+    foreach ($params['cell'] as $key => $attrib) {
+      $cell_attribs .= $key . '="' . $attrib . '" ';
+    }
+  }
+
+  switch ($arg) {
+    case 'cell_first_prefix':
+      return "<table $table_attribs ><tr $row_attribs ><td $cell_attribs >";
+
+    case 'cell_first_suffix':
+      return "</td>";
+
+    case 'cell_middle_prefix':
+      return "<td $cell_attribs>&nbsp;</td><td $cell_attribs >";
+
+    case 'cell_middle_suffix':
+      return "</td>";
+
+    case 'cell_last_prefix':
+      return "<td $cell_attribs >&nbsp;</td><td $cell_attribs >";
+
+    case 'cell_last_suffix':
+      return "</td></tr></table>";
+
+    case 'new_line':
+      return "<br $class />";
+
+    case 'new_para':
+      return "<p $class />";
+  }
+}
+
+/**
+ * Retrieve a list of available image files.
+ *
+ * @return
+ *   An array suitable to use as Form API '#options' value.
+ */
+function _path_image_get_image_files() {
+  static $files;
+
+  if (isset($files)) {
+    return $files;
+  }
+
+  $files = array();
+  $file_types = variable_get('path_image_file_types', array('gif', 'jpg', 'png'));
+  $dir = file_create_path(variable_get('path_image_repository', 'images'));
+
+  if (is_dir($dir)) {
+    if ($dh = opendir($dir)) {
+      while (($file = readdir($dh)) !== FALSE) {
+        $file_info = pathinfo($file);
+        if (in_array($file_info['extension'], $file_types)) {
+          $files[$file] = $file;
+        }
+      }
+      closedir($dh);
+    }
+  }
+  // Sort alphabetically.
+  ksort($files);
+
+  return $files;
+}
+

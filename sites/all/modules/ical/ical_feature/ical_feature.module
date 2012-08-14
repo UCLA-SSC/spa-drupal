@@ -1,0 +1,3 @@
+<?php
+
+include_once('ical_feature.features.inc');

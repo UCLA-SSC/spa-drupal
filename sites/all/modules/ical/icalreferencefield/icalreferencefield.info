@@ -1,0 +1,15 @@
+; $Id: icalreferencefield.info,v 1.1 2010/09/21 22:20:34 crell Exp $
+name = iCal Reference Field
+description = Defines a field to reference an iCal field in another node, by particular instance.
+dependencies[] = content
+dependencies[] = ical
+dependencies[] = icalfield
+package = CCK
+core = 6.x
+
+; Information added by drupal.org packaging script on 2010-10-25
+version = "6.x-1.0-alpha3"
+core = "6.x"
+project = "ical"
+datestamp = "1288036862"
+

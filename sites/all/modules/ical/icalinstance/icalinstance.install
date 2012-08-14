@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Implementation of hook_install().
+ */
+function icalinstance_install() {
+  drupal_install_schema('icalinstance');
+}
+
+/**
+ * Implementation of hook_install().
+ */
+function icalinstance_schema() {
+  $schema = array();
+
+  $schema['icalinstance_events'] = array(
+    'fields' => array(
+      'nid' => array(
+        'description' => t('The nid of the node that should still be processed.'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+      'last_updated' => array(
+        'description' => t('Timestamp of when this node was last processed.'),
+        'type' => 'int',
+        'not null' => TRUE,
+      ),
+    ),
+    'primary key' => array('nid'),
+  );
+
+  return $schema;
+}
