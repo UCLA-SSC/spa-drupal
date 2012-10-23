@@ -55,6 +55,7 @@
 			  <a href="/sitemap"><img src="/<?php print path_to_theme()?>/images/rss-big.png"/></a>
 		  </div>	
 	  </div>	  
+    <a style="clear: both; float: right;" href="http://visitor.r20.constantcontact.com/manage/optin/ea?v=0019X2hOI7p7lD0fkHNp6iFXw%3D%3D" id="newsletter-signup" target="_blank">Join Our Email List</a>
     </div>
     <?php print $header; ?>
     

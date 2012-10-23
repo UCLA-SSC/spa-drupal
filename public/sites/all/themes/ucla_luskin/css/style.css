@@ -208,7 +208,7 @@ h2.pane-title, h2.pane-title a {
   float: right;
   font-size: 0.9em;
   margin: 4px 0 0;
-  padding: 0 44px 2px;
+  padding: 0 65px 2px;
 }
 #edit-menu-parent-hierarchical-select-selects-0 {
 	display: none;
@@ -2110,6 +2110,17 @@ body.mceContentBody {
 	  padding-left:8px;
 }*/
 
+#edit-keys {
+  width: 135px;
+}
+
+#edit-submit-glossary {
+  width: 135px;
+}
+
+.view-glossary .views-exposed-widgets > div + div + div + div + div {
+  float: right;
+}
 
 .page-events-dashboard h2.main-title {
 	display:block;
