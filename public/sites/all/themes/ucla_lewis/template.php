@@ -715,15 +715,17 @@ function ucla_spa_tweetsimple_getblock($tweet_uri, $num) {
   // echo '<pre>'; print_r($tweets); echo '</pre>';
   if (count($tweets_final)) {
  	 $output.=theme('tweetsimple_tweets', $tweets_final);
+ 	 $name=str_replace('https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=', '', $tweet_uri);
+ 	 $twurl='https://twitter.com/';
  	 $link=str_replace('/statuses/user_timeline', '', $tweet_uri);
  	 $link=str_replace('.atom','',$link);
  	 if (arg(0) == 'node' && is_numeric(arg(1))) {
  	   $node=node_load(arg(1));
  	   }
  	 if ($node->type == 'faculty_profile') {
- 	   $output.= "<div class='tweetlink'><a href='". $link ."'>Visit the Professor's Twitter Page</a></div>";
+ 	   $output.= "<div class='tweetlink'><a href='". $twurl. $name ."'>Visit the Professor's Twitter Page</a></div>";
  	 } else {
- 	    $output.= "<div class='tweetlink'><a href='". $link ."'>Visit our Twitter Page</a></div>";
+ 	    $output.= "<div class='tweetlink'><a href='". $twurl . $name ."'>Visit our Twitter Page</a></div>";
  	 } 
  	 return $output;
   } else {

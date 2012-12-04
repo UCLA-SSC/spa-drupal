@@ -40,7 +40,7 @@
               <?php print t($label) ?>:&nbsp;</div>
           <?php } ?>
           <?php drupal_add_css(drupal_get_path('module', 'tweetsimple') .'/css/tweetsimple.css');
-                print ucla_spa_tweetsimple_getblock('http://twitter.com/statuses/user_timeline/'. $item['value'] .'.atom', 2);  
+                print ucla_spa_tweetsimple_getblock('https://api.twitter.com/1/statuses/user_timeline.rss?screen_name='. $item['value'], 2);  
                ?>
         </div>
       <?php $count++;
