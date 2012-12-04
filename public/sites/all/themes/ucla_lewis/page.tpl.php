@@ -108,12 +108,13 @@
         <?php endif; ?>
       </div>
         <div class="social-links">
-			  <!---<a href="<?php print $school->field_linkedin[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/linkedin-big.png"/></a>--->
-			  <a href="<?php print $school->field_facebook[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/facebook-big.png"/></a>
-			  <a href="http://twitter.com/<?php print $school->field_twitter[0]['value']?>"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
-			  <a href="<?php print $school->field_youtube_page[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/youtube-big.png"/></a>
-			  <a href="/sitemap"><img src="/<?php print path_to_theme()?>/images/rss-big.png"/></a>
-			  <a href="/sitemap"><img src="/<?php print path_to_theme()?>/images/apple-big.png"/></a>
+			  <!--<a href="<?php print $school->field_linkedin[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/linkedin-big.png"/></a>-->
+			  <a href="https://www.facebook.com/pages/The-Ralph-and-Goldy-Lewis-Center-for-Regiona
+        l-Policy-Studies/45157711239"><img src="/<?php print path_to_theme()?>/images/facebook-big.png"/></a>
+			  <a href="http://twitter.com/UCLALewisCenter"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
+			  <a href="http://www.youtube.com/user/UCLALewisCenter/"><img src="/<?php print path_to_theme()?>/images/youtube-big.png"/></a>
+			  <!--<a href="/sitemap"><img src="/<?php print path_to_theme()?>/images/rss-big.png"/></a>-->
+			  <!--<a href="/sitemap"><img src="/<?php print path_to_theme()?>/images/apple-big.png"/></a>-->
 		  </div>
 		  
       <?php if ($footer): ?>
