@@ -93,8 +93,12 @@ DirectoryIndex index.php
   # To redirect all users to access the site WITHOUT the 'www.' prefix,
   # (http://www.example.com/... will be redirected to http://example.com/...)
   # uncomment and adapt the following:
-  # RewriteCond %{HTTP_HOST} ^www\.example\.com$ [NC]
-  # RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST} ^www\.publicaffairs.ucla\.edu$ [NC]
+   RewriteRule ^(.*)$ http://publicaffairs.ucla.edu/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST} ^www\.luskin.ucla\.edu$ [NC]
+   RewriteRule ^(.*)$ http://luskin.ucla.edu/$1 [L,R=301]
+   RewriteCond %{HTTP_HOST} ^www\.lewis.ucla\.edu$ [NC]
+   RewriteRule ^(.*)$ http://lewis.ucla.edu/$1 [L,R=301]
 
   # Modify the RewriteBase if you are using Drupal in a subdirectory or in a
   # VirtualDocumentRoot and the rewrite rules are not working properly.
@@ -104,7 +108,7 @@ DirectoryIndex index.php
   #
   # If your site is running in a VirtualDocumentRoot at http://example.com/,
   # uncomment the following line:
-  # RewriteBase /
+   RewriteBase /
 
   # Rewrite URLs of the form 'x' to the form 'index.php?q=x'.
   RewriteCond %{REQUEST_FILENAME} !-f
@@ -113,4 +117,4 @@ DirectoryIndex index.php
   RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
 </IfModule>
 
-# $Id$
+# $Id: .htaccess,v 1.90.2.5 2010/02/02 07:25:22 dries Exp $
