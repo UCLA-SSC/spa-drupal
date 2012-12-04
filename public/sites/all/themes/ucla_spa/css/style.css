@@ -61,14 +61,23 @@ h2.pane-title, h2.pane-title a {
 
 #top-right {
 	float: right;
-	margin: -11px 0 0 2px;
-	width: 520px;
+	margin: -11px -30px 0 2px;
+	width: 475px;
 }
 #top-right a {
 	margin-left: 10px;
 }
 #edit-menu-parent-hierarchical-select-selects-0 {
 	display: none;
+}
+
+#block-search-0 {
+	clear:both;
+	height: 10px;
+}
+
+.block-search .content {
+	text-align:right;
 }
 
 .top-pane {
@@ -1565,3 +1574,26 @@ ul.links li.blog_usernames_blog {
 .node-type-student-profile .field-field-student-profile-name
 {font-size:1.4em;margin:20px 0 0 257px;}
 
+/* Calendar */
+
+.calendar-calendar div.date-nav {
+	background-color:transparent;
+	border:0;
+}
+
+.calendar-calendar div.date-nav a {
+	color:#000;
+	text-decoration:none;
+}
+
+.calendar-calendar .mini-day-off {
+	text-align:center;
+}
+
+.calendar-calendar .mini-day-on {
+	text-align:center;
+}
+
+table td.mini .mini-day-on a {
+	font-weight:bold;
+}
