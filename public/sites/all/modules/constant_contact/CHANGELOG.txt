@@ -1,6 +1,20 @@
 Constant Contact Drupal Module
 ------------------------------
 
+6.x-3.3 CHANGES
+---------------
+Fixed #1018054 #1511164 #1467850
+
+
+6.x-3.x CHANGES
+---------------
+Upgraded underlying library to use curl instead of openssl as curl is more widely supported.
+Fixed #775508
+Fixed #872956
+Fixed #758870
+Fixed #931778
+
+
 6.x-2.1 CHANGES
 ---------------
 Implemented #698916 - contact lists are cached

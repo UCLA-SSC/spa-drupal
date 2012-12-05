@@ -1,5 +1,4 @@
 <?php
-// $Id: content_complete_views_handler_filter_content_type.inc,v 1.1.2.2 2009/09/11 15:24:36 pvhee Exp $
 
 /**
  *  @file

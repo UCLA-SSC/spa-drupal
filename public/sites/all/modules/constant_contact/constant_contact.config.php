@@ -1,5 +1,5 @@
 <?php
-// $Id: constant_contact.config.php,v 1.11 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 /**
  * @file
  */
@@ -44,6 +44,6 @@ define('CC_SHOW_FORMAT_CHOICE', 0);
 define('CC_CONTACT_LIST_SORT_ORDER', 'SortOrder');
 
 // how long should we keep contact lists in the cache for, default is 1 hour
-define('CC_CONTACT_LISTS_CACHE_EXPIRE', 3600)
+define('CC_CONTACT_LISTS_CACHE_EXPIRE', 3600);
 
 ?>

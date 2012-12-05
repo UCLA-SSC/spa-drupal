@@ -1,5 +1,5 @@
 <?php
-// $Id: constant_contact.module,v 1.21 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 module_load_include('php', 'constant_contact', 'constant_contact.config');
 
 /**
@@ -56,7 +56,15 @@ function constant_contact_help($path, $arg)
 	return t('<p>Information about the activity if displayed below.</p>');
 
 	case 'admin/settings/constant_contact/settings':
-	return t('<p>Configure the module settings.</p>');
+        $html = t('<p>Configure the module settings.</p>');
+
+
+        // if they have webform enabled display a message about the webform CC module to let them know it exists
+        if(module_exists('webform') AND !module_exists('webform_constant_contact')):
+            $html .= t('<p><span style="color:green; font-weight:bold; font-size:1em;">Did you know you can integrate webform with the constant contact module? - <a href="http://drupal.org/project/webform_constant_contact">To find out more click here</a></span></p>');
+        endif;
+
+        return $html;
 
 	case 'admin/settings/constant_contact/lists/add':
 	return t('<p>This will add a new contact list to your Constant Contact account.</p>');
@@ -222,7 +230,7 @@ function constant_contact_menu()
 function constant_contact_perm()
 {
 	return array(
-		'access constant_contact',
+		//'access constant_contact',
 		'administer constant_contact',
 	);
 }
@@ -351,12 +359,15 @@ function constant_contact_user($op, &$edit, &$account, $category = NULL)
 	endif;
 
 	// Fixes a bug: http://drupal.org/node/697400
-	if($op == 'insert' || $op == 'after_update'):
-		if(!isset($edit['cc_newsletter']) && !isset($account->cc_newsletter) && !count($edit['cc_newsletter_lists']) && !count($account->cc_newsletter_lists)):
-			return;
-		endif;
-	endif;
-
+    if($op == 'insert' || $op == 'after_update'):
+        if ($category == 'account' && (!isset($edit['cc_newsletter_lists']) AND !isset($edit['cc_newsletter']))):
+            return;
+        endif;
+        if(!isset($edit['cc_newsletter']) && !isset($account->cc_newsletter) && !count($edit['cc_newsletter_lists']) && !count($account->cc_newsletter_lists)):
+            return;
+        endif;
+    endif;
+    
 
 	if($op == 'form' && $category == 'account'):
 
@@ -492,15 +503,23 @@ function constant_contact_user($op, &$edit, &$account, $category = NULL)
 		//module_invoke_all('constant_contact', 'user_inserted', $edit, $lists);
 		$edit['cc_newsletter'] = 1; /* they may not have this flag set but may be subscribed */
 
-		// parse custom fields
-		$extra_fields = array();
-		if(is_array($fields)):
-		foreach($fields as $field):
-			$fieldname = str_replace(' ','', $field);
-			if(isset($field_mappings[$fieldname]) && isset($_POST[$field_mappings[$fieldname]])):
-				$extra_fields[$fieldname] = $_POST[$field_mappings[$fieldname]];
-			endif;
-		endforeach;
+        // parse custom fields
+        $extra_fields = array();
+        if(is_array($fields)):
+            foreach($fields as $field):
+                $fieldname = str_replace(' ','', $field);
+                if(isset($field_mappings[$fieldname]) && isset($_POST[$field_mappings[$fieldname]])):
+
+                    $extra_fields[$fieldname] = $_POST[$field_mappings[$fieldname]];
+                    // CCK fields / multi-value fields - strip down array to first value.
+                    // structure is probably $field[$delta][$value], but try to work for any array
+                    if (is_array($extra_fields[$fieldname])) {
+                        while (is_array($extra_fields[$fieldname])) {
+                            $extra_fields[$fieldname] = array_shift($extra_fields[$fieldname]);
+                        }
+                    }
+                endif;
+            endforeach;
 		endif;
 
 		// find contact
@@ -615,15 +634,32 @@ function constant_contact_user($op, &$edit, &$account, $category = NULL)
 			if($category == 'account'):
 				// if the fieldname has been posted add to our custom CC fields array
 				if(isset($edit[$actual_fieldname])):
-					$extra_fields[$fieldname] = $edit[$actual_fieldname];
+
+                    $extra_fields[$fieldname] = $edit[$actual_fieldname];
+                    // CCK fields / multi-value fields - strip down array to first value.
+                    // structure is probably $field[$delta][$value], but try to work for any array
+                    if (is_array($extra_fields[$fieldname])) {
+                        while (is_array($extra_fields[$fieldname])) {
+                            $extra_fields[$fieldname] = array_shift($extra_fields[$fieldname]);
+                        }
+                    }
 				endif;
 			else:
 				if(isset($account->$actual_fieldname)):
-					$extra_fields[$fieldname] = $account->$actual_fieldname;
+
+                    $extra_fields[$fieldname] = $account->$actual_fieldname;
+                    // CCK fields / multi-value fields - strip down array to first value.
+                    // structure is probably $field[$delta][$value], but try to work for any array
+                    if (is_array($extra_fields[$fieldname])) {
+                        while (is_array($extra_fields[$fieldname])) {
+                            $extra_fields[$fieldname] = array_shift($extra_fields[$fieldname]);
+                        }
+                    }
 				endif;
 			endif;
 		endif;
 		endforeach;
+
 
 		// find contact
 		if($category == 'account'):
@@ -910,7 +946,7 @@ function constant_contact_signup_form(&$form_state)
  */
 function constant_contact_signup_form_submit($form, &$form_state)
 {
-	$auto_lists = variable_get('cc_block_lists','');
+	$auto_lists = variable_get('cc_block_lists',array());
 	$show_selection = variable_get('cc_block_show_list_selection',CC_BLOCK_SHOW_LIST_SELECTION);
 	$selection_format = variable_get('cc_block_list_selection_format',CC_LIST_SELECTION_FORMAT);
 	$redirect_to = variable_get('cc_block_redirect_url','');
@@ -924,7 +960,7 @@ function constant_contact_signup_form_submit($form, &$form_state)
 
 	$fields = array();
 
-	if($show_selection):
+	if($show_selection AND isset($form_state['values']['cc_newsletter_lists'])):
 		$lists = $form_state['values']['cc_newsletter_lists'];
 
 		if($selection_format == 'checkbox' && $lists):
@@ -938,7 +974,7 @@ function constant_contact_signup_form_submit($form, &$form_state)
 			$lists = $newlists;
 		endif;
 
-	elseif(!$show_selection):
+	elseif(!$show_selection AND !isset($form_state['values']['cc_newsletter_lists'])):
 		$lists = constant_contact_get_lists($cc);
 
 		$newlists = array();
@@ -992,7 +1028,10 @@ function constant_contact_signup_form_submit($form, &$form_state)
 
 	endif;
 
-	$form_state['redirect'] = $redirect_to;
+    if(trim($redirect_to) != ''):
+	    $form_state['redirect'] = $redirect_to;
+    endif;
+
 	return;
 }
 
@@ -1040,8 +1079,8 @@ function constant_contact_cron()
 	endif;
 
 	// if we have other pages grab them too
-	if(!empty($cc->contact_meta_data->next_page)):
-		while($cc->contact_meta_data->next_page != ''):
+	if(isset($cc->contact_meta_data->next_page) AND !is_null($cc->contact_meta_data->next_page)):
+		while(!is_null($cc->contact_meta_data->next_page)):
 			$action = $cc->contact_meta_data->next_page;
 			$users = $cc->get_contacts($action);
 
@@ -1064,8 +1103,8 @@ function constant_contact_cron()
 	endif;
 
 	// if we have other pages grab them too
-	if(!empty($cc->contact_meta_data->next_page)):
-		while($cc->contact_meta_data->next_page != ''):
+	if(isset($cc->contact_meta_data->next_page) AND !is_null($cc->contact_meta_data->next_page)):
+		while(!is_null($cc->contact_meta_data->next_page)):
 			$action = $cc->contact_meta_data->next_page;
 			$users = $cc->get_contacts($action);
 
@@ -1097,7 +1136,7 @@ function constant_contact_cron()
 			endif;
 		endforeach;
 
-		// reset synce_last_run variable to the current date and time
+		// reset sync_last_run variable to the current date and time
 		variable_set('cc_sync_last_run', date($date_format));
 
 		if($users_synced):
@@ -1252,13 +1291,14 @@ function constant_contact_sort_lists($a, $b)
 
 }
 
+
 /**
  * Helpful function to get the contact lists
  */
-function constant_contact_get_lists(&$cc, $exclude = 3)
+function constant_contact_get_lists(&$cc, $exclude = 3, $bypass_cache = false)
 {
-    // if some cached data exists use it
-    if($cached = cache_get('cc_lists', 'cache')):
+    // if some cached data exists and we are not bypassing the cache use the cached data
+    if(!$bypass_cache AND $cached = cache_get('cc_lists', 'cache')):
         return $cached->data;
     endif;
 

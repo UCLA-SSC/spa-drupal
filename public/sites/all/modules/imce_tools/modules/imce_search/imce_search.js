@@ -10,8 +10,8 @@ imce.hooks.load.push(function() {
     var case_insensitive = 0;
     $('#edit-imce-search-case:checked').each(function() { case_insensitive = 1; });
     $.ajax({
-      url: '/imce_search_callback/' + case_insensitive + '/' + encodeURI(imce.conf.dir + '/' + $('#edit-imce-search-term').val()),
-      type: 'text',
+      url: Drupal.settings.basePath + 'imce_search_callback/' + case_insensitive + '/' + encodeURI(imce.conf.dir + '/' + $('#edit-imce-search-term').val()),
+      type: 'GET',
       success: function(serverdata, status, xmlhttp) {
         data = eval('(' + serverdata + ')');
         var filelist = $.map(data.files, function(fullpath, index) {

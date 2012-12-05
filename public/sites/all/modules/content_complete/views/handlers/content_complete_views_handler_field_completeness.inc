@@ -1,5 +1,4 @@
 <?php
-// $Id: content_complete_views_handler_field_completeness.inc,v 1.1.2.6 2010/01/22 13:30:14 pvhee Exp $
 
 /**
  *  @file

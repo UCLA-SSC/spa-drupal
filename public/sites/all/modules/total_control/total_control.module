@@ -1,15 +1,16 @@
 <?php
-// $Id: total_control.module,v 1.20 2010/03/02 22:45:32 jenlampton Exp $
+
 /**
- * @file
+ * @file total_control.module
  *
  * This module enables an administrative dashboard.
  */
+ 
 include_once('includes/total_control.inc'); 
 include_once('includes/total_control.views_default.inc');
 
 define('TOTAL_CONTROL_REQUIRED_PANELS_API', '3');
-define('TOTAL_CONTROL_REQUIRED_VIEWS_API', '2');
+define('TOTAL_CONTROL_REQUIRED_VIEWS_API', '3');
 // This is the name of the dashboard as the page manager module sees it via the page task.
 define('TOTAL_CONTROL_DASHBOARD_PANEL_NAME', 'dashboard');
 define('TOTAL_CONTROL_MINIMUM_VERSION', 1);
@@ -102,10 +103,8 @@ function total_control_default_page_manager_handlers() {
  *       its path here.
  */
 function total_control_views_api() {
-  // TODO
   return array(
-    'api' => 2,
-    //'path' => drupal_get_path('module', 'total_control') . '/includes', 
+    'api' => 3,
   );
 }
 
@@ -114,9 +113,11 @@ function total_control_views_api() {
  *
  * Redirects to the dashboard if configured.
  */
-function total_control_user($op, &$edit, &$account, $category = NULL){
-  if (($op == 'login') && (variable_get('total_control_login_redirect', 0) == 1)){
-    drupal_goto('admin/dashboard');
+function total_control_user($op, &$edit, &$account, $category = NULL) {
+  if (!(arg(0) == 'user' && arg(1) == 'reset')) {
+    if (($op == 'login') && (variable_get('total_control_login_redirect', 0) == 1 && user_access('have total control'))) {
+      drupal_goto('admin/dashboard');
+    }
   }
 }
  
@@ -126,5 +127,73 @@ function total_control_user($op, &$edit, &$account, $category = NULL){
  * Adds the create content links to dashboard views.
  */
 function total_control_views_pre_render(&$view) {
- // TODO
+  // Check that this is the control content view
+  if ($view->name == 'control_content') {
+    // Get the content type for the current page.
+
+    // Create an array to work with
+    $type_displays = $view->display;
+    unset($type_displays['default']);
+    unset($type_displays['page_1']);
+    $machine_names = array();
+    foreach ($type_displays as $key => $value) {
+      $machine_names[] = substr($key, 8);
+    }
+
+/*
+    // TODO
+    foreach ($view->display as $display_id => $display) {
+
+    }
+
+    // Check for page.
+    foreach ($machine_names as $type) {
+
+      // Check if the user has access to create content of that type.
+      if (user_access('create ' . $type . ' content')) {
+        // Add the create content link.
+        $add_link = l(t('Create ' . $type . ' content'), 'node/add/' . $type);
+        if (array_key_exists('header', $view->display['page_tc_' . $type]->handler->options)) {
+          // If there's already a header, append to it.
+          $view->display['page_tc_' . $type]->handler->options['header'] .= $add_link;
+        }
+        else {
+          // Otherwise add our own header.
+          $view->display['page_tc_' . $type]->handler->options['header'] = $add_link;
+        }
+      }
+    }
+  */
+  }
 }
+
+/**
+ * Implementation of hook_theme().
+ *
+ * Adds theme functions for the output of content panes.
+ */
+function total_control_theme() {
+  return array(
+    'total_control_create' => array(
+      'arguments' => array('create' => array()), 
+      'file' => 'total_control.theme.inc',
+    ),
+    'total_control_overview' => array(
+      'arguments' => array('content' => array(), 'users' => array()), 
+      'file' => 'total_control.theme.inc',
+    ),
+    'total_control_overview_content' => array(
+      'arguments' => array('overview' => array()), 
+      'file' => 'total_control.theme.inc',
+    ),
+    'total_control_overview_user' => array(
+      'arguments' => array('overview' => array()), 
+      'file' => 'total_control.theme.inc',
+    ),
+    'total_control_admin_table' => array(
+      'arguments' => array('header' => array(), 'rows' => array(), 'link' => FALSE), 
+      'file' => 'total_control.theme.inc',
+    ),
+  );
+}
+

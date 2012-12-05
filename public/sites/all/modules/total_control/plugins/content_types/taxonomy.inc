@@ -1,8 +1,8 @@
 <?php
-// $Id: taxonomy.inc,v 1.11 2010/03/02 22:10:32 jenlampton Exp $
 
 /**
- * @file
+ * @file taxonomy.inc
+ *
  * "Taxonomy" content type. It shows users with permissions statistics
  * and links to manage terms in vocabularies on the site.
  *
@@ -13,8 +13,8 @@
  * by the system that includes this file.
  */
 $plugin = array(
-  'title' => t('Categories'),
-  'description' => t('Displays Categories, number of terms in each category, "view terms" link and "edit terms" link.'),
+  'title' => t('Admin - Taxonomy'),
+  'description' => t('Provides links to administer taxonomy.'),
   // 'single' => TRUE means has no subtypes.
   'single' => TRUE,
   // Constructor.
@@ -33,23 +33,18 @@ $plugin = array(
 
 /**
  * 'Admin title' callback for the content type.
- *
- * ctools_plugin_example_total_control_panel_pages_content_type_admin_title.
- *
  */
 function total_control_taxonomy_content_type_admin_title($subtype = NULL, $conf = NULL, $context = NULL) {
-    return t('Categories and Terms');
+  return t('Administer Taxonomy');
 }
 
 /**
  * 'Admin info' callback for the content type.
- *
- * ctools_plugin_example_total_control_panel_pages_content_type_admin_info.
- *
  */
 function total_control_taxonomy_content_type_admin_info($subtype, $conf, $context) {
   $block = new stdClass();
-  $block->title = t('Displays Categories, number of terms in each category, "view terms" link and "edit terms" link.');
+  $block->title = t('Provides links to administer taxonomy.');
+
   return $block;
 }
 
@@ -67,92 +62,91 @@ function total_control_taxonomy_content_type_admin_info($subtype, $conf, $contex
  *   An object with at least title and content members.
  */
 function total_control_taxonomy_content_type_render($subtype, $conf, $panel_args, &$context) {
-  if (!module_exists('taxonomy')){
+  if (!module_exists('taxonomy')) {
     return;
   }
-  $block = new stdClass();
-  $block->module = t('total_control');
-  $block->title = total_control_taxonomy_content_type_admin_title();
-  
+
   $vids = (isset($conf['vids']))? $conf['vids']: array();
-  
+
   $vocabs = taxonomy_get_vocabularies();
+  $access = user_access('administer taxonomy');
+  $options = array('query' => array('destination' => 'admin/dashboard'));
+  $header = array('page' => t('Vocabulary'), 'options' => array('data' => t('Operations'), 'colspan' => 2));
   $rows = array();  
-  
-  if (!empty($vocabs)){  
-    foreach ($vocabs as $vocab){
+
+  if (!empty($vocabs)) {  
+    foreach ($vocabs as $vocab) {
       // compare against vocab option on pane config
-      if ((in_array($vocab->vid, $vids)) || !array_key_exists('vids',$conf)){  
+      if ((in_array($vocab->vid, $vids)) || !array_key_exists('vids', $conf)) {  
         $term_query = db_query("SELECT count(*) FROM {term_data} WHERE vid = %d", $vocab->vid);
         $terms = format_plural(db_result($term_query), '1 term', '@count terms');
-        $rows[$vocab->vid] = $vocab->name . ': ' . $terms;
-        if (user_access('administer taxonomy')){
-          $rows[$vocab->vid] .= ' | '. l('list terms', 'admin/content/taxonomy/'.$vocab->vid);
-          $rows[$vocab->vid] .= ' | '. l('add term', 'admin/content/taxonomy/'.$vocab->vid.'/add/term');
-        } // if access
-      } // if vocab
-    } // foreach
-  }
-  
-  if ($rows){
-    $output = theme('item_list', $rows);
-  }
-  else {
-    $output = t('You have no vocabularies yet. ');
-    if (user_access('administer taxonomy')){
-      $output .= '<div class="add-vocab">'.l(t('Add vocabulary'),'admin/content/taxonomy/add/vocabulary').'</div>';
+        if ($access) {
+          $rows[] = array(
+            'data' => array(
+              t($vocab->name . ': ' . $terms),
+              l('List terms', 'admin/content/taxonomy/' . $vocab->vid, $options),
+              l('Add terms', 'admin/content/taxonomy/' . $vocab->vid . '/add/term', $options),
+            ),
+          );
+        }
+      }
     }
   }
-  
-  // assemble content
-  $content =  '<div class="total-control-content-overview">';
-  $content .= $output;
-  $content .= '</div>';
 
-  $block->content = $content;
+  if ($access) {
+    $link = l(t('Taxonomy administration'), 'admin/content/taxonomy');
+  }
+
+  if (empty($rows)) {
+    $rows[] = array(
+      array(
+        'data' => t('There are no vocabularies to display.'),
+        'colspan' => 3,
+      )
+    );
+  }
+
+  $block = new stdClass();
+  $block->module = t('total_control');
+  $block->title = t('Administer Taxonomy');
+  $block->content = theme('total_control_admin_table', $header, $rows, $link);
+
   return $block;
 }
 
 /**
  * 'Edit form' callback for the content type.
- *
- * ctools_plugin_example_total_control_panel_pages_content_type_edit_form.
- *
  */
 function total_control_taxonomy_content_type_edit_form(&$form, &$form_state) {
   $conf = $form_state['conf'];
- 
+
   $vocabs = taxonomy_get_vocabularies();
   if (!empty($vocabs)) {
     $vocab_options = array();
     $vocab_defaults = array();
-    foreach ($vocabs as $vid => $vocab){
+    foreach ($vocabs as $vid => $vocab) {
       $vocab_options[$vid] = $vocab->name;
       $vocab_defaults[$vid] = $vid;
     }
-    
-    if (isset($conf['vids'])){
+
+    if (isset($conf['vids'])) {
       $vocab_defaults = $conf['vids'];
     }
-  
+
     $form['vids'] = array(
       '#type' => 'checkboxes',
       '#title' => t('Include Vocabularies'),
-      '#multiple' => true,
+      '#multiple' => TRUE,
       '#options' => $vocab_options,
       '#default_value' => $vocab_defaults,
       );
   }
-  
+
   return $form;
 }
 
 /**
  * 'Edit form' submit callback for the content type.
- *
- * ctools_plugin_example_total_control_panel_pages_content_type_edit_form_submit.
- * The submit form stores the data in $conf.
- *
  */
 function total_control_taxonomy_content_type_edit_form_submit(&$form, &$form_state) {
   foreach (array_keys($form_state['plugin']['defaults']) as $key) {

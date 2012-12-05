@@ -1,4 +1,4 @@
-// $Id: README.txt,v 1.17 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 
 Constant Contact Drupal Module
 
@@ -32,7 +32,7 @@ Documentation to help you use the module and improved installation instructions 
 ABOUT & SERVICES
 ---------------------------------------------------
 
-The version 6 drupal module is developed by James Benson (justphp.co.uk) with support from the co-maintainer David Konsumer.
+The version 6 drupal module is developed by James Benson (justphp.co.uk).
 
 If you like the module please consider donating:
 http://integrationservic.es/donate.php

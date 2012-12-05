@@ -1,8 +1,8 @@
 <?php
-// $Id: create.inc,v 1.14 2010/03/02 22:10:32 jenlampton Exp $
 
 /**
- * @file
+ * @file create.inc
+ *
  * "Create content" panels content type. It shows users links to
  * create new content of all types for which they have permissions,
  * and users with "administer content types" permission an optional
@@ -40,7 +40,7 @@ $plugin = array(
  *
  */
 function total_control_create_content_type_admin_title($subtype, $conf, $context) {
-    return t('Content Creation');
+  return t('Create content');
 }
 
 /**
@@ -52,6 +52,7 @@ function total_control_create_content_type_admin_title($subtype, $conf, $context
 function total_control_create_content_type_admin_info($subtype, $conf, $context) {
   $block = new stdClass();
   $block->title = t('Provides links to create new content.');
+
   return $block;
 }
 
@@ -69,44 +70,25 @@ function total_control_create_content_type_admin_info($subtype, $conf, $context)
  *   An object with at least title and content members.
  */
 function total_control_create_content_type_render($subtype, $conf, $panel_args, &$context) {
-  $block = new stdClass();
-  $block->module = t('total_control');
-  $block->title = t('Create Content');
-    
   $types = node_get_types('types');
   $create = array();  
-  
-  foreach ($types as $type => $object){
-    $row = '';
+
+  foreach ($types as $type => $object) {
     // compare against type option on pane config
-        
-    if ((isset($conf['types']) && $conf['types'][$type]) || ($conf == array())){  
-      
+    if ((isset($conf['types']) && $conf['types'][$type]) || ($conf == array())) {
       // check access to create nodes of this type
       if (node_access('create', $type)) { 
         $object_path = str_replace('_', '-', $object->type);
-        $row = l(t('Add New '.$object->name), 'node/add/'.$object_path);
+        $create[] = l(t('Add New ' . $object->name), 'node/add/' . $object_path);
       }
-      
-      // check access to administer content types
-      if ((variable_get('total_control_configure_links', 1) == 1) 
-        && user_access('administer content types')){
-        $row .= ' | ' . l(t('Configure'), 'admin/content/node-type/'.$object_path);
-      }
-      
-      if ($row) { 
-        $create[] = $row;
-      }
-      
-    } // end if type
+    }
   }
-      
-  // assemble content
-  $content =  '<div class="total-control-content-overview">';
-  $content .=     theme('item_list', $create);
-  $content .= '</div>';
 
-  $block->content = $content;
+  $block = new stdClass();
+  $block->module = t('total_control');
+  $block->title = t('Create Content');
+  $block->content =  theme('total_control_create', $create);
+
   return $block;
 }
 
@@ -118,27 +100,29 @@ function total_control_create_content_type_render($subtype, $conf, $panel_args, 
  */
 function total_control_create_content_type_edit_form(&$form, &$form_state) {
   $conf = $form_state['conf'];
-  
+
   $types = node_get_types('types');
   $type_options = array();
   $type_defaults = array();
-  
-  foreach ($types as $type => $object){
-    $type_options[$type] = $object->name;
-    $type_defaults[] = $type;
-  }
-  
-  if (isset($conf['types'])){
+
+  if (isset($conf['types'])) {
     $type_defaults = $conf['types'];
   }
-  
+
+  foreach ($types as $type => $object) {
+    $type_options[$type] = $object->name;
+    if (!array_key_exists($type, $type_defaults)) {
+      $type_defaults[$type] = $type;
+    }
+  }
+
   $form['types'] = array(
     '#type' => 'checkboxes',
     '#title' => t('Include Create links for Content Types'),
     '#options' => $type_options,
     '#default_value' => $type_defaults,
     );
-  
+
   return $form;
 }
 

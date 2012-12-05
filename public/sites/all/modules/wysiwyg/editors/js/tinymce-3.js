@@ -22,6 +22,19 @@ Drupal.wysiwyg.editor.init.tinymce = function(settings) {
   tinyMCE.srcMode = (settings.global.execMode == 'src' ? '_src' : '');
   tinyMCE.gzipMode = (settings.global.execMode == 'gzip');
 
+  // Fix Drupal toolbar obscuring editor toolbar in fullscreen mode.
+  var $drupalToolbar = $('#toolbar', Drupal.overlayChild ? window.parent.document : document);
+  tinyMCE.onAddEditor.add(function (mgr, ed) {
+    if (ed.id == 'mce_fullscreen') {
+      $drupalToolbar.hide();
+    }
+  });
+  tinyMCE.onRemoveEditor.add(function (mgr, ed) {
+    if (ed.id == 'mce_fullscreen') {
+      $drupalToolbar.show();
+    }
+  });
+
   // Initialize editor configurations.
   for (var format in settings) {
     if (format == 'global') {
@@ -76,6 +89,13 @@ Drupal.wysiwyg.editor.attach.tinymce = function(context, params, settings) {
 
   // Attach editor.
   ed.render();
+  if (tinymce.minorVersion == '5.7') {
+    // Work around a TinyMCE bug hiding new instances when switching to them.
+    // @see http://www.tinymce.com/develop/bugtracker_view.php?id=5510
+    setTimeout(function () {
+      tinymce.DOM.show(ed.editorContainer);
+    }, 1);
+  }
 };
 
 /**
@@ -181,7 +201,7 @@ Drupal.wysiwyg.editor.instance.tinymce = {
   },
 
   openDialog: function(dialog, params) {
-    var instanceId = this.isFullscreen() ? 'mce_fullscreen' : this.field;
+    var instanceId = this.getInstanceId();
     var editor = tinyMCE.get(instanceId);
     editor.windowManager.open({
       file: dialog.url + '/' + instanceId,
@@ -192,8 +212,7 @@ Drupal.wysiwyg.editor.instance.tinymce = {
   },
 
   closeDialog: function(dialog) {
-    var instanceId = this.isFullscreen() ? 'mce_fullscreen' : this.field;
-    var editor = tinyMCE.get(instanceId);
+    var editor = tinyMCE.get(this.getInstanceId());
     editor.windowManager.close(dialog);
   },
 
@@ -228,13 +247,25 @@ Drupal.wysiwyg.editor.instance.tinymce = {
 
   insert: function(content) {
     content = this.prepareContent(content);
-    var instanceId = this.isFullscreen() ? 'mce_fullscreen' : this.field;
-    tinyMCE.execInstanceCommand(instanceId, 'mceInsertContent', false, content);
+    tinyMCE.execInstanceCommand(this.getInstanceId(), 'mceInsertContent', false, content);
+  },
+
+  setContent: function (content) {
+    content = this.prepareContent(content);
+    tinyMCE.execInstanceCommand(this.getInstanceId(), 'mceSetContent', false, content);
+  },
+
+  getContent: function () {
+    return tinyMCE.get(this.getInstanceId()).getContent();
   },
 
   isFullscreen: function() {
     // TinyMCE creates a completely new instance for fullscreen mode.
     return tinyMCE.activeEditor.id == 'mce_fullscreen' && tinyMCE.activeEditor.getParam('fullscreen_editor_id') == this.field;
+  },
+
+  getInstanceId: function () {
+    return this.isFullscreen() ? 'mce_fullscreen' : this.field;
   }
 };
 

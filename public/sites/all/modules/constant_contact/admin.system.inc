@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.system.inc,v 1.6 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 /**
  * @file
  */
@@ -12,12 +12,19 @@ function constant_contact_intro()
 	$info_filename = drupal_get_path('module','constant_contact').'/'.'constant_contact' .'.info';
 	$module = drupal_parse_info_file($info_filename);
 
+    $webform_html = '';
+    // if they have webform enabled display a message about the webform CC module to let them know it exists
+    if(module_exists('webform') AND !module_exists('webform_constant_contact')):
+        $webform_html = '<p><span style="color:green; font-weight:bold; font-size:1em;">Did you know you can integrate webform with the constant contact module? - <a href="http://drupal.org/project/webform_constant_contact">To find out more click here</a></span></p>';
+    endif;
+
 	// not sure translation will work here :(
-	$html = '<p>This is version '.$module['version'].' of the Constant Contact module for Drupal.</p>';
-	$html.='<p>If you do not have a constant contact account <a target="_blank" href="@cc">Signup for a free 60-day trial</a>.</p>';
-	$html.='<p>Instructions for setting up the module can be found <a href="@instructions">here</a>.</p>';
-	$html.='<p>If you find any problems or need help see <a href="@help">here</a>.</p>';
-	$html.='<br /><p>The drupal module is provided by <a target="_blank" href="@me">James Benson</a>.
+    $html = $webform_html;
+	$html .= '<p>This is version '.$module['version'].' of the Constant Contact module for Drupal.</p>';
+	$html .= '<p>If you do not have a constant contact account <a target="_blank" href="@cc">Signup for a free 60-day trial</a>.</p>';
+	$html .= '<p>Instructions for setting up the module can be found <a href="@instructions">here</a>.</p>';
+	$html .= '<p>If you find any problems or need help see <a href="@help">here</a>.</p>';
+	$html .= '<br /><p>The drupal module is provided by <a target="_blank" href="@me">James Benson</a>.
 	<br />If you find the module useful please consider <a target="_blank" href="@donate">donating</a> a few dollars towards future development costs.</p>';
 
 	$params = array(
@@ -109,6 +116,7 @@ function constant_contact_settings()
 		'#description' => t("The description text displayed on the register page, if enabled"),
 		'#default_value' => variable_get('cc_signup_description',CC_SIGNUP_DESCRIPTION),
 		'#size' => 60,
+        '#maxlength' => NULL,
 	);
 
 	$form['constant_contact']['form']['cc_extra_field_mappings'] = array(

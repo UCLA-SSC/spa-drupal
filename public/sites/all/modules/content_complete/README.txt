@@ -1,4 +1,3 @@
-// $Id: README.txt,v 1.1.2.8 2010/05/16 14:48:17 pvhee Exp $
 
 -- SUMMARY --
 

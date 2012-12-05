@@ -1,8 +1,8 @@
 <?php
-// $Id: panel_pages.inc,v 1.3 2010/03/02 22:10:32 jenlampton Exp $
 
 /**
- * @file
+ * @file panel_pages.inc
+ *
  * "Panel Pages" content type. It shows users with permissions the panel
  * pages on the site, and provides links directly to the "content" so
  * it can be changed without so many clicks via the panels UI.
@@ -14,8 +14,8 @@
  * by the system that includes this file.
  */
 $plugin = array(
-  'title' => t('Panel Pages list'),
-  'description' => t('A list of panels on the site.'),
+  'title' => t('Admin - Panel Pages'),
+  'description' => t('Provides links to administer panel pages.'),
   // 'single' => TRUE means has no subtypes.
   'single' => TRUE,
   // Constructor.
@@ -39,7 +39,7 @@ $plugin = array(
  *
  */
 function total_control_panel_pages_content_type_admin_title($subtype, $conf, $context) {
-    return t('Panel Pages');
+    return t('Administer Panel pages');
 }
 
 /**
@@ -50,7 +50,8 @@ function total_control_panel_pages_content_type_admin_title($subtype, $conf, $co
  */
 function total_control_panel_pages_content_type_admin_info($subtype, $conf, $context) {
   $block = new stdClass();
-  $block->title = t('Displays a list of Panel Pages, with "edit" links.');
+  $block->title = t('Provides links to administer panel pages.');
+
   return $block;
 }
 
@@ -68,51 +69,56 @@ function total_control_panel_pages_content_type_admin_info($subtype, $conf, $con
  *   An object with at least title and content members.
  */
 function total_control_panel_pages_content_type_render($subtype, $conf, $args, $context) {
-  $block = new stdClass();
-
-  // The title actually used in rendering
-  $block->title = check_plain("Panel Pages");
-  
   $items = array();
   
-  // get panels pages
-  if (module_exists('page_manager')) {
-    module_load_include('inc', 'page_manager', 'page_manager.admin');
-    $tasks = page_manager_get_tasks_by_type('page');
-    $pages = array('operations' => array());
+  // Get panels pages.
+  module_load_include('inc', 'page_manager', 'page_manager.admin');
+  $tasks = page_manager_get_tasks_by_type('page');
+  $pages = array('operations' => array());
 
-    page_manager_get_pages($tasks, $pages);
-    $count = 0;
-    $rows = array();
-    
-    foreach ($pages['rows'] as $id => $info) {
-      // TODO: config setting?
-      // Only show enabled panels on the pane.
-      if (array_key_exists('data', $info['data']['operations'])
-        && (stristr((string)$info['data']['operations']['data'], 'Enable') == FALSE)){
-        $rows[] = array(
-          'data' => array(
-            $info['data']['title'],
-            $info['data']['operations'],
-          ),
-          'class' => $info['class'],
-        );
+  page_manager_get_pages($tasks, $pages);
+  $count = 0; // TODO
+  $header = array(t('Page'), t('Operations'));
+  $rows = array();
+  
+  foreach ($pages['rows'] as $id => $info) {
+    // TODO: config setting?
+    // Only show enabled panels on the pane.
+    if (array_key_exists('data', $info['data']['operations'])
+      && (stristr((string)$info['data']['operations']['data'], 'Enable') == FALSE)) {
+      $rows[] = array(
+        'data' => array(
+          $info['data']['title'],
+          $info['data']['operations'],
+        ),
+        'class' => $info['class'],
+      );
 
-        // Only show 10.
-        if (++$count >= 10) {
-          break;
-        } 
-      }
+      // Only show 10.
+      if (++$count >= 10) {
+        break;
+      } 
     }
-    $header = array(t('Page'), t('Operations'));
-    $output = theme('table', $header, $rows, array('class' => 'panels-manage'));
-    $output .= '<div class="see-list">' . l(t('Go to list'), 'admin/build/pages') . '</div>';
-  }
-  else {
-    $output = '<p>' . t('You must install and activate the Page Manager module to manage pages. This module is located within the Chaos Tools Suite.') . '</p>';
   }
   
-  $block->content = $output;
+  if (empty($rows)) {
+    $rows[] = array(
+      array(
+        'data' => t('You have no panel pages yet.'),
+        'colspan' => 3,
+      )
+    );
+  }
+  
+  // Build a link to the page manager UI.
+  if (user_access('use page manager')) {
+    $link = l(t('Page manager administration'), 'admin/build/pages');
+  }
+
+  $block = new stdClass();
+  $block->module = t('total_control');
+  $block->title = t('Administer Panel pages');
+  $block->content = theme('total_control_admin_table', $header, $rows, $link);
 
   return $block;
 
@@ -138,7 +144,7 @@ function total_control_panel_pages_content_type_edit_form(&$form, &$form_state) 
  *
  */
 function total_control_panel_pages_content_type_edit_form_submit(&$form, &$form_state) {
-  foreach (array('item1', 'item2') as $key) {
+  foreach (array_keys($form_state['plugin']['defaults']) as $key) {
     $form_state['conf'][$key] = $form_state['values'][$key];
   }
 }
