@@ -21,7 +21,7 @@ ul.nice-menu-down li {
   
 }
 ul.nice-menu-down li#menu-3376 {
-  width:258px;
+  width:220px;
   /*width:193px;*/
   }
 
@@ -33,10 +33,10 @@ ul.nice-menu-down a {
   color:#333333;
   font-weight:bold;
   font-family:Georgia;
-  padding:10px 26px 10px 26px;
+  padding:10px 26px 10px 24px;
 }
 ul.nice-menu-down li#menu-3376 a {
-padding:10px 22px 10px 22px;
+padding:10px 10px 10px 10px;
 }
 ul.nice-menu-down li.active-trail a, ul.nice-menu-down li.menuparent:hover a, ul.nice-menu-down li:hover a,
 ul.nice-menu-down li.over a, ul.nice-menu-down a.active {
@@ -101,7 +101,7 @@ ul.nice-menu-down li ul li ul,
 }
 
 ul.nice-menu-down .menuparent a {
-  padding-right:26px;
+  padding-right:25px;
 }
 
 ul.nice-menu-down li.menuparent,
