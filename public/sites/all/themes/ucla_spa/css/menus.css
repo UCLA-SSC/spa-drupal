@@ -448,3 +448,19 @@ margin-left:0px;
  #block-block-1  {
    text-align:right;
    }
+
+	#block-menu-menu-footer ul li {
+		list-style-type:none;
+		list-style-image:none;
+		display:inline;
+		float:left;
+		text-align:center;
+		width:25%;
+		text-transform:uppercase;
+
+	}
+
+	#block-menu-menu-footer ul li a {
+		color:#369;
+		text-decoration:none;
+	}
