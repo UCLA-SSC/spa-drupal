@@ -19,10 +19,49 @@
 	border:0;
 }
 
+.nivoSlider {
+	z-index:0;
+}
+
+.nivo-caption {
+	width:300px;
+	height:300px;
+	left:640px;
+	background-color:#1A2334;
+}
+
+.nivo-caption .views-field-title {
+	float:left;
+	width:260px;
+	height:70px; 
+	border-bottom:1px solid #ccc;
+	border-top:1px solid #ccc;
+	text-align:center;
+	padding:10px 0 10px 0;
+	margin-left:13px;
+
+}
+
+.nivo-caption p {
+	
+}
+
+.nivo-caption .field-content p {
+	padding-top:40px;
+	text-align:center;
+}
+
+.nivo-caption .views-field-title a {
+	font-size:2em;
+ color:#fff;
+ text-decoration:none;
+ text-transform:uppercase;
+}
+
 .nivo-controlNav {
 	position:absolute;
 	left:47%;
-	bottom:-30px;
+	bottom:35px;
 }
 .nivo-controlNav a {
 	display:block;
@@ -35,7 +74,7 @@
 	float:left;
 }
 .nivo-controlNav a.active {
-	background-position:-10px 0;
+	background-position:0 100%;
 }
 
 .nivo-directionNav a {
