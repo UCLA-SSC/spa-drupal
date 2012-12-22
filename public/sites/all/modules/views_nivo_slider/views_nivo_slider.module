@@ -92,7 +92,7 @@ function template_preprocess_views_nivo_slider_view_nivo_sliderfields(&$vars) {
   if (isset($view->field[$options['title_field']])) {
     $view->field[$options['title_field']]->options['format'] = 'plain';
     $view->field[$options['title_field']]->options['alter']['make_link'] = 0;
-    $view->field[$options['title_field']]->options['alter']['strip_tags'] = 1;
+    $view->field[$options['title_field']]->options['alter']['strip_tags'] = 0;
   }
 
   // link
