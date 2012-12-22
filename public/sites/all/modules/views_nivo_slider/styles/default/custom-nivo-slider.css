@@ -32,8 +32,7 @@
 
 .nivo-caption .views-field-title {
 	float:left;
-	width:260px;
-	height:70px; 
+	width:260px; 
 	border-bottom:1px solid #ccc;
 	border-top:1px solid #ccc;
 	text-align:center;
@@ -43,7 +42,7 @@
 }
 
 .nivo-caption p {
-	
+	margin-top:30px;	
 }
 
 .nivo-caption .field-content p {
@@ -52,12 +51,15 @@
 }
 
 .nivo-caption .views-field-title a {
-	font-size:2em;
+	font-size:16px;
  color:#fff;
  text-decoration:none;
  text-transform:uppercase;
 }
 
+.nivo-caption .views-field-field-homepage-tout-value {
+	font-style:italic
+}
 .nivo-controlNav {
 	position:absolute;
 	left:47%;
