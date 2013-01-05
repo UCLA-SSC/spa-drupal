@@ -1,5 +1,5 @@
 <?php
-// $Id: admin.lists.inc,v 1.6 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 
 /**
  * @file
@@ -109,6 +109,10 @@ function constant_contact_edit_list_form_submit($form, &$form_state)
 	$sort_order = (isset($form_state['values']['sort_order'])) ? $form_state['values']['sort_order'] : 99;
 	
 	$status = $cc->update_list($id, $list, 'false', $sort_order);
+
+    // refresh the lists, bypass cache
+    constant_contact_get_lists($cc, 3, true);
+
 	if($status):
 		drupal_set_message(t("The contact list has been saved"));
 	else:
@@ -170,6 +174,10 @@ function constant_contact_delete_list_form_submit($form, &$form_state)
 			endif;
 			
 			$status = $cc->delete_list($id);
+
+            // refresh the lists, bypass cache
+            constant_contact_get_lists($cc, 3, true);
+
 			if($status):
 				drupal_set_message(t('The Contact list has been deleted'));
 			else:
@@ -239,6 +247,10 @@ function constant_contact_add_list_form_submit($form, &$form_state)
 	$sort_order = (isset($form_state['values']['sort_order'])) ? $form_state['values']['sort_order'] : 99;
 	
 	$status = $cc->create_list($list, 'false', $sort_order);
+
+    // refresh the lists, bypass cache
+    constant_contact_get_lists($cc, 3, true);
+    
 	if($status):
 		drupal_set_message(t('A new contact list has been created'));
 	else:

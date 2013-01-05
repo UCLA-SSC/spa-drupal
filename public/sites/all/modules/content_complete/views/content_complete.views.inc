@@ -1,5 +1,4 @@
 <?php
-// $Id: content_complete.views.inc,v 1.1.2.7 2010/10/08 13:55:11 pvhee Exp $
 
 /**
  *  @file

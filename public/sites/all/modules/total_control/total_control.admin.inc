@@ -1,8 +1,8 @@
 <?php
-// $Id: total_control.admin.inc,v 1.3 2010/03/02 22:45:32 jenlampton Exp $
 
 /**
- * @file
+ * @file total_control.admin.inc
+ *
  * This module enables a page to be used as an administrative dashboard
  * Also included are several views for site administration
  *
@@ -11,7 +11,7 @@
 /**
  * menu callback for settings page
  */
-function total_control_admin_settings(){
+function total_control_admin_settings() {
   // Redirect on log in
   $form['total_control_login_redirect'] = array(
     '#type' => 'checkbox',
@@ -19,15 +19,7 @@ function total_control_admin_settings(){
     '#default_value' => variable_get('total_control_login_redirect', 0),
     '#description' => t('Users with the !permission can be automatically redirected to the Dashboard when they log in.', array('!permission' => l(t('Have Total Control permission'), 'admin/user/permissions'))),
     );
-  
-  // Panel pane settings
-  $form['total_control_configure_links'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Show configure links on "Create Content" panel'),
-    '#default_value' => variable_get('total_control_configure_links', 1),
-    '#description' => t('Configure links go to the edit content type pages'),
-    );
-  
+
   $overridden = '<strong>' . t('  Automatic settings override these options.') . '</strong>';
   $collapse_type = FALSE;
   $collapse_role = FALSE;
@@ -38,17 +30,17 @@ function total_control_admin_settings(){
   $disable_role_page = '';
   $auto_pane_default = variable_get('total_control_auto_panels', array());
   $auto_page_default = variable_get('total_control_auto_pages', array());
-  
+
   $types = node_get_types();
   $options = array();
-  foreach ($types as $machine => $type){
+  foreach ($types as $machine => $type) {
     $options[$machine] = $type->name;
   }
-  if (!empty($auto_pane_default) && !($auto_pane_default['type'] === 0)){
+  if (!empty($auto_pane_default) && !($auto_pane_default['type'] === 0)) {
     $disable_type_pane = TRUE;
     $collapse_auto = FALSE;
   }
-  if (!empty($auto_page_default) && !($auto_page_default['type'] === 0)){
+  if (!empty($auto_page_default) && !($auto_page_default['type'] === 0)) {
     $disable_type_page = TRUE;
     $collapse_auto = FALSE;
   }
@@ -60,14 +52,14 @@ function total_control_admin_settings(){
   $roles = user_roles(TRUE);
   $role_options = array();
   $role_defaults = array(2);
-  foreach ($roles as $rid => $role){
+  foreach ($roles as $rid => $role) {
     $role_options[$rid] = $role . 's';
   }
-  if (!empty($auto_pane_default) && !($auto_pane_default['role'] === 0)){
-    $disable_role_pane = TURE;
+  if (!empty($auto_pane_default) && !($auto_pane_default['role'] === 0)) {
+    $disable_role_pane = TRUE;
     $collapse_auto = FALSE;
   }
-  if (!empty($auto_page_default) && !($auto_page_default['role'] === 0)){
+  if (!empty($auto_page_default) && !($auto_page_default['role'] === 0)) {
     $disable_role_page = TURE;
     $collapse_auto = FALSE;
   }
@@ -159,16 +151,20 @@ function total_control_admin_settings(){
 /**
  * Submit function for settings page
  */
-function total_control_admin_settings_submit($form, &$form_state){
-  if ($form_state['values']['total_control_role_panels'][2] == 0){
+function total_control_admin_settings_submit($form, &$form_state) {
+  if ($form_state['values']['total_control_role_panels'][2] == 0) {
     // change it back and tell them why
     $form_state['values']['total_control_role_panels'][2] = 2;
-    drupal_set_message(t('You can not delete the pane view for users.  To remove it from your dashboard, use the <a href="!panels_interface">Page Manager</a>.', array('!panels_interface' => url('admin/build/pages'))));
+    drupal_set_message(t('You can not delete the pane view for users.  To 
+      remove it from your dashboard, use the <a href="!panels_interface">Page 
+      Manager</a>.', array('!panels_interface' => url('admin/build/pages'))));
   }
-  if ($form_state['values']['total_control_role_pages'][2] == 0){
+  if ($form_state['values']['total_control_role_pages'][2] == 0) {
     // change it back and tell them why
     $form_state['values']['total_control_role_pages'][2] = 2;
-    drupal_set_message('You should not delete the page view for all users.');
+    drupal_set_message(t('You should not delete the page view for all users, 
+      use the <a href="!views_interface">Views user interface</a> to disable
+      it instead.', array('!views_interface' => url('admin/structure/views'))));
   }
   
   $panes = variable_get('total_control_type_panes', array());
@@ -176,21 +172,21 @@ function total_control_admin_settings_submit($form, &$form_state){
   $paneview = views_get_view('control_content_panes');
   $pageview = views_get_view('control_content');
   $types = node_get_types();
-  foreach ($types as $machine => $type){
-    if (is_array($form_state['values']['total_control_type_panels'])){
-      if (array_key_exists($machine, $form_state['values']['total_control_type_panels'])) {
+  foreach ($types as $machine => $type) {
+    if (is_array($form_state['values']['total_control_type_panels'])) {
+      if ($form_state['values']['total_control_type_panels'][$machine] === $machine) {
         total_control_add_views_pane_display($paneview, $type->name, $machine);
       }
       else {
-        total_control_views_delete_pane_display($paneview, $type->name, $machine); 
+        total_control_views_delete_pane_display($machine); 
       }
     }
     if (is_array($form_state['values']['total_control_type_pages'])) {
-      if (array_key_exists($machine, $form_state['values']['total_control_type_pages'])) {
+      if ($form_state['values']['total_control_type_pages'][$machine] === $machine) {
         total_control_add_views_page_display($pageview, $type->name, $machine); 
       }
       else {
-        total_control_views_delete_page_display($pageview, $type->name, $machine); 
+        total_control_views_delete_page_display($machine); 
       }
     }
   }

@@ -1,4 +1,7 @@
-// $Id: CHANGELOG.txt,v 1.1.2.4 2010/10/08 14:33:54 pvhee Exp $
+Content Complete 1.5, 2010-08-19
+--------------------------------
+- Issue #1201270: removed user_access wrap in hook_block and put in view switch only, as suggested by carlos8f in issue #1173012 comment 58.
+
 
 Content Complete 1.4, 2010-08-10
 --------------------------------

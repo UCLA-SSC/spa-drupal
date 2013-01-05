@@ -1,5 +1,4 @@
 <?php
-// $Id: content_complete.admin.inc,v 1.1.2.8 2009/09/11 15:24:36 pvhee Exp $ 
 
 /** 
  * @file 

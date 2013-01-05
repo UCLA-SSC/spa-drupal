@@ -1,4 +1,4 @@
-// $Id: constant_contact.js,v 1.11 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 $(document).ready(function(){
 	$("#cc_auth").click(function(event){
 		constant_contact_auth();

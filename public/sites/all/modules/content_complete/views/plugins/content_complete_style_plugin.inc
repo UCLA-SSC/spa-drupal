@@ -1,5 +1,4 @@
 <?php
-// $Id: content_complete_style_plugin.inc,v 1.1.2.2 2010/01/22 13:30:14 pvhee Exp $
 
 /**
  * @file

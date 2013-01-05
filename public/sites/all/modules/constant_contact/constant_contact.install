@@ -1,5 +1,5 @@
 <?php
-// $Id: constant_contact.install,v 1.15 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 module_load_include('php', 'constant_contact', 'constant_contact.config');
 
 /**
@@ -14,68 +14,28 @@ function constant_contact_requirements($phase)
 {
 	$requirements = array();
 
-	// try to change the allow_url_fopen setting
-	@ini_get('allow_url_fopen', 1);
-
 	if($phase == 'runtime'):
 		// running the module...
 	else:
 		// installing...
 		if(!extension_loaded('xml'))
 		{
-			$requirements['xml'] = array(
+			$requirements['constant_contact']['xml'] = array(
 			'value' => t('XML extension Not installed'),
 			'severity' => REQUIREMENT_ERROR,
 			'description' => t('The XML extension for PHP is missing or outdated. Please check the PHP XML documentation for information on how to correct this.'),
 			);
-			$requirements['xml']['title'] = t('Constant Contact');
+			$requirements['constant_contact']['xml']['title'] = t('Constant Contact');
 		}
 
-		if(!extension_loaded('openssl'))
+		if(!extension_loaded('curl'))
 		{
-			$requirements['openssl'] = array(
-			'value' => t('openssl extension Not installed'),
+			$requirements['constant_contact']['curl'] = array(
+			'value' => t('curl extension Not installed'),
 			'severity' => REQUIREMENT_ERROR,
-			'description' => t('The openssl extension for PHP is missing or outdated. Please check the PHP openssl documentation for information on how to correct this.'),
+			'description' => t('The curl extension for PHP is missing or outdated. Please check the PHP curl documentation at www.php.net/curl for information on how to correct this.'),
 			);
-			$requirements['openssl']['title'] = t('Constant Contact');
-		}
-		else
-		{
-			$last_error = false;
-
-			if($fp = @fsockopen('ssl://www.google.com', 443, $errno, $errstr, 120)):
-				if(fwrite($fp, $request)):
-					while(!feof($fp)):
-						if(!$this->http_response .= @fread($fp, 8192)):
-							$last_error = "Failed to read test connection to google.com";
-							break;
-						endif;
-					endwhile;
-				endif;
-				fclose($fp);
-			else:
-				$last_error = "Test connection to google.com Failed $errstr ($errno)";
-			endif;
-
-			if($last_error):
-				$requirements['ssl'] = array(
-				'value' => t('Problem with fsockopen function'),
-				'severity' => REQUIREMENT_ERROR,
-				'description' => t("We encountered a problem while trying to test the servers secure communication abilities, the test failed with the message: $last_error."),
-				);
-				$requirements['xml']['title'] = t('Constant Contact');
-			endif;
-		}
-
-		if(!ini_get('allow_url_fopen'))
-		{
-			$requirements['allow_url_fopen'] = array(
-			'value' => t('allow_url_fopen setting Not enabled'),
-			'severity' => REQUIREMENT_ERROR,
-			'description' => t('The allow_url_fopen setting is not enabled in your php.ini config file'),
-			);
-			$requirements['allow_url_fopen']['title'] = t('Constant Contact');
+			$requirements['constant_contact']['curl']['title'] = t('Constant Contact');
 		}
 	endif;
 

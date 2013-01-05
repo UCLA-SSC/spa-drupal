@@ -1,8 +1,8 @@
 <?php
-// $Id: welcome.inc,v 1.8 2010/03/02 22:10:32 jenlampton Exp $
 
 /**
- * @file
+ * @file welcome.inc
+ *
  * "Welcome" panels content type. Displays a summary of 
  * content statistics including: number pieces of each type of 
  * content, number of comments, number of blocked comments (spam)
@@ -68,16 +68,22 @@ function total_control_welcome_content_type_admin_info($subtype, $conf, $context
  * @return
  *   An object with at least title and content members.
  */
-function total_control_welcome_content_type_render($subtype, $conf, $panel_args, &$context) {
+function total_control_welcome_content_type_render($subtype, $conf, $panel_args, &$context) {  
+  // Building the content
+  $content =  '<div class="total-control-site-overview">';
+  $content .= '  <p>' . t('Welcome to your administrative dashboard.  !panel
+    to add more content panes here, or configure those provided by default.
+    Views content panes can be created for you automatically according to your 
+    !settings.  Make this dashboard the perfect hub for all your 
+    administrative needs.', array('!panel' => l(t('Edit this panel'), 
+    'admin/build/pages/edit/dashboard'), '!settings' => l(t('Total 
+    Control Settings'), 'admin/settings/control'))) . '</p>';
+  $content .= '</div>';
+
   $block = new stdClass();
   $block->module = t('total_control');
   $block->title = t('Take Total Control.');
-  
-  // Building the content
-  $content =  '<div class="total-control-site-overview">';
-  $content .= '  <p>'.t('Welcome to your administrative dashboard.  !panel to add more content panes here, or configure those provided by default. Views content panes can be created for you automatically according to your !settings.  Make this dashboard the perfect hub for all your administrative needs.', array('!panel' => l(t('Edit this panel'), 'admin/build/pages/edit/dashboard'), '!settings' => l(t('Total Control Settings'), 'admin/settings/control'))).'</p>';
-  $content .= '</div>';
-
   $block->content = $content;
+
   return $block;
 }

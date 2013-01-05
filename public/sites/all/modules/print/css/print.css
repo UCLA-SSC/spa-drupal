@@ -1,9 +1,8 @@
-/* $Id: print.css,v 1.1.2.2 2008/08/21 22:03:40 jcnventura Exp $ */
 
 body {
   margin: 1em;
   background-color: #fff;
-  font-family: "times new roman", times, serif;
+  font-family: sans-serif;
 }
 th {
   text-align: left; /* LTR */
@@ -55,14 +54,3 @@ img.print-logo {border: 0;}
 .print-source_url {font-size: small;}
 .print-links {font-size: small;}
 .print-footer {text-align: center;}
-
-
-/*  CUSTOM CSS FOR POSTER PRINTOUT */
-
-#print-poster body {margin:1in 1in 0;}
-#print-poster .meta {display:none;}
-
-.field-field-poster-head-img {text-align:center;}
-.field-field-poster-left {width:190px;float:left;padding:30px 20px 30px 10px;height:550px;overflow: hidden;font-family:helvetica,arial,sans-serif;}
-.field-field-poster-info {margin-left:220px;width:430px;height:560px;overflow:hidden;padding-top:30px;}
-.field-field-poster-foot {clear:both;height:110px;overflow: hidden;vertical-align: bottom;}

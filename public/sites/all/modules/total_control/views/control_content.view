@@ -1,8 +1,12 @@
 <?php
 
-/* 
- * default content page view 
+/**
+ * @file control_content.view
+ *
+ * Default view for administration of content. Contains page displays only.
+ *
  */
+ 
 $view = new view;
 $view->name = 'control_content';
 $view->description = 'Total Control over content: Contains an administration page for content.';
@@ -240,6 +244,8 @@ $handler->override_option('cache', array(
   'type' => 'none',
 ));
 $handler->override_option('title', 'All ');
+$handler->override_option('empty', 'There is not any content on your site.');
+$handler->override_option('empty_format', '1');
 $handler->override_option('items_per_page', 30);
 $handler->override_option('use_pager', '1');
 $handler->override_option('style_plugin', 'bulk');
@@ -542,17 +548,18 @@ $handler->override_option('fields', array(
   ),
 ));
 $handler->override_option('title', 'All Content');
-$handler->override_option('path', 'admin/dashboard/content');
+$handler->override_option('path', 'admin/dashboard/content/all');
 $handler->override_option('menu', array(
-  'type' => 'tab',
+  'type' => 'default tab',
   'title' => 'All Content',
   'description' => '',
   'weight' => '-19',
   'name' => 'navigation',
 ));
 $handler->override_option('tab_options', array(
-  'type' => 'none',
-  'title' => '',
+  'type' => 'tab',
+  'title' => 'All Content',
   'description' => '',
-  'weight' => '0',
+  'weight' => '-19',
+  'name' => 'navigation',
 ));

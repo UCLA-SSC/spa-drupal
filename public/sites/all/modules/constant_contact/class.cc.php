@@ -5,7 +5,7 @@
  * @package		drupal
  * @subackage	constant-contact-api
  */
-// $Id: class.cc.php,v 1.11 2010/03/28 12:02:30 justphp Exp $
+// $Id$
 /**
  * @file
  */
@@ -17,7 +17,7 @@ class cc {
 	 *
 	 * @access 	public
 	 */
-	var $http_user_agent = 'justphp 2.0';
+	var $http_user_agent = 'justphp 3.0';
 
 	/**
 	 * The developers API key which is associated with the application
@@ -330,10 +330,10 @@ class cc {
 		$lists = $this->get_lists($action, $exclude);
 
 		if(count($lists) > 0):
-			if(isset($this->list_meta_data->next_page)):
+			if(isset($this->list_meta_data->next_page) AND !is_null($this->list_meta_data->next_page)):
 				// grab all the other pages if they exist
-				while($this->list_meta_data->next_page != ''):
-				$lists = array_merge($lists, $this->get_lists($this->list_meta_data->next_page, 0));
+				while(!is_null($this->list_meta_data->next_page)):
+				    $lists = array_merge($lists, $this->get_lists($this->list_meta_data->next_page, 0));
 				endwhile;
 			endif;
 
@@ -390,6 +390,10 @@ class cc {
 			$this->list_meta_data->next_page = $this->get_id_from_link($xml['feed']['link']['2_attr']['href']);
 			$this->list_meta_data->current_page = $this->get_id_from_link($xml['feed']['link']['3_attr']['href']);
 			$this->list_meta_data->first_page = $this->get_id_from_link($xml['feed']['link']['4_attr']['href']);
+	    else:
+			$this->list_meta_data->next_page = NULL;
+			$this->list_meta_data->current_page = NULL;
+			$this->list_meta_data->first_page = NULL;
 		endif;
 
 
@@ -563,9 +567,15 @@ class cc {
 
 		$xml = $this->load_url("lists", 'post', $xml_post, 201);
 
+        if($xml):
+            return true;
+        endif;
+
+        /*
 		if(isset($this->http_response_headers['Location']) && trim($this->http_response_headers['Location']) != ''):
 			return $this->get_id_from_link($this->http_response_headers['Location']);
 		endif;
+        */
 
 		return false;
 	}
@@ -628,6 +638,10 @@ class cc {
 			$this->member_meta_data->next_page = $this->get_id_from_link($xml['feed']['link']['2_attr']['href']);
 			$this->member_meta_data->current_page = $this->get_id_from_link($xml['feed']['link']['3_attr']['href']);
 			$this->member_meta_data->first_page = $this->get_id_from_link($xml['feed']['link']['4_attr']['href']);
+	    else:
+			$this->member_meta_data->next_page = NULL;
+			$this->member_meta_data->current_page = NULL;
+			$this->member_meta_data->first_page = NULL;
 		endif;
 
 		if(is_array($_members)):
@@ -672,6 +686,8 @@ class cc {
 	{
 		$lists_url = str_replace('https:', 'http:', $this->api_url . "lists");
 
+        $email = strtolower($email);
+
 		// build the XML post data
 		$xml_post = '
 <entry xmlns="http://www.w3.org/2005/Atom">
@@ -712,9 +728,15 @@ $xml_post .= '
 
 		$xml = $this->load_url("contacts", 'post', $xml_post, 201);
 
+        if($xml):
+            return true;
+        endif;
+
+        /*
 		if(isset($this->http_response_headers['Location']) && trim($this->http_response_headers['Location']) != ''):
 			return $this->get_id_from_link($this->http_response_headers['Location']);
 		endif;
+        */
 
 		return false;
 	}
@@ -730,6 +752,8 @@ $xml_post .= '
 		// build the XML put data
 		$_url = str_replace('https:', 'http:', $this->api_url . "contacts");
 		$url = "$_url/$id";
+
+        $email = strtolower($email);
 
 		$xml_data = '<entry xmlns="http://www.w3.org/2005/Atom">
   <id>'.$url.'</id>
@@ -755,7 +779,7 @@ $xml_post .= '
 				$xml_data .= '<ContactList id="'.$this->get_list_url($list_id).'"></ContactList>';
 			endforeach;
 		else:
-			$xml_data .= '<ContactList id="'.$this->get_list_url($list_id).'"></ContactList>';
+			$xml_data .= '<ContactList id="'.$this->get_list_url($lists).'"></ContactList>';
 		endif;
 		endif;
 		$xml_data .= "</ContactLists>\n";
@@ -765,13 +789,14 @@ $xml_data .= '
   </content>
 </entry>
 ';
-
+        
 		$this->http_set_content_type('application/atom+xml');
-		$this->load_url("contacts/$id", 'put', $xml_data, 204);
+		$xml = $this->load_url("contacts/$id", 'put', $xml_data, 204);
 
-		if(intval($this->http_response_code) === 204):
+		if($xml OR is_array($xml)):
 			return true;
 		endif;
+
 		return false;
 	}
 
@@ -797,14 +822,18 @@ $xml_data .= '
 		$_contacts = (isset($xml['feed']['entry'])) ? $xml['feed']['entry'] : false;
 
 
-		if(isset($xml['feed']['link']['2_attr']['rel']) && $xml['feed']['link']['2_attr']['rel'] == 'first'):
+		if(isset($xml['feed']['link']['2_attr']['rel'], $xml['feed']['link']['3_attr']['href']) && $xml['feed']['link']['2_attr']['rel'] == 'first'):
 			$this->contact_meta_data->first_page = $this->get_id_from_link($xml['feed']['link']['2_attr']['href']);
 			$this->contact_meta_data->current_page = $this->get_id_from_link($xml['feed']['link']['3_attr']['href']);
 			$this->contact_meta_data->next_page = '';
-		elseif(isset($xml['feed']['link']['2_attr']['rel']) && $xml['feed']['link']['2_attr']['rel'] == 'next'):
+		elseif(isset($xml['feed']['link']['2_attr']['rel'], $xml['feed']['link']['3_attr']['href'], $xml['feed']['link']['4_attr']['href']) && $xml['feed']['link']['2_attr']['rel'] == 'next'):
 			$this->contact_meta_data->next_page = $this->get_id_from_link($xml['feed']['link']['2_attr']['href']);
 			$this->contact_meta_data->current_page = $this->get_id_from_link($xml['feed']['link']['3_attr']['href']);
 			$this->contact_meta_data->first_page = $this->get_id_from_link($xml['feed']['link']['4_attr']['href']);
+	    else:
+			$this->contact_meta_data->next_page = NULL;
+			$this->contact_meta_data->current_page = NULL;
+			$this->contact_meta_data->first_page = NULL;
 		endif;
 
 
@@ -1033,11 +1062,18 @@ $xml_data .= '
 
 		$this->http_set_content_type('application/x-www-form-urlencoded');
 
-		$this->load_url("activities", 'post', $params, 201);
+		$xml = $this->load_url("activities", 'post', $params, 201);
 
+
+        if($xml):
+            return true;
+        endif;
+
+        /*
 		if(isset($this->http_response_headers['Location']) && trim($this->http_response_headers['Location']) != ''):
 			return $this->get_id_from_link($this->http_response_headers['Location']);
 		endif;
+        */
 
 		return false;
 	}
@@ -1107,11 +1143,17 @@ $xml_data .= '
 
 		$this->http_set_content_type('application/x-www-form-urlencoded');
 
-		$this->load_url("activities", 'post', $params, 201);
+		$xml = $this->load_url("activities", 'post', $params, 201);
 
+        if($xml):
+            return true;
+        endif;
+
+        /*
 		if(isset($this->http_response_headers['Location']) && trim($this->http_response_headers['Location']) != ''):
 			return $this->get_id_from_link($this->http_response_headers['Location']);
 		endif;
+        */
 
 		return false;
 	}
@@ -1168,11 +1210,17 @@ $xml_data .= '
 
 		$this->http_set_content_type('application/x-www-form-urlencoded');
 
-		$this->load_url("activities", 'post', $params, 201);
+		$xml = $this->load_url("activities", 'post', $params, 201);
 
+        if($xml):
+            return true;
+        endif;
+
+        /*
 		if(isset($this->http_response_headers['Location']) && trim($this->http_response_headers['Location']) != ''):
 			return $this->get_id_from_link($this->http_response_headers['Location']);
 		endif;
+        */
 
 		return false;
 	}
@@ -1354,9 +1402,15 @@ id="'.$this->get_http_api_url().'campaigns/1100546096289">
 		$this->http_set_content_type('application/atom+xml');
 		$xml = $this->load_url("campaigns", 'post', $xml_post, 201);
 
+        if($xml):
+            return true;
+        endif;
+
+        /*
 		if(isset($this->http_response_headers['Location']) && trim($this->http_response_headers['Location']) != ''):
 			return $this->get_id_from_link($this->http_response_headers['Location']);
 		endif;
+        */
 
 		return false;
 	}
@@ -1475,7 +1529,7 @@ id="'.$this->get_http_api_url().'campaigns/1100546096289">
 			$minute = $time_bits[1];
 			$second = $time_bits[2];
 
-			return mktime($hour,$minute,$second, $month, $day, $year);
+			return mktime($hour,$minute, 0, $month, $day, $year);
 		endif;
 
 		return false;
@@ -1799,56 +1853,6 @@ id="'.$this->get_http_api_url().'campaigns/1100546096289">
 		$this->http_content_type = $content_type;
 	}
 
-	/**
-	 * Simple method which calls PHP's @see parse_url function and saves the result to a variable
-	 *
-	 *
-	 * @access 	private
-	 */
-	function http_parse_request_url($url) {
-		$this->http_url_bits = parse_url($url);
-	}
-
-
-	/**
-	 * This method adds the necessary HTTP auth headers to communicate with the API
-	 *
-	 *
-	 * @access 	private
-	 */
-	function http_auth_headers() {
-		if($this->http_user || $this->http_pass):
-			$this->http_headers_add('Authorization', " Basic ".base64_encode($this->http_user . ":" . $this->http_pass));
-		endif;
-	}
-
-
-	/**
-	 * This method takes care of escaping the values sent with the http request
-	 *
-	 * @param	array		An array of params to escape
-	 * @param	array		The HTTP method eg. GET
-	 *
-	 * @access 	private
-	 */
-	function http_serialize_params($params) {
-		$query_string = array();
-		if(is_array($params)):
-			foreach($params as $key => $value):
-				if(is_array($value)):
-					foreach($value as $k => $fieldvalue):
-						$query_string[] = urlencode($key) . '=' . rawurlencode($fieldvalue);
-					endforeach;
-				else:
-					$query_string[] = urlencode($key) . '=' . rawurlencode($value);
-				endif;
-			endforeach;
-		else:
-			return $params;
-		endif;
-		return implode('&', $query_string);
-	}
-
 
 
 	/**
@@ -1857,257 +1861,41 @@ id="'.$this->get_http_api_url().'campaigns/1100546096289">
 	 * @param	string		The path of the resource to request eg. /index.php
 	 * @param	string		The method to use to make the request eg. GET
 	 * @param	array		An array of params to use for this HTTP request, eg. post data
-	 * @param	array		An array of additional HTTP headers to send along with the request
 	 *
 	 * @access 	private
 	 */
-	function http_send($path, $method, $params = array(), $headers = array())
-	{
+	function http_send($the_url, $method, $params = array())
+    {
 		$this->http_response = '';
 		$this->http_response_code = '';
 		$this->http_method = $method;
-		$this->http_parse_request_url($path);
-		$this->http_headers_merge($headers);
-
-		if(is_array($params)):
-			$params = $this->http_serialize_params($params);
-		endif;
 
 		$method = strtoupper($method);
 
-		$the_host = $this->http_url_bits['host'];
-		$the_path = (isset($this->http_url_bits['path'])&&trim($this->http_url_bits['path'])!='') ? $this->http_url_bits['path'] : '';
-		$the_path .= (isset($this->http_url_bits['query'])&&trim($this->http_url_bits['query'])!='') ? '?'.$this->http_url_bits['query'] : '';
+        $ch = curl_init($the_url);
+        curl_setopt($ch, CURLOPT_USERAGENT, $this->http_user_agent);
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->http_user . ':' . $this->http_pass);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: {$this->http_content_type}"));
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->http_request_timeout);
 
-    	$this->http_headers_add('', "$method $the_path HTTP/1.1");
-    	$this->http_headers_add('Host', $the_host);
+        if($method == 'POST' OR $method == 'PUT' AND count($params) > 0):
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+        endif;
 
-		if($this->http_content_type):
-			$this->http_headers_add('Content-Type', $this->http_content_type);
-		endif;
+        curl_setopt($ch, CURLOPT_FAILONERROR, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
 
-		$this->http_headers_add('User-Agent', $this->http_user_agent);
-		$this->http_headers_add('Content-Length', strlen($params));
+        $this->http_response_body = curl_exec($ch);
+        $this->http_response_info = curl_getinfo($ch);
+        $this->http_response_error = curl_error($ch);
+        $this->http_response_code = $this->http_response_info['http_code'];
 
-		$request = $this->http_build_request_headers();
-
-		if(trim($params) != ''):
-			$request .= "$params{$this->http_linebreak}";
-		endif;
-
-		$this->http_request = $request;
-
-		if($this->http_url_bits['scheme']=='https'):
-			$port = 443;
-			$fsockurl = "ssl://$the_host";
-		else:
-			$port = 80;
-			$fsockurl = $the_host;
-		endif;
-
-		// if an error occurs we log that and break out of the function
-		if($fp = @fsockopen($fsockurl, $port, $errno, $errstr, $this->http_request_timeout)):
-			if(fwrite($fp, $request)):
-				$this->http_response = '';
-                while(!feof($fp)):
-                    $this->http_response .= fgets($fp, 8192);
-                endwhile;
-			else:
-				$this->last_error = "Failed to write to $fsockurl";
-			endif;
-			fclose($fp);
-		else:
-			$this->last_error = "Failed to connect to $fsockurl $errstr ($errno)";
-			return false;
-		endif;
-
-		$this->http_parse_response();
-	}
-
-
-    /**
-     * dechunk an http 'transfer-encoding: chunked' message
-     *
-     * @param string $chunk the encoded message
-     * @return string the decoded message.  If $chunk wasn't encoded properly it will be returned unmodified.
-     */
-    function http_chunked_decode($chunk)
-	{
-        $pos = 0;
-        $len = strlen($chunk);
-        $dechunk = null;
-
-        while(($pos < $len)
-            && ($chunkLenHex = substr($chunk,$pos, ($newlineAt = strpos($chunk,"\n",$pos+1))-$pos)))
-        {
-            if (! $this->is_hex($chunkLenHex)) {
-                trigger_error('Data is not properly chunk encoded', E_USER_ERROR);
-                return $chunk;
-            }
-
-            $pos = $newlineAt + 1;
-            $chunkLen = hexdec(rtrim($chunkLenHex,"\r\n"));
-            $dechunk .= substr($chunk, $pos, $chunkLen);
-            $pos = strpos($chunk, "\n", $pos + $chunkLen) + 1;
-        }
-        return $dechunk;
+        curl_close($ch);
     }
-
-    /**
-     * determine if a string can represent a number in hexadecimal
-     *
-     * @param string $hex
-     * @return boolean true if the string is a hex, otherwise false
-     */
-    function is_hex($hex) {
-        // regex is for weenies
-        $hex = strtolower(trim(ltrim($hex,"0")));
-        if (empty($hex)) { $hex = 0; };
-        $dec = hexdec($hex);
-        return ($hex == dechex($dec));
-    }
-
-	/**
-	 * This method calls other methods
-	 * It is mainly here so we can do everything in the correct order, according to HTTP spec
-	 *
-	 * @return	string		A string containing the entire HTTP request
-	 *
-	 * @access 	private
-	 */
-	function http_build_request_headers()
-	{
-		$this->http_auth_headers();
-		$this->http_headers_add('Connection', "Close{$this->http_linebreak}");
-		$request = $this->http_headers_to_s($this->http_request_headers);
-		$this->http_request_headers = array();
-
-		return $request;
-	}
-
-
-	/**
-	 * This method parses the raw http response into local variables we use later on
-	 *
-	 *
-	 * @access 	private
-	 */
-	function http_parse_response()
-	{
-		list($headers, $body) = explode("\r\n\r\n", $this->http_response, 2);
-		$this->http_parse_headers($headers);
-
-		if(isset($this->http_response_headers['Transfer-Encoding']) && 'chunked' == $this->http_response_headers['Transfer-Encoding']):
-    		$this->http_response_body = $this->http_chunked_decode($body);
-		else:
-			$this->http_response_body =  $body;
-		endif;
-
-		$this->http_set_content_type($this->http_default_content_type);
-	}
-
-
-	/**
-	 * This method converts an array of request headers into a correctly formatted HTTP request header
-	 *
-	 * @param	array		The array of headers to convert
-	 * @return	string		A string that can be used within an HTTP request
-	 *
-	 * @access 	private
-	 */
-	function http_headers_to_s($headers) {
-		$string = '';
-		if(is_array($headers)):
-			foreach ($headers as $header => $value) {
-				if(trim($header) != '' && !is_numeric($header)):
-					$string .= "$header: $value{$this->http_linebreak}";
-				else:
-					$string .= "$value{$this->http_linebreak}";
-				endif;
-			}
-		endif;
-		return $string;
-	}
-
-
-	/**
-	 * This method allows us to add a specific header to the @see $http_request_headers array
-	 *
-	 * @param	string		The name of the header to add
-	 * @param	string		The value of the header to add
-	 *
-	 * @access 	private
-	 */
-	function http_headers_add($header, $value) {
-		if(trim($header) != '' && !is_numeric($header)):
-			$this->http_request_headers[$header] = $value;
-		else:
-			$this->http_request_headers[] = $value;
-		endif;
-	}
-
-
-	/**
-	 * This merges the given array with the @see $http_request_headers array
-	 *
-	 * @param	array		The associative array of headers to merge
-	 *
-	 * @access 	private
-	 */
-	function http_headers_merge($headers) {
-		$this->http_request_headers = array_merge($this->http_request_headers, $headers);
-	}
-
-
-
-	/**
-	 * This gets a specific request header from the @see $http_request_headers array
-	 *
-	 * @param	string		The name of the header to retrieve
-	 *
-	 * @access 	private
-	 */
-	function http_headers_get($header) {
-		return $this->http_request_headers[$header];
-	}
-
-
-	/**
-	 * This gets the response code of the last HTTP request
-	 *
-	 * @return	int		The response code, eg. 200
-	 *
-	 * @access 	private
-	 */
-	function http_headers_get_response_code() {
-		return $this->http_response_code;
-	}
-
-
-	/**
-	 * Parses the response headers and response code into a readable format
-	 *
-	 * @param	array	An associative array of headers to include in the HTTP request
-	 *
-	 * @access 	private
-	 */
-	function http_parse_headers($headers) {
-		$replace = ($this->http_linebreak == "\n" ? "\r\n" : "\n");
-		$headers = str_replace($replace, $this->http_linebreak, trim($headers));
-		$headers = explode($this->http_linebreak, $headers);
-		$this->http_response_headers = array();
-		if (preg_match('/^HTTP\/\d\.\d (\d{3})/', $headers[0], $matches)) {
-		  $this->http_response_code = intval($matches[1]);
-		  array_shift($headers);
-		}
-		if($headers):
-			foreach ($headers as $string) {
-			  list($header, $value) = explode(': ', $string, 2);
-			  $this->http_response_headers[$header] = trim($value);
-			}
-		endif;
-	}
-
 
 
 	/**
