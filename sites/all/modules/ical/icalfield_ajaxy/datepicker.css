@@ -1,6 +1,0 @@
-/*!
- * datepicker.css, included with the date popup module, does not play well with
- * the css provided by jquery ui. Basically, it breaks it. So, we add this blank
- * file in as a theme file and let drupal_get_css() treat this as a theme
- * override which stops the file from date popup from loading.
- */

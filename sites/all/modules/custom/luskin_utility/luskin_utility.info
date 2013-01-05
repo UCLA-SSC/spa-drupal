@@ -1,5 +1,0 @@
-name = "Luskin Utility"
-description = "A helper module for the Luskin site"
-core = 6.x
-package = Luskin
-
