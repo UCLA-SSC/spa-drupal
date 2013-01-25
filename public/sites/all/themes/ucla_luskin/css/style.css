@@ -496,6 +496,7 @@ float: left;
 .profile-style .views-field-field-position-value {
 	color: #666;
 	font-style: italic;
+  width: 410px;
 }
 .profile-style .views-field-name {
 	color: #666;
@@ -505,6 +506,7 @@ float: left;
 .profile-style .views-field-field-headshot-fid {
 	float: right;
 	padding: 0 0 10px 10px;
+  margin-top: -6px;
 }
 .profile-style .views-field-field-degrees-value, .profile-style .views-field-field-email-address-email, .profile-style .views-field-field-phone-number-value,
 .profile-style .views-field-field-fax-number-value {
@@ -1984,45 +1986,55 @@ body.mceContentBody {
 
 
 /*publications*/
+#publications-list #edit-keys {
+  width: 270px;
+}
+#publications-list #edit-initiative-wrapper {
+  margin-top: 3px;
+}
+.view-id-glossary.view-display-id-panel_pane_3  {
+}
+#publications-list .views-row,
 .view-id-glossary.view-display-id-panel_pane_3 .views-row {
 	clear: both;
 	border-top: 1px solid #999;
 	padding: 10px 0;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-field-cover-image-fid {
+#publications-list .views-field-field-cover-image-fid {
 	float: right;
 	margin: 0 5px 0 5px;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-title a {
+#publications-list .views-field-title a {
 	font-size: 14px;
 	color: #000;
 	font-weight: bold;
 	padding: 0 0 5px 0;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-field-subtitle-value,
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-field-author-value {
+#publications-list .views-field-field-subtitle-value,
+#publications-list .views-field-field-author-value {
 	color: #666;
 	font-weight: bold;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-field-description-value {
+#publications-list .views-field-field-description-value {
 	color: #666;
 	margin: 15px 150px 0 0;
 	padding: 5px 55px 0 0;
 	border-top: 1px dotted #ccc;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-view-node a {
+#publications-list .views-field-view-node a {
 	color: #3399ff;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-view-node {
-	margin: 5px 0 15px 0;
+#publications-list .views-field-view-node {
+  float: left;
+	margin: 0 15px 0 0;
 }
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-tid label.views-label-tid {
+#publications-list .views-field-tid label.views-label-tid {
 	color: #000;
 	font-size: 14px;
 	font-weight: bold;
 }
 
-.view-id-glossary.view-display-id-panel_pane_3 .views-field-tid label {
+#publications-list .views-field-tid label {
 	color: #666;
 }
 
@@ -2116,6 +2128,7 @@ body.mceContentBody {
 
 #edit-submit-glossary {
   width: 135px;
+  margin-top: 26px;
 }
 
 .view-glossary .views-exposed-widgets > div + div + div + div + div {
