@@ -479,6 +479,24 @@ float: left;
   font-size: 20.8px;
 }
 
+/*Archive Events*/
+.page-archive-event-items .view-date-browser h3 {
+  font-size: inherit;
+  border-top: 1px solid #999;
+}
+.page-archive-event-items .date-views-filter-wrapper {
+  min-width: 50px;
+}
+.page-archive-event-items #edit-field-date-value-value-year-wrapper select {
+  margin-top: 7px;
+}
+.page-archive-event-items .views-widget-filter-keys input {
+  width: 300px;
+}
+.page-archive-event-items .views-exposed-form .views-exposed-widget .form-submit {
+  margin-top: 2em;
+}
+
 /*Faculty Index */
 
 .profile-style .attachment-before .view-filters {
@@ -838,6 +856,14 @@ padding-left: 10px;
 .view-blogs .views-field-field-news-image-fid,
 .view-blogs .views-field-body {
 	margin-top: 15px;
+}
+
+/* Term Left Luskin */
+#term-left-luskin .views-field-title a,
+#term-left-luskin .views-field-title a:link {
+  color: #000;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 /* department landing */
@@ -1659,11 +1685,11 @@ ul.links li.blog_usernames_blog {
 .view-News {
 	color: #666666;
 }
-.view-News .views-field-title a {
+/*.view-News .views-field-title a {
 	color: #000;
 	text-decoration: none;
 	font-weight: bold;
-}
+}*/
 
 .views-row {
 	margin-bottom: 20px;
@@ -1735,14 +1761,17 @@ ul.links li.blog_usernames_blog {
 	position absolute;
 	top: 0px;
 }
+.pane-glossary-panel-pane-5 .view-filters,
 .pane-glossary-panel-pane-1 .view-filters {
 	margin-top: -150px;
 	float: left;
 }
+.pane-glossary-panel-pane-5 .view-header,
 .pane-glossary-panel-pane-1 .view-header {
 	float: left;
 	margin-top: 100px;
 }
+.pane-glossary-panel-pane-5 .view-content,
 .pane-glossary-panel-pane-1 .view-content {
 	clear: both;
 }
