@@ -6,6 +6,7 @@ body {
 	background-position: top center;
 	background-repeat: no-repeat;
 	background-color: #26465b;
+  background-attachment: fixed;
 }
 h1, h2, h3, h4, h5, h6 {
 	font-family: "Lucida Sans Unicode", "Lucida Grande", Verdana, Arial, Helvetica, sans-serif;
@@ -858,7 +859,9 @@ padding-left: 10px;
 	margin-top: 15px;
 }
 
-/* Term Left Luskin */
+/* Luskin Home & Term Left Luskin */
+#luskin-home .views-field-title a,
+#luskin-home .views-field-title a:link,
 #term-left-luskin .views-field-title a,
 #term-left-luskin .views-field-title a:link {
   color: #000;
