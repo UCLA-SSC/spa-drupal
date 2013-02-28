@@ -859,6 +859,30 @@ padding-left: 10px;
 	margin-top: 15px;
 }
 
+/* news archive index */
+.pane-news-panel-pane-4 .view-content h3 {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  line-height: 19.5px;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.pane-news-panel-pane-4 .view-content .views-row {
+  margin-bottom: 0;
+}
+
+.pane-news-panel-pane-4 .view-content .views-row .views-field-title {
+  margin-bottom: 7px;
+  line-height: 15px;
+}
+
+.pane-news-panel-pane-4 .view-content .views-row a {
+  color: #000;
+  font-weight: bold;
+}
+
 /* Luskin Home & Term Left Luskin */
 #luskin-home .views-field-title a,
 #luskin-home .views-field-title a:link,
@@ -1790,6 +1814,36 @@ ul.links li.blog_usernames_blog {
 	width: 1006px;
 }
 
+/* Fix for multi-day events */
+.view-content .calendar-calendar .date-prev {
+  float: left;
+  text-align: left;
+  width: 24%;
+  background: none;
+  border: none;
+  padding: 0;
+  right: 0;
+}
+.view-content .calendar-calendar .date-heading {
+  float: left;
+  width: auto;
+  text-align: center;
+}
+.view-content .calendar-calendar .date-next {
+  width: 24%;
+  float: right;
+  text-align: right;
+  background: none;
+  padding: 0;
+}
+.view-content .calendar-calendar .date-next .next{
+  margin: 0;
+}
+.view-content .calendar-calendar .date-prev a, .view-content .calendar-calendar .date-next a {
+  font-size: inherit;
+  margin: 0;
+}
+/* end multi-day fix */
 
 #calendar-block-month,
 .pane-views-calendar-calendar-block-1 {

@@ -20,4 +20,4 @@
   * the view is modified.
   */
 ?>
-<?php print $output; krumo($row); ?>
+<?php print $output; ?>

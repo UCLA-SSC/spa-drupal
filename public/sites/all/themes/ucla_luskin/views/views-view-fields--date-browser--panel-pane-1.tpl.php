@@ -20,23 +20,42 @@
  */
 ?>
 <?php foreach ($fields as $id => $field): ?>
+<?php if ($field->content) : ?>
   <?php if (!empty($field->separator)): ?>
     <?php print $field->separator; ?>
   <?php endif; ?>
-
- <?php if ($field->content): ?>
+ 
+  <?php if ($field->class == 'field-date-value'): ?>
+    <div class="left-block span-12 clear">
+  <?php endif;?>  
+  <?php if ($field->class == 'field-date-value-1'): ?>
+    <div class="right-block span-12 last"><div class="right-inner-left-block span-6">
+  <?php endif;?> 
+   
+  <?php if ($field->class == 'field-rsvp-email'): ?>
+    </div><div class="right-inner-right-block span-6 last">
+  <?php endif;?> 
   <<?php print $field->inline_html;?> class="views-field-<?php print $field->class; ?>">
     <?php if ($field->label): ?>
       <label class="views-label-<?php print $field->class; ?>">
         <?php print $field->label; ?>:
       </label>
     <?php endif; ?>
-
       <?php
       // $field->element_type is either SPAN or DIV depending upon whether or not
       // the field is a 'block' element type or 'inline' element type.
       ?>
       <<?php print $field->element_type; ?> class="field-content"><?php print $field->content; ?></<?php print $field->element_type; ?>>
   </<?php print $field->inline_html;?>>
+   <?php if ($field->class == 'view-node'|| $field->class == 'views-field-address' || $field->class == 'name' || $field->class == 'views-field-field-phone-number-value' ): ?>
+    </div>
+    
+  <?php endif;?> 
+  
+  <?php //print $field->class ?>
+
 <?php endif; ?>
 <?php endforeach; ?>
+</div>
+</div>
+<div class="clear"></div>
