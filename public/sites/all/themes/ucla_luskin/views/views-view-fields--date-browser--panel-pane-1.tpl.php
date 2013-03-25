@@ -25,7 +25,8 @@
     <?php print $field->separator; ?>
   <?php endif; ?>
  
-  <?php if ($field->class == 'field-date-value'): ?>
+  <?php // if ($field->class == 'field-date-value'): ?>
+  <?php if ($field->class == 'title'): ?>
     <div class="left-block span-12 clear">
   <?php endif;?>  
   <?php if ($field->class == 'field-date-value-1'): ?>

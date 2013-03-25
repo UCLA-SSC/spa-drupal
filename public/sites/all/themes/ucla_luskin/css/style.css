@@ -218,7 +218,9 @@ h2.pane-title, h2.pane-title a {
 .top-pane {
 	margin-bottom: 20px;
   /* RG 20110708 */
-  margin-left: -31px;
+  /*margin-left: -31px;*/
+  margin-left: -66px;
+  margin-top: -20px;
 }
 
 .yellow-block {
@@ -1473,6 +1475,7 @@ div.tabs {
 	margin: 0px auto;
 	height: 160px;
 }
+.container .span-24 .content-wrapper .top-pane,
 #header .top {
 	background: #3399ff;
 	width: 1006px;
