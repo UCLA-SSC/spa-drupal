@@ -33,14 +33,7 @@
     <div id="logo">
       <a href="<?php print url();?>"><img src="<?php print $logo?>"/></a>
     </div>
-      <div id="top-right">
-      <?php $school=node_load(422);?>
-      <a href="<?php print $school->field_luskin_online[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/LuskinOnlinewb.jpg"/></a>
-      <a href="<?php print $school->field_linkedin[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/linkedin-big.png"/></a>
-      <a href="<?php print $school->field_facebook[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/facebook-big.png"/></a>
-      <a href="http://twitter.com/<?php print $school->field_twitter[0]['value']?>"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
-      <a href="<?php print $school->field_youtube_page[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/youtube-big.png"/></a>
-    </div>
+  
     <?php print $header; ?>
     <?php if (isset($primary_links)) : ?>
       <?php print theme('nice_menu_primary_links'); ?>

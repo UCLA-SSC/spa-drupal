@@ -1,8 +1,7 @@
 #nice-menu-0 {
   width:950px;
   margin-top:17px;
-  font-size:12px ;
-margin-bottom: -10px;
+  font-size:12px;
   }
 ul.nice-menu-down {
   float: left;
@@ -31,8 +30,7 @@ ul.nice-menu-down a {
   text-align:center;
   text-decoration:none;
   text-transform:uppercase; 
-  background-color:#020c17;
-  color: #fff;
+  color:#333333;
   font-weight:bold;
   font-family:Georgia;
   padding:10px 26px 10px 25px;

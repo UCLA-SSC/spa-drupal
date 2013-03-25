@@ -61,19 +61,21 @@ h2.pane-title, h2.pane-title a {
 
 #top-right {
 	float: right;
-	margin: -11px -30px 0 2px;
-	width: 475px;
+	margin-top: -25px;
+	margin-right: 200px;
+
 }
+
 #top-right a {
-	margin-left: 10px;
+	margin-left: 0px;
 }
 #edit-menu-parent-hierarchical-select-selects-0 {
 	display: none;
 }
 
 #block-search-0 {
-	clear:both;
 	height: 10px;
+	margin-top: 15px;
 }
 
 .block-search .content {
