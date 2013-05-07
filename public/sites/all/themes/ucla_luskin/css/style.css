@@ -1537,27 +1537,27 @@ label {
   z-index: 10;
 }
 
-#views_slideshow_singleframe_main_Spotlight-panel_pane_2 .views-field-field-teaser-text-value,
-#views_slideshow_singleframe_main_Spotlight-panel_pane_2 .views-field-title {
+#views_slideshow_singleframe_main_Spotlight-panel_pane_3 .views-field-field-teaser-text-value,
+#views_slideshow_singleframe_main_Spotlight-panel_pane_3 .views-field-title {
   max-width: 475px;
 }
 
-#views_slideshow_singleframe_prev_Spotlight-panel_pane_2,
-#views_slideshow_singleframe_playpause_Spotlight-panel_pane_2,
-#views_slideshow_singleframe_next_Spotlight-panel_pane_2 {
+#views_slideshow_singleframe_prev_Spotlight-panel_pane_3,
+#views_slideshow_singleframe_playpause_Spotlight-panel_pane_3,
+#views_slideshow_singleframe_next_Spotlight-panel_pane_3 {
   color: transparent;
 }
 
-#views_slideshow_singleframe_playpause_Spotlight-panel_pane_2 {
+#views_slideshow_singleframe_playpause_Spotlight-panel_pane_3 {
   display: inline-block;
   width: 5px;
 }
 
-#views_slideshow_singleframe_prev_Spotlight-panel_pane_2 {
+#views_slideshow_singleframe_prev_Spotlight-panel_pane_3 {
   background: url('/sites/all/themes/ucla_luskin/images/left_arrow.png') no-repeat right;
 }
 
-#views_slideshow_singleframe_next_Spotlight-panel_pane_2 {
+#views_slideshow_singleframe_next_Spotlight-panel_pane_3 {
   background: url('/sites/all/themes/ucla_luskin/images/right_arrow.png') no-repeat left;
 }
 
