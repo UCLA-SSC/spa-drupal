@@ -1566,7 +1566,7 @@ label {
 }
 
 .invisible {
-	Ê visibility:hidden;
+	visibility:hidden;
 }
 
 #footer-message {
@@ -2011,14 +2011,17 @@ body.mceContentBody {
 	z-index: 1;
 	width: 612px;
 	float: left;
-	height: 100px;
-	margin: -100px 0 0 0px;
+	/*height: 100px;*/
+	/*margin: -100px 0 0 0px;*/
+  position: absolute;
+  bottom: 0;
+  padding: 10px 0;
 }
 .view-id-slideshow_luskin .views-field-title {
 	z-index: 3;
 	float: left;
-	margin: 15px 0 0 35px;
-	font-size: 2.5em;
+	margin: 0 0 0 35px;
+	font-size: 2em;
 	color: #fff;
 	line-height: 43px;
 }
@@ -2033,8 +2036,13 @@ body.mceContentBody {
 .view-id-slideshow_luskin .views-field-field-link-url {
 	z-index: 3;
 	float: right;
-	margin: -23px 34px 0 35px;
+	/*margin: -23px 34px 0 35px;*/
 	font-size: 1.0em;
+  position: absolute;
+  bottom: 50px;
+  right: 20px;
+  text-align: center;
+  width: 100px;
 }
 .view-id-slideshow_luskin .views-field-field-link-url .field-content {
 }
@@ -2044,6 +2052,42 @@ body.mceContentBody {
 	padding: 5px;
 	background: #3399ff;
 }
+
+/* Views slideshow front page */
+#views_slideshow_singleframe_main_slideshow_luskin-panel_pane_1 .views-field-title,
+#views_slideshow_singleframe_main_slideshow_luskin-panel_pane_1 .views-field-teaser-value {
+  width: 450px;
+}
+
+#views_slideshow_singleframe_controls_slideshow_luskin-panel_pane_1 {
+  position: relative;
+  top: -30px;
+  left: 480px;
+  text-align: center;
+  z-index: 5;
+  width: 100px;
+}
+
+#views_slideshow_singleframe_prev_slideshow_luskin-panel_pane_1,
+#views_slideshow_singleframe_playpause_slideshow_luskin-panel_pane_1,
+#views_slideshow_singleframe_next_slideshow_luskin-panel_pane_1 {
+  color: transparent;
+}
+
+#views_slideshow_singleframe_playpause_slideshow_luskin-panel_pane_1 {
+  display: inline-block;
+  width: 7px;
+}
+
+#views_slideshow_singleframe_prev_slideshow_luskin-panel_pane_1 {
+  background: url('/sites/all/themes/ucla_luskin/images/left_arrow_lt_gray.png') no-repeat right;
+}
+
+#views_slideshow_singleframe_next_slideshow_luskin-panel_pane_1 {
+  background: url('/sites/all/themes/ucla_luskin/images/right_arrow_lt_gray.png') no-repeat left;
+}
+/* end slideshow front page */
+
 .view-id-slideshow_luskin .views-showcase-pager-subitem {
 }
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-row {
@@ -2277,4 +2321,5 @@ body.mceContentBody {
 
 .introtext {
 	font-size:16px;
-}  
+}
+
