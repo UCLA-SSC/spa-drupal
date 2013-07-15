@@ -308,6 +308,9 @@ h2.pane-title, h2.pane-title a {
 	font-size: .9em;
 	font-weight: normal;
 }
+.view-tweets .views-row {
+  margin-bottom: 1em;
+}
 .views-field-field-publication-url {
 	margin: 10px 0 10px 0;
 }
