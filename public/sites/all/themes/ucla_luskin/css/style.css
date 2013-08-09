@@ -299,7 +299,10 @@ h2.pane-title, h2.pane-title a {
 	clear: both;
 	padding: 15px 0 15px 0;
 }
-.teasers .views-field-view-node a, .more-link a, .views-field-field-publication-url a {
+.view-tweets .view-footer a,
+.teasers .views-field-view-node a,
+.more-link a,
+.views-field-field-publication-url a {
 	color: #3399ff;
 	text-decoration: none;
 	background: #f4f5f7;
