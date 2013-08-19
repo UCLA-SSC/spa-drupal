@@ -2222,6 +2222,25 @@ body.mceContentBody {
 	color: #666;
 }
 
+/* Publication Page */
+.node-type-full-publication .links {
+  font-size: 11.7px;
+}
+
+.node-type-full-publication .links li.first {
+  padding-left: 0;
+}
+
+.pane-publication-page-panel-pane-1 label {
+  font-weight: bold;
+  display: block;
+  margin-top: 1em;
+}
+
+.pane-publication-page-panel-pane-1 .views-field-field-cover-image-fid {
+  margin-top: 1em;
+}
+
 .view-glossary .views-summary a {
 	background: none repeat scroll 0 0 #3399ff;
 	color: #FFFFFF;
