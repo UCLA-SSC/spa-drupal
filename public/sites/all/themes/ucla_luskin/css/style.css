@@ -387,6 +387,9 @@ h2.pane-title, h2.pane-title a {
 	border-top: 1px solid #E2E2E2;
   padding-top: 10px;
 }
+.view-date-browser .views-field-tid {
+  width: 314px;
+}
 .view-date-browser .views-field-view-node,
 .view-id-News.view-display-id-panel_pane_1 .views-field-view-node {
 	margin: .5em 0;
