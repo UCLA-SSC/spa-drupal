@@ -1865,7 +1865,7 @@ ul.links li.blog_usernames_blog { display: none; }
 	font-size: 1 em;
 }
 
-.calendar-calendar .date-prev, .calendar-calendar .date-next { display: none; }
+.calendar-calendar .date-prev, .calendar-calendar .date-next { }
 
 .calendar-calendar th.days,
 .calendar-calendar div.date-nav,
