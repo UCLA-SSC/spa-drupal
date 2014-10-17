@@ -50,7 +50,7 @@
 		  <div class="connected">Stay connected on </div>
 		  <div class="social-links">
 			  <a href="http://www.facebook.com/pages/UCLA-Luskin-Center-for-Innovation/157333557610562?ref=sgm"><img src="/<?php print path_to_theme()?>/images/facebook-big.png"/></a>
-			  <a href="http://twitter.com/UCLALuskin"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
+			  <a href="http://www.twitter.com/luskincenter"><img src="/<?php print path_to_theme()?>/images/twitter-big.png"/></a>
 			  <a href="<?php print $school->field_youtube_page[0]['url']?>"><img src="/<?php print path_to_theme()?>/images/youtube-big.png"/></a>
 			  <a href="/sitemap"><img src="/<?php print path_to_theme()?>/images/rss-big.png"/></a>
 		  </div>	
