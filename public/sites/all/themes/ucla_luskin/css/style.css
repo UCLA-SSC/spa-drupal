@@ -64,6 +64,7 @@ a:visited {
 }
 */
 
+  /*
 .center-wrapper {
 	width: 944px;
 	margin: 0px 31px;
@@ -71,12 +72,24 @@ a:visited {
 .center-wrapper .center-wrapper {
 	width: 99%;
 }
+*/
+
+.not-front .content-wrapper #term-panel {
+  padding: 15px 35px 45px;
+}
+
+#luskin-home .center-wrapper {
+  padding-top: 11px;
+}
+.panel-3col-33-stacked .panel-col-first .inside {
+  padding-left: 11px;
+}
 #mini-panel-term_left .center-wrapper {
 	width: 95%;
 	margin: 0px;
 }
 .panel-3col-33-stacked .center-wrapper {
-	width: 874px;
+	width: 100%;
 }
 #header {
 	margin: 0px;
@@ -84,7 +97,7 @@ a:visited {
 	width: 1006px;
 }
 .content-wrapper {
-	padding: 15px 35px 45px 35px;
+  width: 1006px;
 	margin: 0px auto;
 	background: #fff;
 }
@@ -122,7 +135,8 @@ h2.main-title {
 	display: none;
 }
 h2.pane-title, h2.pane-title a {
-	font-size: 1.6em;
+	/*font-size: 1.6em;*/
+	font-size: 21px;
 	font-weight: normal;
 	color: #555;
 	text-decoration: none;
@@ -313,8 +327,16 @@ h2.pane-title, h2.pane-title a {
 	font-size: .9em;
 	font-weight: normal;
 }
+/* Twitter feed */
 .view-tweets .views-row {
+  position: relative;
+  margin-left: 62px;
   margin-bottom: 1em;
+}
+.view-tweets .views-row .views-field-profile-image-url {
+  position: absolute;
+  left: -62px;
+  top: 5px;
 }
 .views-field-field-publication-url {
 	margin: 10px 0 10px 0;
@@ -906,7 +928,9 @@ padding-left: 10px;
   text-decoration: none;
 }
 
+
 #luskin-home .center-wrapper h2.pane-title,
+#luskin-home .center-wrapper h2.pane-title a,
 #mini-panel-term_left_luskin_center .center-wrapper h2.pane-title {
   color: #FFF;
   background-color: #26465B;
@@ -1805,7 +1829,7 @@ ul.links li.blog_usernames_blog {
 }
 .pane-term-description {
 	color: #333;
-	width: 560px;
+	width: 98%;
 }
 .pane-term-description .pane-content {
 	border: 1px solid #999;
@@ -1821,12 +1845,12 @@ ul.links li.blog_usernames_blog {
 /* Correct 2nd column width on initiative pages RG 20120310 */
 .Topic .panel-2col-stacked .panel-col-first {
     float: left;
-    width: 45%;
+    width: 49%;
     margin-right: 8px;
 }
 .Topic .panel-2col-stacked .panel-col-last {
     float: left;
-    width: 45%;
+    width: 49%;
 }
 .field-wrapper.Luskin.Center {
 	display: none;
@@ -1967,7 +1991,7 @@ body.mceContentBody {
 
 .pane-slideshow-luskin-panel-pane-1 {
 	background: #3399ff;
-	width: 642px;
+	width: 100%;
 	height: 330px;
 	float: left;
 }
@@ -1982,18 +2006,16 @@ body.mceContentBody {
 	clear: both;
 	width: 1006px;
 	background: #3399FF;
-	margin: -29px 0 10px -66px;
+	margin-top: -13px;
 }
 #luskin-home .panel-col-top .panel-region-separator {
 	display: none;
 	float: left;
 }
 #luskin-home .view-id-slideshow_luskin {
-	width: 612px;
 	height: 330px;
 	clear: both;
 	background: none;
-	margin: 0 0 0 30px;
 	position:relative;
 }
 
@@ -2009,7 +2031,7 @@ body.mceContentBody {
 }
 .view-id-slideshow_luskin .views-field-field-slide-image-fid {
 	float: left;
-	width: 612px;
+	width: 1006px;
 	height: 330px;
 	z-index: 0;
 }
@@ -2020,7 +2042,7 @@ body.mceContentBody {
 .view-id-slideshow_luskin .slideshow-bg {
 	background: url(../images/grey-bg.png) top left repeat;
 	z-index: 1;
-	width: 612px;
+	width: 1006px;
 	float: left;
 	/*height: 100px;*/
 	/*margin: -100px 0 0 0px;*/
@@ -2073,10 +2095,9 @@ body.mceContentBody {
 #views_slideshow_singleframe_controls_slideshow_luskin-panel_pane_1 {
   position: relative;
   top: -30px;
-  left: 480px;
-  text-align: center;
+  right: 10px;
+  text-align: right;
   z-index: 5;
-  width: 100px;
 }
 
 #views_slideshow_singleframe_prev_slideshow_luskin-panel_pane_1,
@@ -2106,6 +2127,7 @@ body.mceContentBody {
   margin-bottom: 20px;
 }
 
+/*
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-row {
 	width: 333px;
 	height: 94px;
@@ -2136,9 +2158,11 @@ body.mceContentBody {
 	margin: 5px 15px 0 15px;
 	color: #555;
 }
+*/
 .view-id-slideshow_luskin ul.views-showcase-mini-list .views-showcase-pager-item {
 	opacity: 1;
 }
+/*
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-row:hover {
 	background: #3399ff;
 	color: #fff;
@@ -2160,6 +2184,7 @@ body.mceContentBody {
 #luskin-home .pane-initiatives-terms-panel-pane-5 .views-field-name {
 	margin: 15px 15px 0 15px;
 }
+*/
 
 #luskin-home .pane-news-luskin-panel-pane-1 .views-field-field-list-teaser-value {
   margin-top: 10px;
