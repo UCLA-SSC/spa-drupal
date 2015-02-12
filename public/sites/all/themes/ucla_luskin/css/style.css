@@ -397,7 +397,7 @@ h2.pane-title, h2.pane-title a {
 }
 /*Front page events*/
 .front .view-date-browser .views-row {
-  margin-bottom: inherit;
+  margin-bottom: 20px;
 }
 .front .view-date-browser .views-row .views-field-tid {
   float: none;
