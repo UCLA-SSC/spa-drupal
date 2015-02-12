@@ -395,6 +395,13 @@ h2.pane-title, h2.pane-title a {
 .teasers .view-date-browser .views-field-view-node a {
 	color: #336699;
 }
+/*Front page events*/
+.front .view-date-browser .views-row {
+  margin-bottom: inherit;
+}
+.front .view-date-browser .views-row .views-field-tid {
+  float: none;
+}
 /*Events Page */
 .view-id-News.view-display-id-panel_pane_1 .views-row {
 	clear: both;
