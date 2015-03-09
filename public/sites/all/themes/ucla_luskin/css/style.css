@@ -937,10 +937,15 @@ padding-left: 10px;
 
 
 #luskin-home .center-wrapper h2.pane-title,
-#luskin-home .center-wrapper h2.pane-title a,
 #mini-panel-term_left_luskin_center .center-wrapper h2.pane-title {
   color: #FFF;
   background-color: #26465B;
+  padding: 5px 5px 3px 8px;
+}
+
+#term-left-luskin .center-wrapper h2.pane-title a,
+#luskin-home .center-wrapper h2.pane-title a {
+  color: #FFF;
   padding: 5px 5px 3px 8px;
 }
 
