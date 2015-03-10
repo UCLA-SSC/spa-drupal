@@ -1735,7 +1735,7 @@ ul.links li.mollom_node_report {
 	width: 580px;
 }
 .col-center.span-24 {
-	width: 944px;
+	width: 1006px;
 	margin: 0px auto;
 	background: #fff;
 }
@@ -2279,7 +2279,7 @@ body.mceContentBody {
 
 /* Publication Page */
 .node-type-full-publication .content-wrapper .panel-display {
-  padding: 0 20px 20px 20px;
+  padding: 0 65px;
 }
 
 .node-type-full-publication .links {
@@ -2407,5 +2407,13 @@ body.mceContentBody {
 
 .introtext {
 	font-size:16px;
+}
+
+/* Node pages */
+.page-blogs .content-wrapper .panel-display,
+.page-publications .content-wrapper .panel-display,
+.page-node .content-wrapper .panel-display {
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
