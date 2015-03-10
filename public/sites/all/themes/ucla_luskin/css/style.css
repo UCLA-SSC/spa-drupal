@@ -2278,6 +2278,10 @@ body.mceContentBody {
 }
 
 /* Publication Page */
+.node-type-full-publication .content-wrapper .panel-display {
+  padding: 0 20px 20px 20px;
+}
+
 .node-type-full-publication .links {
   font-size: 11.7px;
 }
