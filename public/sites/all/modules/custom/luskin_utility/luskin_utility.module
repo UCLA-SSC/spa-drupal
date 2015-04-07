@@ -10,3 +10,37 @@ function luskin_utility_link_alter(&$links, $node, $comment = NULL) {
     $links['comment_add'] = '';
   }
 }
+
+/**
+* Implementation of hook_views_query_alter().
+*/
+function luskin_utility_views_api() {
+  return array(
+    'api' => 2,
+  );
+}
+
+/**
+ * Implementation of hook_views_query_alter().
+ **/
+function luskin_utility_views_query_alter(&$view, &$query) {
+  // Select options markup is in theme in views-view-field--glossary--field-headshot-fid.tpl.php
+  if ( $view->name == 'glossary' && $view->current_display == 'panel_pane_6' ) {
+    $sort = $_REQUEST['sort-order'];
+    switch ($sort) {
+      case "a_z":
+        // modify the sorting criteria according to your view query shown in Views UI
+        $query->orderby[0]='node_title ASC';
+        break;
+      case "newest":
+        // modify the sorting criteria according to your view query shown in Views UI
+        $query->orderby[0]='node_created DESC';
+        break;
+      case "oldest":
+        // modify the sorting criteria according to your view query shown in Views UI
+        $query->orderby[0]='node_created ASC';
+        break;
+    }
+  }
+}
+

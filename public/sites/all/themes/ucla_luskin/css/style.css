@@ -2277,6 +2277,14 @@ body.mceContentBody {
 	color: #666;
 }
 
+#publications-list #sort-options {
+  margin-bottom: 12px;
+}
+
+#publications-list #sort-options label {
+  font-weight: bold;
+}
+
 /* Publication Page */
 .node-type-full-publication .content-wrapper .panel-display {
   padding: 0 65px;
