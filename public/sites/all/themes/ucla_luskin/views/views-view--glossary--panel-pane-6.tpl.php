@@ -50,9 +50,9 @@
         <label>Sort by </label>
         <div id='edit-sort-options'>
           <select name="sort-order" onchange="this.form.submit()">
-            <option value="a_z" <?php echo ( $sel == 'a_z' ) ? 'selected' : '';?>>A-Z</option>
-            <option value="newest" <?php echo ( $sel == 'newest' ) ? 'selected' : '';?>>Newest</option>
-            <option value="oldest" <?php echo ( $sel == 'oldest' ) ? 'selected' : '';?>>Oldest</option>
+            <option value="a_z" <?php echo ( $sel == 'a_z' ) ? 'selected' : ''; ?>>A-Z</option>
+            <option value="newest" <?php echo ( $sel == 'newest' ) ? 'selected' : ''; ?>>Newest</option>
+            <option value="oldest" <?php echo ( $sel == 'oldest' ) ? 'selected' : ''; ?>>Oldest</option>
           </select>
         </div>
       </form>
