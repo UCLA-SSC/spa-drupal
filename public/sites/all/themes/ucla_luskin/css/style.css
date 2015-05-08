@@ -811,6 +811,7 @@ padding:10px;
 	font-weight: normal;
 	margin-right: 5px;
 }
+.view-News.view-display-id-panel_pane_2 .views-field-field-fp-image-fid,
 .view-News.view-display-id-panel_pane_2 .views-field-field-news-image-fid {
 	float: left;
 	display: inline;
@@ -862,6 +863,7 @@ padding-left: 10px;
 .view-News .views-field-teaser {
 	font-weight: normal;
 }
+.view-News .views-field-field-fp-image-fid img,
 .view-News .views-field-field-news-image-fid img {
 	float: left;
 	padding: 0 10px 10px 0;
